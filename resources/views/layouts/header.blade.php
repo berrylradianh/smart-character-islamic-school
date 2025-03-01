@@ -1,6 +1,6 @@
 <header>
     <!-- Top Header (Location) -->
-    <div class="header__top" style="background-color: #fff; color: #031220; padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+    <div class="header__top" style="background-color: #f0f0f0; color: #031220; padding: 8px 0; border-bottom: 1px solid #dee2e6;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-12 d-flex justify-content-between">
@@ -51,7 +51,7 @@
 
     <!-- Bottom Header (Logo, Navigation, Search, Registration) -->
     <div class="header__area">
-        <div class="header__bottom" id="header-sticky" style="background-color: #f8f9fa; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
+        <div class="header__bottom grey-bg-4" id="header-sticky" style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
             <div class="container">
                 <div class="row align-items-center">
                     <!-- Logo -->
