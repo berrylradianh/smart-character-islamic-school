@@ -45,10 +45,11 @@
     </div>
     <!-- back to top end -->
 
-    @include('layouts.header')
+    @include('components.header')
 
+    @yield('content')
 
-    @include('layouts.footer')
+    @include('components.footer')
 
     <!-- JS here -->
     <script src="{{ asset('assets/js/vendor/jquery.js') }}"></script>
