@@ -1,10 +1,11 @@
 <header>
-    <!-- Header Atas (Lokasi) -->
+    <!-- Top Header (Location) -->
     <div class="header__top" style="background-color: #fff; color: #031220; padding: 8px 0; border-bottom: 1px solid #dee2e6;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-12 d-flex justify-content-between">
-                    <!-- Lokasi -->
+
+                    <!-- Location -->
                     <div class="header__top-left">
                         <a href="https://maps.app.goo.gl/GmLnp8cWdumje7d86?g_st=aw" target="_blank"
                             style="display: inline-flex; align-items: center; gap: 5px; color: #4B535A; text-decoration: none; transition: color 0.3s ease-in-out;"
@@ -18,8 +19,7 @@
                         </a>
                     </div>
 
-
-                    <!-- Sosial Media -->
+                    <!-- Social Media -->
                     <div class="header__top-right" style="display: flex; align-items: center; gap: 10px;">
                         <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
@@ -49,7 +49,7 @@
     </div>
     </div>
 
-    <!-- Header Bawah (Logo, Navigasi, Search, Pendaftaran) -->
+    <!-- Bottom Header (Logo, Navigation, Search, Registration) -->
     <div class="header__area">
         <div class="header__bottom" id="header-sticky" style="background-color: #f8f9fa; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
             <div class="container">
@@ -66,11 +66,11 @@
 
                     </div>
 
-                    <!-- Menu, Search, dan Pendaftaran -->
+                    <!-- Menu, Search, dan Registration -->
                     <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-6 col-6">
                         <div class="header__right" style="display: flex; align-items: center; justify-content: flex-end; gap: 20px;">
 
-                            <!-- Navigasi -->
+                            <!-- Navigation -->
                             <div class="main-menu">
                                 <nav id="mobile-menu">
                                     <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 20px;">
@@ -119,7 +119,6 @@
                                                 </li>
                                             </ul>
                                         </li>
-
                                         <li style="position: relative;">
                                             <a href="about.html"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
@@ -131,8 +130,6 @@
                                     </ul>
                                 </nav>
                             </div>
-
-
 
                             <!-- Search -->
                             <div class="header__search">
@@ -149,7 +146,7 @@
                                 </form>
                             </div>
 
-                            <!-- Tombol Pendaftaran -->
+                            <!-- Registration Button -->
                             <div class="header__btn">
                                 <a href="contact.html" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
@@ -158,8 +155,6 @@
                                     Pendaftaran
                                 </a>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

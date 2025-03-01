@@ -78,7 +78,6 @@
         function hideDropdown(element) {
             var submenu = element.querySelector('.submenu');
             if (submenu) {
-                // Tambahkan delay agar tidak langsung hilang saat pindah ke submenu
                 setTimeout(() => {
                     if (!submenu.matches(':hover') && !element.matches(':hover')) {
                         submenu.style.display = "none";

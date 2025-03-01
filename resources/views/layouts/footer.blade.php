@@ -3,7 +3,7 @@
         <div class="footer__top grey-bg-4 pt-95 pb-45">
             <div class="container">
                 <div class="row">
-                    <!-- Logo dan Deskripsi -->
+                    <!-- Logo and Description -->
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-7">
                         <div class="footer__widget footer-col-1 mb-50">
                             <div class="footer__logo">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
 
-                    <!-- Link Bermanfaat -->
+                    <!-- Helpful Links -->
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-7">
                         <div class="footer__widget mb-50">
                             <h3 style="font-weight: bold; color: #031220; margin-bottom: 15px;">Link Bermanfaat</h3>
@@ -26,7 +26,6 @@
                                     <a href="index.html" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">Beranda</a>
                                 </li>
-
                                 <li style="position: relative; margin-bottom: 10px;"
                                     onmouseenter="showDropdown(this)"
                                     onmouseleave="hideDropdown(this)">
@@ -49,8 +48,6 @@
                                         </div>
                                     </div>
                                 </li>
-
-
                                 <li style="margin-bottom: 10px;">
                                     <a href="ppdb.html" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">PPDB</a>
@@ -59,7 +56,7 @@
                         </div>
                     </div>
 
-                    <!-- Hubungi Kami -->
+                    <!-- Contact Us -->
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-7">
                         <div class="footer__widget mb-50">
                             <h3 class="footer__widget-title" style="font-weight: bold; color: #031220; margin-bottom: 15px;">Hubungi Kami</h3>
@@ -92,7 +89,7 @@
                         </div>
                     </div>
 
-                    <!-- Pendaftaran -->
+                    <!-- Registration -->
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-7">
                         <div class="footer__widget mb-50">
                             <h3 class="footer__widget-title" style="font-weight: bold; color: #031220; margin-bottom: 15px;">Pendaftaran</h3>
