@@ -1,4 +1,4 @@
-<section class="blog__area pt-120 pb-85 p-relative">
+<section class="blog__area pt-120 p-relative">
     <div class="blog__shape">
         <img class="blog__shape-1" src="assets/img/blog/blog-shape-1.png" alt="">
         <img class="blog__shape-2" src="assets/img/blog/blog-shape-2.png" alt="">
