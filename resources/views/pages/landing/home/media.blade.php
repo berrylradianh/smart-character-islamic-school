@@ -110,7 +110,7 @@
 
             sliderInner.style.transition = 'transform 0s linear';
 
-            const slideInterval = setInterval(slide, 20);
+            const slideInterval = setInterval(slide, 10);
 
             slider.addEventListener('mouseenter', () => {
                 clearInterval(slideInterval);
