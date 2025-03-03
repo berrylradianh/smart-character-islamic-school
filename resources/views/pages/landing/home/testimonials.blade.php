@@ -1,4 +1,4 @@
-<section class="testimonial__area pt-80 pb-120 fix">
+<section class="testimonial__area pt-70 pb-120 fix">
     <div class="container">
         <div class="row">
             <div class="col-xxl-12">
