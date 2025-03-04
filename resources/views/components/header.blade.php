@@ -75,26 +75,40 @@
                                 <nav id="mobile-menu">
                                     <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 20px;">
                                         <li style="position: relative;">
-                                            <a href="about.html"
+                                            @if ($title == 'Beranda')
+                                            <a href="{{ route('landing.home') }}"
+                                                style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
+                                                Beranda
+                                            </a>
+                                            @else
+                                            <a href="{{ route('landing.home') }}"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
-                                                Beranda
+                                                {{ $title }}
                                             </a>
+                                            @endif
                                         </li>
 
                                         <!-- Dropdown -->
                                         <li class="has-dropdown" style="position: relative;" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                            <a href="index.html"
+                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi Dan Misi' || $title == 'Program')
+                                            <a href="#"
+                                                style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
+                                                Tentang Kami
+                                            </a>
+                                            @else
+                                            <a href="#"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745'; showDropdown(this);"
                                                 onmouseout="this.style.color='#031220'; hideDropdown(this);">
                                                 Tentang Kami
                                             </a>
+                                            @endif
                                             <ul class="submenu"
                                                 style="display: none; position: absolute; background-color: white; border: 1px solid #ddd; border-radius: 5px; padding: 10px 0; min-width: 160px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); top: 100%; left: 0;">
                                                 <li>
-                                                    <a href="index.html"
+                                                    <a href="#"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -102,7 +116,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="index-2.html"
+                                                    <a href="#"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -110,7 +124,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="index-3.html"
+                                                    <a href="#"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -120,12 +134,19 @@
                                             </ul>
                                         </li>
                                         <li style="position: relative;">
-                                            <a href="about.html"
+                                            @if ($title == 'PPDB')
+                                            <a href="#"
+                                                style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
+                                                PPDB
+                                            </a>
+                                            @else
+                                            <a href="#"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
                                                 PPDB
                                             </a>
+                                            @endif
                                         </li>
                                     </ul>
                                 </nav>
