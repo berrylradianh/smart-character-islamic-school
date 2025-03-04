@@ -175,6 +175,37 @@
 </section>
 
 <style>
+    .course__item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .course__thumb {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .course__thumb img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .course__content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .course__title {
+        font-size: 18px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        min-height: 48px;
+    }
+
     .truncate-text {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -184,5 +215,10 @@
         white-space: normal;
         max-width: 100%;
         word-break: break-word;
+        flex-grow: 1;
+    }
+
+    .course__bottom {
+        margin-top: auto;
     }
 </style>
