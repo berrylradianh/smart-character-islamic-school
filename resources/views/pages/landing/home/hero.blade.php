@@ -8,8 +8,8 @@
                         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-10">
                             <div class="slider__content p-relative z-index-1">
                                 <span data-animation="fadeInUp" data-delay=".3s">Smart Character Islamic School</span>
-                                <h2 class="slider__title" data-animation="fadeInUp" data-delay=".6s">Making Technology as a Container, Quran as a Foundation</h2>
-                                <p data-animation="fadeInUp" data-delay=".9s">Menjadikan Teknologi sebagai Wadah, Al Quran sebagai Landasan</p>
+                                <h2 class="slider__title" data-animation="fadeInUp" data-delay=".6s">Belajar Modern, Berpijak pada Al-Quran</h2>
+                                <p data-animation="fadeInUp" data-delay=".9s">Pendidikan berkualitas yang memadukan kecerdasan teknologi dan kekuatan iman untuk generasi unggul.</p>
                                 <div class="slider__btn" data-animation="fadeInUp" data-delay="1.1s">
                                     <a href="contact.html"
                                         style="display: inline-block; padding: 15px 30px; font-size: 18px; background-color: #E47804;
@@ -31,8 +31,8 @@
                         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-10">
                             <div class="slider__content p-relative z-index-1">
                                 <span data-animation="fadeInUp" data-delay=".3s">Smart Character Islamic School</span>
-                                <h2 class="slider__title" data-animation="fadeInUp" data-delay=".6s">Making Technology as a Container, Quran as a Foundation</h2>
-                                <p data-animation="fadeInUp" data-delay=".9s">Menjadikan Teknologi sebagai Wadah, Al Quran sebagai Landasan</p>
+                                <h2 class="slider__title" data-animation="fadeInUp" data-delay=".6s">Teknologi dan Al-Quran dalam Satu Langkah</h2>
+                                <p data-animation="fadeInUp" data-delay=".9s">Menggabungkan teknologi terkini dengan nilai-nilai Al-Quran untuk masa depan anak yang cerdas dan berakhlak.</p>
                                 <div class="slider__btn" data-animation="fadeInUp" data-delay="1.1s">
                                     <a href="contact.html"
                                         style="display: inline-block; padding: 15px 30px; font-size: 18px; background-color: #E47804;
