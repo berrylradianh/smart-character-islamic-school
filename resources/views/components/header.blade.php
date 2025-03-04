@@ -57,7 +57,7 @@
                     <!-- Logo -->
                     <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-6">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="{{route('landing.home')}}">
                                 <img src="assets/img/logo/logo-name.png"
                                     alt="Smart Character Islamic School Logo"
                                     style="max-width: 100%; height: auto; width: clamp(150px, 40%, 250px);">
