@@ -11,13 +11,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-1.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Wamenag Kunjungi Menteri Hukum, Bahas Pemekaran Ditjen Pendidikan Islam</a>
+                            <a href="#">Wamenag Kunjungi Menteri Hukum, Bahas Pemekaran Ditjen Pendidikan Islam</a>
                         </h3>
                         <p class="truncate-text">Wakil Menteri Agama mengunjungi Menteri Hukum untuk membahas pemekaran Direktorat Jenderal Pendidikan Islam guna meningkatkan kualitas pendidikan Islam di Indonesia.</p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">
@@ -38,13 +38,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-2.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
+                            <a href="#">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
                         </h3>
                         <p class="truncate-text">Kementerian Agama meluncurkan sistem Magis untuk pengawasan madrasah, yang diharapkan dapat menghemat anggaran miliaran rupiah dan meningkatkan efisiensi pengelolaan madrasah. </p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">
@@ -65,13 +65,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-3.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Rayakan Imlek, Siswa di Jakut dan Tangsel Diajarkan Pendidikan Karakter</a>
+                            <a href="#">Rayakan Imlek, Siswa di Jakut dan Tangsel Diajarkan Pendidikan Karakter</a>
                         </h3>
                         <p class="truncate-text">Dalam perayaan Imlek, siswa di Jakarta Utara dan Tangerang Selatan mendapatkan pembelajaran pendidikan karakter untuk menumbuhkan sikap toleransi dan saling menghormati antarbudaya. </p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">
@@ -92,13 +92,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-4.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Mendikdasmen Luncurkan Gerakan 7 Kebiasaan Anak Indonesia Hebat</a>
+                            <a href="#">Mendikdasmen Luncurkan Gerakan 7 Kebiasaan Anak Indonesia Hebat</a>
                         </h3>
                         <p class="truncate-text">Menteri Pendidikan Dasar dan Menengah meluncurkan gerakan "7 Kebiasaan Anak Indonesia Hebat" yang bertujuan membentuk karakter positif pada anak-anak Indonesia.</p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">
@@ -119,13 +119,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-5.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Muhammadiyah Dukung Sekolah Libur Selama Satu Bulan Selama Ramadan</a>
+                            <a href="#">Muhammadiyah Dukung Sekolah Libur Selama Satu Bulan Selama Ramadan</a>
                         </h3>
                         <p class="truncate-text">Muhammadiyah mendukung kebijakan libur sekolah selama satu bulan saat Ramadan untuk memperkuat pendidikan karakter dan spiritualitas siswa. </p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">
@@ -146,13 +146,13 @@
             <div class="col-xxl-4 col-xl-4 col-lg-6 col-md-6">
                 <div class="course__item white-bg transition-3 mb-30">
                     <div class="course__thumb w-img fix">
-                        <a href="course-details.html">
+                        <a href="#">
                             <img src="{{asset('assets/img/news/news-6.png')}}" alt="" style="width: 320px; height: 220px;">
                         </a>
                     </div>
                     <div class="course__content p-relative">
                         <h3 class="course__title">
-                            <a href="course-details.html">Kisah Fatima Al-Fihri, Perempuan Muslim Pendiri Universitas Pertama di Dunia</a>
+                            <a href="#">Kisah Fatima Al-Fihri, Perempuan Muslim Pendiri Universitas Pertama di Dunia</a>
                         </h3>
                         <p class="truncate-text">Kisah inspiratif Fatima Al-Fihri, seorang perempuan Muslim yang mendirikan Universitas Al-Qarawiyyin di Fez, Maroko, universitas tertua di dunia yang masih beroperasi hingga kini. </p>
                         <div class="course__bottom d-sm-flex align-items-center justify-content-between">

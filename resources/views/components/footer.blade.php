@@ -7,7 +7,7 @@
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-7">
                         <div class="footer__widget footer-col-1 mb-50">
                             <div class="footer__logo">
-                                <a href="index.html">
+                                <a href="{{route('landing.home')}}">
                                     <img src="assets/img/logo/logo.png" alt="" style="width: 100%; height: auto; max-width: 250px;">
                                 </a>
                             </div>
@@ -23,7 +23,7 @@
                             <h3 style="font-weight: bold; color: #031220; margin-bottom: 15px;">Link Bermanfaat</h3>
                             <ul style="list-style: none; padding: 0; margin: 0;">
                                 <li style="margin-bottom: 10px;">
-                                    <a href="index.html" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
+                                    <a href="{{route('landing.home')}}" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">Beranda</a>
                                 </li>
                                 <li style="position: relative; margin-bottom: 10px;"
@@ -35,21 +35,21 @@
                                     </a>
                                     <div class="submenu" style="display: none; position: absolute; left: 0; background: white; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); width: 150px; border-radius: 5px; z-index: 10;">
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="profil.html" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Profil</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="visi-misi.html" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Visi dan Misi</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="program.html" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Program</a>
                                         </div>
                                     </div>
                                 </li>
                                 <li style="margin-bottom: 10px;">
-                                    <a href="ppdb.html" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
+                                    <a href="#" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">PPDB</a>
                                 </li>
                             </ul>
@@ -94,7 +94,7 @@
                         <div class="footer__widget mb-50">
                             <h3 class="footer__widget-title" style="font-weight: bold; color: #031220; margin-bottom: 15px;">Pendaftaran</h3>
                             <p style="color: #031220; margin-bottom: 20px;">Isi Formulir Pendaftaran secara online sesuai dengan jenjang yang diinginkan, inden mulai sekarang untuk pendaftaran tahun ajaran yang akan datang.</p>
-                            <a href="contact.html" style="display: inline-block; padding: 10px 20px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 5px; transition: 0.3s;"
+                            <a href="#" style="display: inline-block; padding: 10px 20px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 5px; transition: 0.3s;"
                                 onmouseover="this.style.backgroundColor='#FF9800';"
                                 onmouseout="this.style.backgroundColor='#E47804';">
                                 Daftar Sekarang

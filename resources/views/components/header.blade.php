@@ -169,7 +169,7 @@
 
                             <!-- Registration Button -->
                             <div class="header__btn">
-                                <a href="contact.html" class="header-btn"
+                                <a href="#" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                                     onmouseover="this.style.backgroundColor='#FF9800';"
                                     onmouseout="this.style.backgroundColor='#E47804';">

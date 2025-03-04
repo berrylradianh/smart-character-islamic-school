@@ -9,13 +9,13 @@
                     <div style="background-color: #fff; transition: all 0.3s; display: flex; height: 406px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 10px;">
                         <div style="display: flex; flex-direction: row; width: 100%;">
                             <div style="width: 40%; overflow: hidden; border-radius: 10px 0 0 10px;">
-                                <a href="course-details.html">
+                                <a href="#">
                                     <img src="{{asset('assets/img/agenda/agenda-1.png')}}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                             </div>
                             <div style="width: 60%; display: flex; flex-direction: column; padding: 25px;">
                                 <h3 style="font-size: 24px; line-height: 1.2; margin-bottom: 15px;">
-                                    <a href="course-details.html" style="text-decoration: none; color: #333;">Wamenag Kunjungi Menteri Hukum, Bahas Pemekaran Ditjen Pendidikan Islam</a>
+                                    <a href="#" style="text-decoration: none; color: #333;">Wamenag Kunjungi Menteri Hukum, Bahas Pemekaran Ditjen Pendidikan Islam</a>
                                 </h3>
                                 <p style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-width: 100%; word-break: break-word; flex-grow: 1; font-size: 18px;">Wakil Menteri Agama mengunjungi Menteri Hukum untuk membahas pemekaran Direktorat Jenderal Pendidikan Islam guna meningkatkan kualitas pendidikan Islam di Indonesia.</p>
                                 <div style="margin-top: auto;">
@@ -39,13 +39,13 @@
                     <div style="background-color: #fff; transition: all 0.3s; display: flex; height: 406px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 10px;">
                         <div style="display: flex; flex-direction: row; width: 100%;">
                             <div style="width: 40%; overflow: hidden; border-radius: 10px 0 0 10px;">
-                                <a href="course-details.html">
+                                <a href="#">
                                     <img src="{{asset('assets/img/agenda/agenda-2.png')}}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                             </div>
                             <div style="width: 60%; display: flex; flex-direction: column; padding: 25px;">
                                 <h3 style="font-size: 24px; line-height: 1.2; margin-bottom: 15px;">
-                                    <a href="course-details.html" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
+                                    <a href="#" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
                                 </h3>
                                 <p style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-width: 100%; word-break: break-word; flex-grow: 1; font-size: 18px;">Kementerian Agama meluncurkan sistem Magis untuk pengawasan madrasah, yang diharapkan dapat menghemat anggaran miliaran rupiah dan meningkatkan efisiensi pengelolaan madrasah.</p>
                                 <div style="margin-top: auto;">
@@ -69,13 +69,13 @@
                     <div style="background-color: #fff; transition: all 0.3s; display: flex; height: 406px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 10px;">
                         <div style="display: flex; flex-direction: row; width: 100%;">
                             <div style="width: 40%; overflow: hidden; border-radius: 10px 0 0 10px;">
-                                <a href="course-details.html">
+                                <a href="#">
                                     <img src="{{asset('assets/img/agenda/agenda-3.png')}}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                             </div>
                             <div style="width: 60%; display: flex; flex-direction: column; padding: 25px;">
                                 <h3 style="font-size: 24px; line-height: 1.2; margin-bottom: 15px;">
-                                    <a href="course-details.html" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
+                                    <a href="#" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
                                 </h3>
                                 <p style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-width: 100%; word-break: break-word; flex-grow: 1; font-size: 18px;">Kementerian Agama meluncurkan sistem Magis untuk pengawasan madrasah, yang diharapkan dapat menghemat anggaran miliaran rupiah dan meningkatkan efisiensi pengelolaan madrasah.</p>
                                 <div style="margin-top: auto;">
@@ -99,13 +99,13 @@
                     <div style="background-color: #fff; transition: all 0.3s; display: flex; height: 406px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 10px;">
                         <div style="display: flex; flex-direction: row; width: 100%;">
                             <div style="width: 40%; overflow: hidden; border-radius: 10px 0 0 10px;">
-                                <a href="course-details.html">
+                                <a href="#">
                                     <img src="{{asset('assets/img/agenda/agenda-4.png')}}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                             </div>
                             <div style="width: 60%; display: flex; flex-direction: column; padding: 25px;">
                                 <h3 style="font-size: 24px; line-height: 1.2; margin-bottom: 15px;">
-                                    <a href="course-details.html" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
+                                    <a href="#" style="text-decoration: none; color: #333;">Luncurkan Magis sebagai Pengawasan Madrasah, Kemenag Hemat Miliaran Rupiah</a>
                                 </h3>
                                 <p style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; max-width: 100%; word-break: break-word; flex-grow: 1; font-size: 18px;">Kementerian Agama meluncurkan sistem Magis untuk pengawasan madrasah, yang diharapkan dapat menghemat anggaran miliaran rupiah dan meningkatkan efisiensi pengelolaan madrasah.</p>
                                 <div style="margin-top: auto;">
