@@ -58,7 +58,7 @@
                     <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-6">
                         <div class="logo">
                             <a href="{{route('landing.home')}}">
-                                <img src="assets/img/logo/logo-name.png"
+                                <img src="{{asset('assets/img/logo/logo-name.png')}}"
                                     alt="Smart Character Islamic School Logo"
                                     style="max-width: 100%; height: auto; width: clamp(150px, 40%, 250px);">
                             </a>
@@ -85,7 +85,7 @@
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
-                                                {{ $title }}
+                                                Beranda
                                             </a>
                                             @endif
                                         </li>
@@ -169,7 +169,7 @@
 
                             <!-- Registration Button -->
                             <div class="header__btn">
-                                <a href="#" class="header-btn"
+                                <a href="{{route('auth.register')}}" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                                     onmouseover="this.style.backgroundColor='#FF9800';"
                                     onmouseout="this.style.backgroundColor='#E47804';">
