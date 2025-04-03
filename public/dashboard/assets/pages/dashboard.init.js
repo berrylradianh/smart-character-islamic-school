@@ -58,7 +58,7 @@
 
       Dashboard.prototype.init = function () {
 
-        
+
 
 
           //creating area chart
@@ -71,13 +71,13 @@
               {y: '2018', a: 75, b: 240, c:120},
               {y: '2019', a: 30, b: 30, c:30}
           ];
-          this.createAreaChart('morris-area-example', 0, 0, $areaData, 'y', ['a', 'b', 'c'], ['Series A', 'Series B', 'Series C'], ['#fcbe2d', '#02c58d', '#30419b']);
+          this.createAreaChart('morris-area-example', 0, 0, $areaData, 'y', ['a', 'b', 'c'], ['Program A', 'Program B', 'Program C'], ['#fcbe2d', '#02c58d', '#30419b']);
 
           //creating donut chart
           var $donutData = [
-              {label: "Download Sales", value: 12},
-              {label: "In-Store Sales", value: 30},
-              {label: "Mail-Order Sales", value: 20}
+              {label: "Program A", value: 12},
+              {label: "Program B", value: 30},
+              {label: "Program C", value: 20}
           ];
           this.createDonutChart('morris-donut-example', $donutData, ['#fcbe2d', '#30419b', '#02c58d']);
 
@@ -100,7 +100,7 @@
       $.Dashboard = new Dashboard, $.Dashboard.Constructor = Dashboard
 }(window.jQuery),
 
-//initializing 
+//initializing
   function ($) {
       "use strict";
       $.Dashboard.init();

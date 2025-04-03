@@ -8,10 +8,11 @@
     <title>{{ $title.' - SCIS' ?? "" }}</title>
     <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
     <meta content="Themesdesign" name="author" />
-    <link rel="shortcut ico" href="{{ asset('dashboard/assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
+
 
     <!--Morris Chart CSS -->
-    <link href="{{ asset('../plugins/morris/morris.css') }}" rel="stylesheet" >
+    <link href="{{ asset('dashboard/assets/css/morris.css') }}" rel="stylesheet" >
 
     <link href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}" rel="stylesheet" >
     <link href="{{ asset('dashboard/assets/css/metismenu.min.css') }}" rel="stylesheet" type="text/css" >
@@ -53,8 +54,8 @@
 
 
     <!--Morris Chart-->
-    <script src="{{ asset('../plugins/morris/morris.min.js') }}"></script>
-    <script src="{{ asset('../plugins/raphael/raphael.min.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/morris.min.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/raphael.min.js') }}"></script>
 
     <script src="{{ asset('dashboard/assets/pages/dashboard.init.js') }}"></script>
 

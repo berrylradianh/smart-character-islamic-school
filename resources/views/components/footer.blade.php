@@ -8,7 +8,7 @@
                         <div class="footer__widget footer-col-1 mb-50">
                             <div class="footer__logo">
                                 <a href="{{route('landing.home')}}">
-                                    <img src="{{asset('assets/img/logo/logo.png')}}" alt="" style="width: 100%; height: auto; max-width: 250px;">
+                                    <img src="{{asset('assets/img/logo/logo-name.png')}}" alt="" style="width: 100%; height: auto; max-width: 250px;">
                                 </a>
                             </div>
                             <div class="footer__widget-content">

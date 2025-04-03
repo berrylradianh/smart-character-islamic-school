@@ -5,7 +5,7 @@
  */
 
 //  line chart datalabel
-   
+
 var options = {
     chart: {
       height: 380,
@@ -83,12 +83,12 @@ var options = {
       }
     }]
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#line_chart_datalabel"),
     options
   );
-  
+
   chart.render();
 
 
@@ -200,7 +200,7 @@ var options = {
     colors: ['#4090cb', '#e74c5e'],
     xaxis: {
         type: 'datetime',
-        categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00", "2018-09-19T06:30:00"],                
+        categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00", "2018-09-19T06:30:00"],
     },
     grid: {
         borderColor: '#f1f1f1',
@@ -233,7 +233,7 @@ var options = {
         bar: {
             horizontal: false,
             columnWidth: '45%',
-            endingShape: 'rounded'	
+            endingShape: 'rounded'
         },
     },
     dataLabels: {
@@ -508,7 +508,7 @@ var options = {
                     return y.toFixed(0) + " points";
                 }
                 return y;
-  
+
             }
         }
     },
@@ -516,7 +516,7 @@ var options = {
         borderColor: '#f1f1f1'
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#mixed_chart"),
     options
@@ -555,7 +555,7 @@ var options = {
     series: [44, 55, 67, 83],
     labels: ['Computer', 'Tablet', 'Laptop', 'Mobile'],
     colors: ['#4090cb', '#e74c5e', '#47bd9a', '#06c2de'],
-    
+
 }
 
 var chart = new ApexCharts(
@@ -572,7 +572,7 @@ var options = {
   chart: {
       height: 320,
       type: 'pie',
-  }, 
+  },
   series: [44, 55, 41, 17, 15],
   labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
   colors: ["#a3cae0", "#4090cb","#e74c5e", "#f9d570", "#47bd9a"],
@@ -614,7 +614,7 @@ var options = {
   chart: {
       height: 320,
       type: 'donut',
-  }, 
+  },
   series: [44, 55, 41, 17, 15],
   labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
   colors: ["#a3cae0", "#4090cb","#e74c5e", "#f9d570", "#47bd9a"],
