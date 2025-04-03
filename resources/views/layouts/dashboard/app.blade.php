@@ -12,12 +12,12 @@
 
 
     <!--Morris Chart CSS -->
-    <link href="{{ asset('dashboard/assets/css/morris.css') }}" rel="stylesheet" >
+    <link href="{{ asset('dashboard/assets/css/morris.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}" rel="stylesheet" >
-    <link href="{{ asset('dashboard/assets/css/metismenu.min.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('dashboard/assets/css/icons.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('dashboard/assets/css/style.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('dashboard/assets/css/metismenu.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('dashboard/assets/css/icons.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('dashboard/assets/css/style.css') }}" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -61,6 +61,8 @@
 
     <!-- App js -->
     <script src="{{ asset('dashboard/assets/js/app.js') }}"></script>
-    </body>
+
+    @yield('scripts')
+</body>
 
 </html>

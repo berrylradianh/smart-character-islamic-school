@@ -24,4 +24,14 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.hero', $data);
     }
+
+
+    public function introduction()
+    {
+        $data = [
+            'title' => 'Content Perkenalan',
+        ];
+
+        return view('pages.dashboard.admin.introduction', $data);
+    }
 }

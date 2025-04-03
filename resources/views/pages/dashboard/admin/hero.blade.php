@@ -6,7 +6,7 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Hero Content</h4>
+                        <h4 class="page-title">Hero</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
