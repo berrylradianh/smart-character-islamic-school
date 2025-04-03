@@ -13,4 +13,5 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/content-hero', [AdminController::class, 'hero'])->name('admin.hero');
 });

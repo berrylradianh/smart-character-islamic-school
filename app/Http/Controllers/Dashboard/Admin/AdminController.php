@@ -15,4 +15,13 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.index', $data);
     }
+
+    public function hero()
+    {
+        $data = [
+            'title' => 'Content Hero',
+        ];
+
+        return view('pages.dashboard.admin.hero', $data);
+    }
 }
