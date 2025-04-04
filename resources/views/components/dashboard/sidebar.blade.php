@@ -18,12 +18,8 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-spread"></i><span> Content <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="{{route('admin.hero')}}">Hero</a></li>
-                        <li><a href="{{route('admin.introduction')}}">Perkenalan</a></li>
-                        <li><a href="#">Program</a></li>
-                        <li><a href="#">Berita</a></li>
-                        <li><a href="#">Agenda</a></li>
-                        <li><a href="#">Testimoni</a></li>
-                        <li><a href="#">Media</a></li>
+                        <li><a href="{{route('admin.news')}}">Berita</a></li>
+                        <li><a href="{{route('admin.agenda')}}">Agenda</a></li>
                     </ul>
                 </li>
 

@@ -25,13 +25,21 @@ class AdminController extends Controller
         return view('pages.dashboard.admin.hero', $data);
     }
 
-
-    public function introduction()
+    public function news()
     {
         $data = [
-            'title' => 'Content Perkenalan',
+            'title' => 'Content Berita',
         ];
 
-        return view('pages.dashboard.admin.introduction', $data);
+        return view('pages.dashboard.admin.news', $data);
+    }
+
+    public function agenda()
+    {
+        $data = [
+            'title' => 'Content Agenda',
+        ];
+
+        return view('pages.dashboard.admin.agenda', $data);
     }
 }
