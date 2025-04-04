@@ -92,7 +92,7 @@
 
                                         <!-- Dropdown -->
                                         <li class="has-dropdown" style="position: relative;" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi Dan Misi' || $title == 'Program')
+                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi dan Misi' || $title == 'Program')
                                             <a href="#"
                                                 style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
                                                 Tentang Kami
@@ -108,7 +108,7 @@
                                             <ul class="submenu"
                                                 style="display: none; position: absolute; background-color: white; border: 1px solid #ddd; border-radius: 5px; padding: 10px 0; min-width: 160px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); top: 100%; left: 0;">
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{route('landing.profile')}}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -116,7 +116,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{route('landing.vision')}}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">

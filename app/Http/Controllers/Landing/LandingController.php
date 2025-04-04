@@ -14,4 +14,22 @@ class LandingController extends Controller
 
         return view('pages.landing.home.index', $data);
     }
+
+    public function profile()
+    {
+        $data = [
+            'title' => 'Profil',
+        ];
+
+        return view('pages.landing.profile.index', $data);
+    }
+
+    public function vision()
+    {
+        $data = [
+            'title' => 'Visi dan Misi',
+        ];
+
+        return view('pages.landing.vision.index', $data);
+    }
 }

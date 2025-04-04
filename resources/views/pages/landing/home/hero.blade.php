@@ -11,7 +11,7 @@
                                 <h2 class="slider__title" data-animation="fadeInUp" data-delay=".6s">Belajar Modern, Berpijak pada Al-Quran</h2>
                                 <p data-animation="fadeInUp" data-delay=".9s">Pendidikan berkualitas yang memadukan kecerdasan teknologi dan kekuatan iman untuk generasi unggul.</p>
                                 <div class="slider__btn" data-animation="fadeInUp" data-delay="1.1s">
-                                    <a href="#"
+                                    <a href="{{route('auth.register')}}"
                                         style="display: inline-block; padding: 15px 30px; font-size: 18px; background-color: #E47804;
            color: #fff; text-decoration: none; border-radius: 8px; transition: 0.3s; font-weight: bold;"
                                         onmouseover="this.style.backgroundColor='#FF9800';"

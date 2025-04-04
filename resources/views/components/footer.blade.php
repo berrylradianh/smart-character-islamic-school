@@ -35,7 +35,7 @@
                                     </a>
                                     <div class="submenu" style="display: none; position: absolute; left: 0; background: white; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); width: 150px; border-radius: 5px; z-index: 10;">
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.profile')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Profil</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
