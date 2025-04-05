@@ -42,4 +42,13 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.agenda', $data);
     }
+
+    public function ppdb_info()
+    {
+        $data = [
+            'title' => 'PPDB Informasi',
+        ];
+
+        return view('pages.dashboard.admin.ppdb.information', $data);
+    }
 }

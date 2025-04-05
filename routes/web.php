@@ -20,4 +20,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/content-hero', [AdminController::class, 'hero'])->name('admin.hero');
     Route::get('/content-news', [AdminController::class, 'news'])->name('admin.news');
     Route::get('/content-agenda', [AdminController::class, 'agenda'])->name('admin.agenda');
+    Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('admin.ppdb_info');
 });
