@@ -1,5 +1,5 @@
 <section style="background-color: white; padding-top: 90px;">
-    <div style="max-width: 1600px; margin: 0 auto; padding: 0 15px;">
+    <div class="container">
         <div style="display: flex; justify-content: center; margin-bottom: 60px;">
             <h2 style="font-size: 44px; font-weight: bold;">Agenda</h2>
         </div>
@@ -162,3 +162,15 @@
         }
     });
 </script>
+
+<style>
+    .container {
+        max-width: 1140px;
+        /* Matches the typical Bootstrap container width */
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
