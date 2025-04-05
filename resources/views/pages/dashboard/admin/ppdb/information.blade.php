@@ -193,7 +193,7 @@
     </div>
 
     <footer class="footer">
-        © SCIS, 2025. All Right Reserved
+        © SCIS, 2024. All Right Reserved
     </footer>
 </div>
 

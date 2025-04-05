@@ -51,4 +51,13 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.ppdb.information', $data);
     }
+
+    public function ppdb_timeline()
+    {
+        $data = [
+            'title' => 'PPDB Timeline',
+        ];
+
+        return view('pages.dashboard.admin.ppdb.timeline', $data);
+    }
 }
