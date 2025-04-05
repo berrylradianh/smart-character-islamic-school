@@ -41,4 +41,13 @@ class LandingController extends Controller
 
         return view('pages.landing.program.index', $data);
     }
+
+    public function ppdb()
+    {
+        $data = [
+            'title' => 'PPDB',
+        ];
+
+        return view('pages.landing.ppdb.index', $data);
+    }
 }
