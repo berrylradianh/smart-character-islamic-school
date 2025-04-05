@@ -124,7 +124,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{route('landing.program')}}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">

@@ -32,4 +32,13 @@ class LandingController extends Controller
 
         return view('pages.landing.vision.index', $data);
     }
+
+    public function program()
+    {
+        $data = [
+            'title' => 'Program',
+        ];
+
+        return view('pages.landing.program.index', $data);
+    }
 }

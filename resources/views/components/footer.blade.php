@@ -39,11 +39,11 @@
                                             onmouseout="this.style.color='#031220';">Profil</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.vision')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Visi dan Misi</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.program')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Program</a>
                                         </div>
                                     </div>

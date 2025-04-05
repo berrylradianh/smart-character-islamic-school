@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/profile', [LandingController::class, 'profile'])->name('landing.profile');
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
+Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
 Route::prefix('auth')->group(function () {
     Route::get('login', [AuthController::class, 'login'])->name('auth.login');
     Route::get('register', [AuthController::class, 'register'])->name('auth.register');
