@@ -11,8 +11,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">SCIS</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">PPDB</a></li>
+                            <li class="breadcrumb-item">SCIS</li>
+                            <li class="breadcrumb-item">PPDB</li>
                             <li class="breadcrumb-item active">Informasi Pendaftaran</li>
                         </ol>
                     </div>

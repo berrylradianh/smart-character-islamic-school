@@ -28,6 +28,7 @@
                     <ul class="submenu">
                         <li><a href="{{route('admin.ppdb_info')}}">Informasi</a></li>
                         <li><a href="{{route('admin.ppdb_timeline')}}">Timeline</a></li>
+                        <li><a href="{{route('admin.ppdb_faq')}}">FAQs</a></li>
                         <li><a href="#">Pendaftaran</a></li>
                     </ul>
                 </li>

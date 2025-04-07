@@ -60,4 +60,13 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.ppdb.timeline', $data);
     }
+
+    public function ppdb_faq()
+    {
+        $data = [
+            'title' => 'PPDB FAQs',
+        ];
+
+        return view('pages.dashboard.admin.ppdb.faq', $data);
+    }
 }

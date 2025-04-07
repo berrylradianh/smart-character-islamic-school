@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="content-page">
-    <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
             <div class="page-title-box">
@@ -12,17 +11,14 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">SCIS</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">PPDB</a></li>
+                            <li class="breadcrumb-item">SCIS</li>
+                            <li class="breadcrumb-item">PPDB</li>
                             <li class="breadcrumb-item active">Timeline</li>
                         </ol>
                     </div>
                 </div>
-                <!-- end row -->
             </div>
-            <!-- end page-title -->
 
-            <!-- Filter Buttons -->
             <div class="row mb-3">
                 <div class="col-12">
                     <div class="btn-group" role="group" aria-label="Filter Jenjang">
