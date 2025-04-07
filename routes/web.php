@@ -23,4 +23,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('admin.ppdb_info');
     Route::get('/ppdb-timeline', [AdminController::class, 'ppdb_timeline'])->name('admin.ppdb_timeline');
     Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('admin.ppdb_faq');
+    Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('admin.ppdb_pendaftaran');
 });

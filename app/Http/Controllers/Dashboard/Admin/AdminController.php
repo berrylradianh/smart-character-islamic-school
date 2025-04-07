@@ -69,4 +69,13 @@ class AdminController extends Controller
 
         return view('pages.dashboard.admin.ppdb.faq', $data);
     }
+
+    public function ppdb_pendaftaran()
+    {
+        $data = [
+            'title' => 'PPDB Pendaftaran',
+        ];
+
+        return view('pages.dashboard.admin.ppdb.pendaftaran', $data);
+    }
 }
