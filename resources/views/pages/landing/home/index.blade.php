@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('pages.landing.home.hero')
+    @include('pages.landing.home.hero', ['heroes' => $heroes])
     @include('pages.landing.home.introduction')
     @include('pages.landing.home.values')
     @include('pages.landing.home.resource')

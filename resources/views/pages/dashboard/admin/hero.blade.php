@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.dashboard.app')
 @section('content')
 <div class="content-page">
@@ -6,7 +10,7 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Hero</h4>
+                        <h4 class="page-title">{{ $title }}</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
@@ -18,6 +22,10 @@
                 </div>
             </div>
 
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
             <div id="hero-sections">
                 <div class="row">
                     <div class="col-12">
@@ -26,19 +34,21 @@
                                 <h4 class="mt-0 header-title">Edit or Add Hero Content</h4>
                                 <p class="sub-title">This Content will be shown on the Hero Section of the Landing Page.</p>
 
-                                <form action="#" method="POST" enctype="multipart/form-data" class="hero-form" data-index="0">
+                                <form action="{{ route('hero.store') }}" method="POST" enctype="multipart/form-data" class="hero-form" data-index="0">
                                     @csrf
                                     <div class="hero-card">
                                         <div class="form-group row">
                                             <label for="title_0" class="col-sm-2 col-form-label">Title</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="Type your title here...." id="title_0" name="title">
+                                                <input class="form-control" type="text" placeholder="Type your title here...." id="title_0" name="title" value="{{ old('title') }}">
+                                                @error('title') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="description_0" class="col-sm-2 col-form-label">Description</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="Type your description here...." id="description_0" name="description">
+                                                <input class="form-control" type="text" placeholder="Type your description here...." id="description_0" name="description" value="{{ old('description') }}">
+                                                @error('description') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -49,6 +59,7 @@
                                                     <div id="imagePreview_0" class="mt-3" style="max-width: 300px; display: none;">
                                                         <img id="previewImg_0" src="#" alt="Image Preview" class="img-fluid rounded" style="max-width: 100%;">
                                                     </div>
+                                                    @error('file') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -61,6 +72,50 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Menampilkan Hero yang Sudah Ada -->
+                @foreach ($heroes as $index => $hero)
+                <div class="row hero-item" data-hero-index="{{ $index }}">
+                    <div class="col-12">
+                        <div class="card m-b-30">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Hero Content #{{ $index + 1 }}</h4>
+                                <form action="{{ route('hero.destroy', $hero->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="hero-card">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Title</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" value="{{ $hero->title }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Description</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" value="{{ $hero->description }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Image</label>
+                                            <div class="col-sm-10">
+                                                @if ($hero->image)
+                                                    <img src="{{ Storage::url($hero->image) }}" alt="{{ $hero->title }}" class="img-fluid rounded" style="max-width: 300px;">
+                                                @else
+                                                    <p>No image available</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="text-center m-t-15">
+                                            <button type="submit" class="btn btn-danger waves-effect waves-light">Remove</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
 
             <div class="row">
@@ -77,9 +132,9 @@
 </div>
 
 <script>
-    let heroCount = 1;
+    // Menghitung jumlah elemen dengan class 'hero-item'
+    let heroCount = document.querySelectorAll('.hero-item').length;
 
-    // Handle image preview
     function setupImagePreview(input, index) {
         input.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -99,21 +154,20 @@
         });
     }
 
-    // Initial image preview setup
     setupImagePreview(document.getElementById('image_0'), 0);
 
-    // Add new hero section
     document.getElementById('add-hero').addEventListener('click', function() {
         const heroSections = document.getElementById('hero-sections');
         const newRow = document.createElement('div');
-        newRow.className = 'row';
+        newRow.className = 'row hero-item';
+        newRow.setAttribute('data-hero-index', heroCount);
         newRow.innerHTML = `
             <div class="col-12">
                 <div class="card m-b-30">
                     <div class="card-body">
                         <h4 class="mt-0 header-title">Edit or Add Hero Content</h4>
                         <p class="sub-title">This Content will be shown on the Hero Section of the Landing Page.</p>
-                        <form action="#" method="POST" enctype="multipart/form-data" class="hero-form" data-index="${heroCount}">
+                        <form action="{{ route('hero.store') }}" method="POST" enctype="multipart/form-data" class="hero-form" data-index="${heroCount}">
                             @csrf
                             <div class="hero-card">
                                 <div class="form-group row">
@@ -140,7 +194,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center m-t-15">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-diameter-light">Submit</button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light ml-2 remove-hero">Remove</button>
                                 </div>
                             </div>
@@ -151,13 +205,12 @@
         `;
         heroSections.appendChild(newRow);
 
-        // Setup image preview for new input
         const newImageInput = document.getElementById(`image_${heroCount}`);
         setupImagePreview(newImageInput, heroCount);
 
-        // Handle remove button
         newRow.querySelector('.remove-hero').addEventListener('click', function() {
             newRow.remove();
+            heroCount = document.querySelectorAll('.hero-item').length;
         });
 
         heroCount++;

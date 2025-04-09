@@ -22,6 +22,8 @@ Route::prefix('auth')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/content-hero', [AdminController::class, 'hero'])->name('admin.hero');
+    Route::post('/content-hero', [AdminController::class, 'storeHero'])->name('hero.store');
+    Route::delete('/content-hero/{id}', [AdminController::class, 'destroyHero'])->name('hero.destroy');
     Route::get('/content-news', [AdminController::class, 'news'])->name('admin.news');
     Route::get('/content-agenda', [AdminController::class, 'agenda'])->name('admin.agenda');
     Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('admin.ppdb_info');

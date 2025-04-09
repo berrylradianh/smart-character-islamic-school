@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Mail\PpdbInquiry;
+use App\Models\Hero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,7 @@ class LandingController extends Controller
     {
         $data = [
             'title' => 'Beranda',
+            'heroes' => Hero::all(),
         ];
 
         return view('pages.landing.home.index', $data);
