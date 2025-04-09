@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hero;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -66,9 +67,46 @@ class AdminController extends Controller
     {
         $data = [
             'title' => 'Content Berita',
+            'news' => News::all(),
         ];
 
         return view('pages.dashboard.admin.news', $data);
+    }
+
+    public function storeNews(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date',
+            'file' => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        $newsData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $request->date,
+        ];
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('news_images', 'public');
+            $newsData['image'] = $filePath;
+        }
+
+        News::create($newsData);
+
+        return redirect()->route('admin.news')->with('success', 'Berita berhasil ditambahkan!');
+    }
+
+    public function destroyNews($id)
+    {
+        $news = News::findOrFail($id);
+        if ($news->image) {
+            Storage::disk('public')->delete($news->image);
+        }
+        $news->delete();
+
+        return redirect()->back()->with('success', 'News section removed successfully!');
     }
 
     public function agenda()

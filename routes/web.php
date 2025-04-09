@@ -25,6 +25,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/content-hero', [AdminController::class, 'storeHero'])->name('hero.store');
     Route::delete('/content-hero/{id}', [AdminController::class, 'destroyHero'])->name('hero.destroy');
     Route::get('/content-news', [AdminController::class, 'news'])->name('admin.news');
+    Route::post('/content-news', [AdminController::class, 'storeNews'])->name('news.store');
+    Route::delete('/content-news/{id}', [AdminController::class, 'destroyNews'])->name('news.destroy');
     Route::get('/content-agenda', [AdminController::class, 'agenda'])->name('admin.agenda');
     Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('admin.ppdb_info');
     Route::get('/ppdb-timeline', [AdminController::class, 'ppdb_timeline'])->name('admin.ppdb_timeline');

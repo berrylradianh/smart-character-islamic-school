@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.dashboard.app')
 @section('content')
 <div class="content-page">
@@ -6,7 +10,7 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Berita</h4>
+                        <h4 class="page-title">{{ $title }}</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
@@ -18,6 +22,10 @@
                 </div>
             </div>
 
+            @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
             <div id="news-sections">
                 <div class="row">
                     <div class="col-12">
@@ -26,25 +34,28 @@
                                 <h4 class="mt-0 header-title">Edit or Add Berita Content</h4>
                                 <p class="sub-title">This Content will be shown on the Berita Section of the Landing Page.</p>
 
-                                <form action="#" method="POST" enctype="multipart/form-data" class="news-form" data-index="0">
+                                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" class="news-form" data-index="0">
                                     @csrf
                                     <div class="news-card">
                                         <div class="form-group row">
                                             <label for="title_0" class="col-sm-2 col-form-label">Title</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="Type your title here...." id="title_0" name="title">
+                                                <input class="form-control" type="text" placeholder="Type your title here...." id="title_0" name="title" value="{{ old('title') }}">
+                                                @error('title') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="description_0" class="col-sm-2 col-form-label">Description</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" placeholder="Type your description here...." id="description_0" name="description">
+                                                <input class="form-control" type="text" placeholder="Type your description here...." id="description_0" name="description" value="{{ old('description') }}">
+                                                @error('description') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="example-date-input" class="col-sm-2 col-form-label">Date</label>
+                                            <label for="date_0" class="col-sm-2 col-form-label">Date</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="date" id="date">
+                                                <input class="form-control" type="date" id="date_0" name="date" value="{{ old('date') }}">
+                                                @error('date') <span class="text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -55,6 +66,7 @@
                                                     <div id="imagePreview_0" class="mt-3" style="max-width: 300px; display: none;">
                                                         <img id="previewImg_0" src="#" alt="Image Preview" class="img-fluid rounded" style="max-width: 100%;">
                                                     </div>
+                                                    @error('file') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -67,11 +79,61 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Menampilkan Berita yang Sudah Ada -->
+                @foreach ($news as $index => $item)
+                <div class="row news-item" data-news-index="{{ $index }}">
+                    <div class="col-12">
+                        <div class="card m-b-30">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Berita Content #{{ $index + 1 }}</h4>
+                                <form action="{{ route('news.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="news-card">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Title</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" value="{{ $item->title }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Description</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" value="{{ $item->description }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Date</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" value="{{ \Carbon\Carbon::parse($item->date)->format('d F Y') }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Image</label>
+                                            <div class="col-sm-10">
+                                                @if ($item->image)
+                                                <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" class="img-fluid rounded" style="max-width: 300px;">
+                                                @else
+                                                <p>No image available</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="text-center m-t-15">
+                                            <button type="submit" class="btn btn-danger waves-effect waves-light">Remove</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    <button type="button" class="btn btn-success waves-effect waves-light mb-3" id="add-news">+ Add Berita</button>
+                    <button type="button" class="btn btn-success waves-effect waves-light mb-3" id="add-news">+ Add Berita Section</button>
                 </div>
             </div>
         </div>
@@ -83,9 +145,8 @@
 </div>
 
 <script>
-    let newsCount = 1;
+    let newsCount = document.querySelectorAll('.news-item').length;
 
-    // Handle image preview
     function setupImagePreview(input, index) {
         input.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -105,21 +166,20 @@
         });
     }
 
-    // Initial image preview setup
     setupImagePreview(document.getElementById('image_0'), 0);
 
-    // Add new news section
     document.getElementById('add-news').addEventListener('click', function() {
         const newsSections = document.getElementById('news-sections');
         const newRow = document.createElement('div');
-        newRow.className = 'row';
+        newRow.className = 'row news-item';
+        newRow.setAttribute('data-news-index', newsCount);
         newRow.innerHTML = `
             <div class="col-12">
                 <div class="card m-b-30">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">Edit or Add news Content</h4>
-                        <p class="sub-title">This Content will be shown on the news Section of the Landing Page.</p>
-                        <form action="#" method="POST" enctype="multipart/form-data" class="news-form" data-index="${newsCount}">
+                        <h4 class="mt-0 header-title">Edit or Add Berita Content</h4>
+                        <p class="sub-title">This Content will be shown on the Berita Section of the Landing Page.</p>
+                        <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" class="news-form" data-index="${newsCount}">
                             @csrf
                             <div class="news-card">
                                 <div class="form-group row">
@@ -134,10 +194,10 @@
                                         <input class="form-control" type="text" placeholder="Type your description here...." id="description_${newsCount}" name="description">
                                     </div>
                                 </div>
-                                 <div class="form-group row">
+                                <div class="form-group row">
                                     <label for="date_${newsCount}" class="col-sm-2 col-form-label">Date</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" type="date" id="date_${newsCount}">
+                                        <input class="form-control" type="date" id="date_${newsCount}" name="date">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -152,7 +212,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center m-t-15">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-diameter-light">Submit</button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light ml-2 remove-news">Remove</button>
                                 </div>
                             </div>
@@ -163,13 +223,12 @@
         `;
         newsSections.appendChild(newRow);
 
-        // Setup image preview for new input
         const newImageInput = document.getElementById(`image_${newsCount}`);
         setupImagePreview(newImageInput, newsCount);
 
-        // Handle remove button
         newRow.querySelector('.remove-news').addEventListener('click', function() {
             newRow.remove();
+            newsCount = document.querySelectorAll('.news-item').length;
         });
 
         newsCount++;
