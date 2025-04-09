@@ -21,33 +21,49 @@
         <div class="row">
             <div class="col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                 <div class="sign__wrapper white-bg">
+                    @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <div class="sign__form">
-                        <form action="#">
+                        <form action="{{ route('auth.login') }}" method="POST">
+                            @csrf
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Email</h5>
                                 <div class="sign__input">
-                                    <input type="text" placeholder="e-mail address">
+                                    <input type="email" name="email" placeholder="e-mail address" value="{{ old('email') }}" required>
                                     <i class="fal fa-envelope"></i>
                                 </div>
                             </div>
                             <div class="sign__input-wrapper mb-10">
                                 <h5>Password</h5>
                                 <div class="sign__input">
-                                    <input type="text" placeholder="Password">
+                                    <input type="password" name="password" placeholder="Password" required>
                                     <i class="fal fa-lock"></i>
                                 </div>
                             </div>
                             <div class="sign__action d-sm-flex justify-content-between mb-30">
                                 <div class="sign__agree d-flex align-items-center">
-                                    <input class="m-check-input" type="checkbox" id="m-agree">
-                                    <label class="m-check-label" for="m-agree">Keep me signed in
-                                    </label>
+                                    <input class="m-check-input" type="checkbox" id="m-agree" name="remember">
+                                    <label class="m-check-label" for="m-agree">Keep me signed in</label>
                                 </div>
                                 <div class="sign__forgot">
                                     <a href="#">Forgot your password?</a>
                                 </div>
                             </div>
-                            <button class="tp-btn  w-100"> <span></span> Sign In</button>
+                            <button type="submit" class="tp-btn w-100"> <span></span> Sign In</button>
                             <div class="sign__new text-center mt-20">
                                 <p>Dont have account? <a href="{{route('auth.register')}}">Sign up</a></p>
                             </div>

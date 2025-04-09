@@ -1,7 +1,7 @@
 <div class="topbar">
     <div class="topbar-left">
         <a href="#" class="logo">
-            <span class="logo-light" >
+            <span class="logo-light">
                 <img src="{{asset('assets/img/logo/logo-name.png')}}" alt="Stexo Logo" style="height: 60px;">
             </span>
         </a>
@@ -24,7 +24,10 @@
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle"></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#"><i class="mdi mdi-power text-danger"></i> Logout</a>
+                        <a class="dropdown-item text-danger" href="{{ route('auth.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="mdi mdi-power text-danger"></i> Logout</a>
+                        <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </li>

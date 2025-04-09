@@ -10,11 +10,15 @@ Route::get('/profile', [LandingController::class, 'profile'])->name('landing.pro
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
 Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
 Route::get('/ppdb', [LandingController::class, 'ppdb'])->name('landing.ppdb');
+
+// Auth
 Route::prefix('auth')->group(function () {
-    Route::get('login', [AuthController::class, 'login'])->name('auth.login');
-    Route::get('register', [AuthController::class, 'register'])->name('auth.register');
+    Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('auth.login');
+    Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
+// Dashboard Admin
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/content-hero', [AdminController::class, 'hero'])->name('admin.hero');
