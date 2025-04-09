@@ -49,7 +49,7 @@
                                     </div>
                                 </li>
                                 <li style="margin-bottom: 10px;">
-                                    <a href="{{route('landing.ppdb')}}" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
+                                    <a href="{{route('ppdb')}}" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">PPDB</a>
                                 </li>
                             </ul>

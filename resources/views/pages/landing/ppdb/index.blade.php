@@ -71,26 +71,38 @@
             <div class="col-lg-6">
                 <div class="card p-4 shadow-sm">
                     <h5 class="mb-3">Untuk informasi lebih lanjut silahkan isi formulir dibawah ini</h5>
-                    <form>
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+                    <form action="{{ route('ppdb') }}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label for="namaSiswa" class="form-label">Nama Siswa/Anak *</label>
-                            <input type="text" class="form-control" id="namaSiswa" required>
+                            <input type="text" class="form-control" id="namaSiswa" name="namaSiswa" required>
                         </div>
                         <div class="mb-3">
                             <label for="asalSekolah" class="form-label">Asal Sekolah *</label>
-                            <input type="text" class="form-control" id="asalSekolah" required>
+                            <input type="text" class="form-control" id="asalSekolah" name="asalSekolah" required>
                         </div>
                         <div class="mb-3">
                             <label for="namaOrangTua" class="form-label">Nama Orang Tua/Wali *</label>
-                            <input type="text" class="form-control" id="namaOrangTua" required>
+                            <input type="text" class="form-control" id="namaOrangTua" name="namaOrangTua" required>
                         </div>
                         <div class="mb-3">
                             <label for="nomorHP" class="form-label">Nomor HP/WhatsApp *</label>
-                            <input type="text" class="form-control" id="nomorHP" required>
+                            <input type="text" class="form-control" id="nomorHP" name="nomorHP" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email *</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenjang Pendidikan *</label><br>
@@ -113,11 +125,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="pesan" class="form-label">Pesan Tambahan</label>
-                            <textarea class="form-control" id="pesan" rows="3"></textarea>
+                            <textarea class="form-control" id="pesan" name="pesan" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-warning text-white" style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                             onmouseover="this.style.backgroundColor='#FF9800';"
-                            onmouseout="this.style.backgroundColor='#E47804';">Daftar</button>
+                            onmouseout="this.style.backgroundColor='#E47804';">Kirim</button>
                     </form>
                 </div>
             </div>

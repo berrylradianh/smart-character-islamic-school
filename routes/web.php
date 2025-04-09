@@ -9,7 +9,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/profile', [LandingController::class, 'profile'])->name('landing.profile');
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
 Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
-Route::get('/ppdb', [LandingController::class, 'ppdb'])->name('landing.ppdb');
+Route::match(['get', 'post'], '/ppdb', [LandingController::class, 'ppdb'])->name('ppdb');
 
 // Auth
 Route::prefix('auth')->group(function () {
