@@ -27,13 +27,12 @@ use Illuminate\Support\Facades\Storage;
             @endif
 
             <div id="agenda-sections">
-                <div class="row">
+                <div class="row" id="initial-input">
                     <div class="col-12">
                         <div class="card m-b-30">
                             <div class="card-body">
                                 <h4 class="mt-0 header-title">Edit or Add Agenda Content</h4>
                                 <p class="sub-title">This Content will be shown on the Agenda Section of the Landing Page.</p>
-
                                 <form action="{{ route('agenda.store') }}" method="POST" enctype="multipart/form-data" class="agenda-form" data-index="0">
                                     @csrf
                                     <div class="agenda-card">
@@ -80,7 +79,14 @@ use Illuminate\Support\Facades\Storage;
                     </div>
                 </div>
 
-                <!-- Menampilkan Agenda yang Sudah Ada -->
+                <div id="new-agenda-sections"></div>
+
+                <div class="row" id="add-agenda-container">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-success waves-effect waves-light mb-3" id="add-agenda">+ Add Agenda Section</button>
+                    </div>
+                </div>
+
                 @foreach ($agendas as $index => $item)
                 <div class="row agenda-item" data-agenda-index="{{ $index }}">
                     <div class="col-12">
@@ -130,12 +136,6 @@ use Illuminate\Support\Facades\Storage;
                 </div>
                 @endforeach
             </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <button type="button" class="btn btn-success waves-effect waves-light mb-3" id="add-agenda">+ Add Agenda Section</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -145,7 +145,7 @@ use Illuminate\Support\Facades\Storage;
 </div>
 
 <script>
-    let agendaCount = document.querySelectorAll('.agenda-item').length;
+    let agendaCount = 1;
 
     function setupImagePreview(input, index) {
         input.addEventListener('change', function(e) {
@@ -169,7 +169,8 @@ use Illuminate\Support\Facades\Storage;
     setupImagePreview(document.getElementById('image_0'), 0);
 
     document.getElementById('add-agenda').addEventListener('click', function() {
-        const agendaSections = document.getElementById('agenda-sections');
+        const newAgendaSections = document.getElementById('new-agenda-sections');
+        const addAgendaContainer = document.getElementById('add-agenda-container');
         const newRow = document.createElement('div');
         newRow.className = 'row agenda-item';
         newRow.setAttribute('data-agenda-index', agendaCount);
@@ -221,14 +222,22 @@ use Illuminate\Support\Facades\Storage;
                 </div>
             </div>
         `;
-        agendaSections.appendChild(newRow);
+
+        newAgendaSections.appendChild(newRow);
+
+        newAgendaSections.appendChild(addAgendaContainer);
 
         const newImageInput = document.getElementById(`image_${agendaCount}`);
         setupImagePreview(newImageInput, agendaCount);
 
         newRow.querySelector('.remove-agenda').addEventListener('click', function() {
             newRow.remove();
-            agendaCount = document.querySelectorAll('.agenda-item').length;
+            const remainingCards = newAgendaSections.querySelectorAll('.agenda-item');
+            if (remainingCards.length > 0) {
+                newAgendaSections.appendChild(addAgendaContainer);
+            } else {
+                document.getElementById('agenda-sections').insertBefore(addAgendaContainer, document.getElementById('new-agenda-sections').nextSibling);
+            }
         });
 
         agendaCount++;
