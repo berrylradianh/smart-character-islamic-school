@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agenda;
 use App\Models\Hero;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -113,9 +114,44 @@ class AdminController extends Controller
     {
         $data = [
             'title' => 'Content Agenda',
+            'agendas' => Agenda::orderBy('date', 'desc')->get(),
         ];
 
         return view('pages.dashboard.admin.agenda', $data);
+    }
+
+    public function storeAgenda(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date',
+            'file' => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        $agendaData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $request->date,
+        ];
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('agenda_images', 'public');
+            $agendaData['image'] = $filePath;
+        }
+
+        Agenda::create($agendaData);
+
+        return redirect()->route('admin.agenda')->with('success', 'Agenda berhasil ditambahkan!');
+    }
+
+    public function destroyAgenda($id)
+    {
+        $agenda = Agenda::findOrFail($id);
+        Storage::disk('public')->delete($agenda->image);
+        $agenda->delete();
+
+        return redirect()->route('admin.agenda')->with('success', 'Agenda berhasil dihapus.');
     }
 
     public function ppdb_info()

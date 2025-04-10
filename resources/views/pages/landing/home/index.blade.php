@@ -8,7 +8,7 @@
     @include('pages.landing.home.resource')
     @include('pages.landing.home.programs')
     @include('pages.landing.home.news', ['news' => $news])
-    @include('pages.landing.home.agenda')
+    @include('pages.landing.home.agenda', ['agendas' => $agendas])
     @include('pages.landing.home.testimonials')
     @include('pages.landing.home.media')
 
