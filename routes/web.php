@@ -34,4 +34,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/ppdb-timeline', [AdminController::class, 'ppdb_timeline'])->name('admin.ppdb_timeline');
     Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('admin.ppdb_faq');
     Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('admin.ppdb_pendaftaran');
+    Route::post('/ppdb-pendaftaran/store', [AdminController::class, 'storeRegistration'])->name('admin.ppdb_pendaftaran.store');
 });

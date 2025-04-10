@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agenda;
 use App\Models\Hero;
 use App\Models\News;
+use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -188,5 +189,45 @@ class AdminController extends Controller
         ];
 
         return view('pages.dashboard.admin.ppdb.pendaftaran', $data);
+    }
+
+    public function storeRegistration(Request $request)
+    {
+        $validated = $request->validate([
+            'jenjang' => 'required|in:tk,sd,smp,sma',
+            'nama_anak' => 'required|string|max:255',
+            'nama_orang_tua' => 'required|string|max:255',
+            'no_hp_orang_tua' => 'required|regex:/^[0-9]{10,13}$/',
+            'tanggal_lahir' => 'required|date',
+            'kk' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'akta' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'pasfoto' => 'required|file|mimes:jpg,png|max:2048',
+            'piagam' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah' => 'required_if:jenjang,smp,sma|file|mimes:pdf,jpg,png|max:2048',
+        ]);
+
+        $kkPath = $request->file('kk')->store('registrations/kk', 'public');
+        $aktaPath = $request->file('akta')->store('registrations/akta', 'public');
+        $pasfotoPath = $request->file('pasfoto')->store('registrations/pasfoto', 'public');
+        $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('registrations/bukti_pembayaran', 'public');
+        $piagamPath = $request->hasFile('piagam') ? $request->file('piagam')->store('registrations/piagam', 'public') : null;
+        $ijazahPath = $request->hasFile('ijazah') ? $request->file('ijazah')->store('registrations/ijazah', 'public') : null;
+
+        Registration::create([
+            'jenjang' => $request->jenjang,
+            'nama_anak' => $request->nama_anak,
+            'nama_orang_tua' => $request->nama_orang_tua,
+            'no_hp_orang_tua' => $request->no_hp_orang_tua,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'kk_path' => $kkPath,
+            'akta_path' => $aktaPath,
+            'pasfoto_path' => $pasfotoPath,
+            'piagam_path' => $piagamPath,
+            'bukti_pembayaran_path' => $buktiPembayaranPath,
+            'ijazah_path' => $ijazahPath,
+        ]);
+
+        return redirect()->route('admin.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
     }
 }
