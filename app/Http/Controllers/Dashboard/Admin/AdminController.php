@@ -34,24 +34,28 @@ class AdminController extends Controller
     public function storeHero(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'file' => 'nullable|image|max:2048', // Max 2MB
+            'heroes.*.title' => 'required|string|max:255',
+            'heroes.*.description' => 'required|string|max:255',
+            'heroes.*.file' => 'nullable|image|max:2048', // Max 2MB
         ]);
 
-        $heroData = [
-            'title' => $request->title,
-            'description' => $request->description,
-        ];
+        if ($request->has('heroes')) {
+            foreach ($request->heroes as $index => $heroData) {
+                $data = [
+                    'title' => $heroData['title'],
+                    'description' => $heroData['description'],
+                ];
 
-        if ($request->hasFile('file')) {
-            $imagePath = $request->file('file')->store('heroes', 'public');
-            $heroData['image'] = $imagePath;
+                if ($request->hasFile("heroes.{$index}.file")) {
+                    $imagePath = $request->file("heroes.{$index}.file")->store('heroes', 'public');
+                    $data['image'] = $imagePath;
+                }
+
+                Hero::create($data);
+            }
         }
 
-        Hero::create($heroData);
-
-        return redirect()->back()->with('success', 'Hero section added successfully!');
+        return redirect()->back()->with('success', 'Hero sections added successfully!');
     }
 
     public function destroyHero($id)
@@ -78,28 +82,31 @@ class AdminController extends Controller
     public function storeNews(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'date' => 'required|date',
-            'file' => 'nullable|image|max:2048', // Max 2MB
+            'news.*.title' => 'required|string|max:255',
+            'news.*.description' => 'required|string',
+            'news.*.date' => 'required|date',
+            'news.*.file' => 'nullable|image|max:2048', // Max 2MB
         ]);
 
-        $newsData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'date' => $request->date,
-        ];
+        if ($request->has('news')) {
+            foreach ($request->news as $index => $newsData) {
+                $data = [
+                    'title' => $newsData['title'],
+                    'description' => $newsData['description'],
+                    'date' => $newsData['date'],
+                ];
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('news_images', 'public');
-            $newsData['image'] = $filePath;
+                if ($request->hasFile("news.{$index}.file")) {
+                    $filePath = $request->file("news.{$index}.file")->store('news_images', 'public');
+                    $data['image'] = $filePath;
+                }
+
+                News::create($data);
+            }
         }
-
-        News::create($newsData);
 
         return redirect()->route('admin.news')->with('success', 'Berita berhasil ditambahkan!');
     }
-
     public function destroyNews($id)
     {
         $news = News::findOrFail($id);
@@ -124,24 +131,28 @@ class AdminController extends Controller
     public function storeAgenda(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'date' => 'required|date',
-            'file' => 'nullable|image|max:2048', // Max 2MB
+            'agendas.*.title' => 'required|string|max:255',
+            'agendas.*.description' => 'required|string',
+            'agendas.*.date' => 'required|date',
+            'agendas.*.file' => 'nullable|image|max:2048', // Max 2MB
         ]);
 
-        $agendaData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'date' => $request->date,
-        ];
+        if ($request->has('agendas')) {
+            foreach ($request->agendas as $index => $agendaData) {
+                $data = [
+                    'title' => $agendaData['title'],
+                    'description' => $agendaData['description'],
+                    'date' => $agendaData['date'],
+                ];
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('agenda_images', 'public');
-            $agendaData['image'] = $filePath;
+                if ($request->hasFile("agendas.{$index}.file")) {
+                    $filePath = $request->file("agendas.{$index}.file")->store('agenda_images', 'public');
+                    $data['image'] = $filePath;
+                }
+
+                Agenda::create($data);
+            }
         }
-
-        Agenda::create($agendaData);
 
         return redirect()->route('admin.agenda')->with('success', 'Agenda berhasil ditambahkan!');
     }
