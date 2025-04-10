@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agenda;
+use App\Models\Faqs;
 use App\Models\Hero;
 use App\Models\News;
 use App\Models\Registration;
@@ -186,8 +187,11 @@ class AdminController extends Controller
 
     public function ppdb_faq()
     {
+        $faqs = Faqs::orderBy('order_number')->get();
+
         $data = [
             'title' => 'PPDB FAQs',
+            'faqs' => $faqs
         ];
 
         return view('pages.dashboard.admin.ppdb.faq', $data);
