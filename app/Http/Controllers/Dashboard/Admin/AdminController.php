@@ -8,6 +8,7 @@ use App\Models\Faqs;
 use App\Models\Hero;
 use App\Models\News;
 use App\Models\Registration;
+use App\Models\SchoolLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -244,5 +245,54 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
+    }
+
+    public function listPendaftar()
+    {
+        $data = [
+            'title' => 'PPDB List Pendaftar',
+            'registrations' => Registration::with('schoolLocation')->get(),
+        ];
+
+        return view('pages.dashboard.admin.ppdb.list', $data);
+    }
+
+    public function showPendaftar($id)
+    {
+        $data = [
+            'title' => 'PPDB List Pendaftar',
+            'registration' => Registration::with('schoolLocation')->findOrFail($id),
+            'locations' => SchoolLocation::all(),
+        ];
+
+        return view('pages.dashboard.admin.ppdb.detail', $data);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'status' => 'required|in:waiting,decline,approve',
+                'jadwal_tes' => 'nullable|required_if:status,approve|date',
+                'school_location_id' => 'nullable|required_if:status,approve|exists:school_locations,id',
+            ]);
+
+            $registration = Registration::findOrFail($id);
+            $data = ['status' => $request->status];
+
+            if ($request->status === 'approve') {
+                $data['jadwal_tes'] = $request->jadwal_tes;
+                $data['school_location_id'] = $request->school_location_id;
+            } else {
+                $data['jadwal_tes'] = null;
+                $data['school_location_id'] = null;
+            }
+
+            $registration->update($data);
+
+            return redirect()->route('admin.list_pendaftar')->with('success', 'Status berhasil diperbarui.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
     }
 }

@@ -21,5 +21,17 @@ class Registration extends Model
         'piagam_path',
         'bukti_pembayaran_path',
         'ijazah_path',
+        'status',
+        'jadwal_tes',
+        'school_location_id'
     ];
+
+    protected $casts = [
+        'jadwal_tes' => 'datetime',
+    ];
+
+    public function schoolLocation()
+    {
+        return $this->belongsTo(SchoolLocation::class);
+    }
 }

@@ -30,6 +30,7 @@
                         <li><a href="{{route('admin.ppdb_timeline')}}">Timeline</a></li>
                         <li><a href="{{route('admin.ppdb_faq')}}">FAQs</a></li>
                         <li><a href="{{route('admin.ppdb_pendaftaran')}}">Pendaftaran</a></li>
+                        <li><a href="{{route('admin.list_pendaftar')}}">List Pendaftar</a></li>
                     </ul>
                 </li>
 

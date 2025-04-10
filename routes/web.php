@@ -35,4 +35,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('admin.ppdb_faq');
     Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('admin.ppdb_pendaftaran');
     Route::post('/ppdb-pendaftaran/store', [AdminController::class, 'storeRegistration'])->name('admin.ppdb_pendaftaran.store');
+    Route::get('/list-pendaftar', [AdminController::class, 'listPendaftar'])->name('admin.list_pendaftar');
+    Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('admin.show_pendaftar');
+    Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('admin.update_status');
 });
