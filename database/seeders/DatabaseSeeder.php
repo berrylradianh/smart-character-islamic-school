@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqSeeder::class);
         $this->call(DashboardStatSeeder::class);
         $this->call(SchoolLocationSeeder::class);
+        $this->call(LevelAndRegistrationInfoSeeder::class);
     }
 }

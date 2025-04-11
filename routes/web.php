@@ -35,6 +35,13 @@ Route::prefix('admin')->group(function () {
     Route::post('/content-agenda', [AdminController::class, 'storeAgenda'])->name('agenda.store');
     Route::delete('/content-agenda/{id}', [AdminController::class, 'destroyAgenda'])->name('agenda.destroy');
     Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('admin.ppdb_info');
+    Route::get('/requirement-information', [AdminController::class, 'requirement_information'])->name('admin.requirement_information');
+    Route::post('/requirement-information', [AdminController::class, 'storeRequirementInformation'])->name('admin.requirement_information.store');
+    Route::get('/requirement-information/{id}/edit', [AdminController::class, 'editRequirementInformation'])->name('admin.requirement_information.edit');
+    Route::put('/requirement-information/{id}', [AdminController::class, 'updateRequirementInformation'])->name('admin.requirement_information.update');
+    Route::delete('/requirement-information/{id}', [AdminController::class, 'destroyRequirementInformation'])->name('admin.requirement_information.destroy');
+    Route::post('/levels', [AdminController::class, 'storeLevel'])->name('admin.levels.store');
+    Route::delete('/levels/{id}', [AdminController::class, 'destroyLevel'])->name('admin.levels.destroy');
     Route::get('/ppdb-timeline', [AdminController::class, 'ppdb_timeline'])->name('admin.ppdb_timeline');
     Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('admin.ppdb_faq');
     Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('admin.ppdb_pendaftaran');
