@@ -15,5 +15,6 @@ class DashboardStat extends Model
         'previous_period_percentage',
         'icon',
         'color',
+        'progress_bar_color',
     ];
 }

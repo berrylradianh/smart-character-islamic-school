@@ -45,6 +45,7 @@ class AdminController extends Controller
             'previous_period_percentage' => 'required|integer|min:0|max:100',
             'icon' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'color' => 'nullable|string',
+            'progress_bar_color' => 'nullable|string',
         ]);
 
         $data = $request->all();
@@ -66,6 +67,7 @@ class AdminController extends Controller
             'previous_period_percentage' => 'required|integer|min:0|max:100',
             'icon' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'color' => 'nullable|string',
+            'progress_bar_color' => 'nullable|string',
         ]);
 
         $stat = DashboardStat::findOrFail($id);
@@ -73,7 +75,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('icon')) {
             if ($stat->icon) {
-                storage::disk('public')->delete($stat->icon);
+                Storage::disk('public')->delete($stat->icon);
             }
             $data['icon'] = $request->file('icon')->store('dashboard/icons', 'public');
         }

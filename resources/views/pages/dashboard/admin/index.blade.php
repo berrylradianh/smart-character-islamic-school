@@ -1,5 +1,5 @@
 @php
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 @endphp
 
 @extends('layouts.dashboard.app')
@@ -34,13 +34,9 @@
                             </div>
                             <h3 class="mt-4">{{ number_format($stat->value, 0, ',', '.') }}</h3>
                             <div class="progress mt-4" style="height: 4px;">
-                                <div class="progress-bar
-                                    @if($stat->name == 'Staff') bg-primary
-                                    @elseif($stat->name == 'Peserta Didik') bg-success
-                                    @elseif($stat->name == 'Alumni') bg-warning
-                                    @else bg-danger @endif"
+                                <div class="progress-bar"
                                     role="progressbar"
-                                    @if($stat->previous_period_percentage !== null && is_numeric($stat->previous_period_percentage)) style="width: {{ $stat->previous_period_percentage }}%;" @else style="width: 0%;" @endif
+                                    @if($stat->progress_bar_color) style="width: {{ $stat->previous_period_percentage }}%; background-color: {{ $stat->progress_bar_color }};" @else style="width: {{ $stat->previous_period_percentage }}%; background-color: #3b82f6;" @endif
                                     aria-valuenow="{{ $stat->previous_period_percentage ?? 0 }}"
                                     aria-valuemin="0"
                                     aria-valuemax="100">
