@@ -12,6 +12,7 @@ use App\Models\News;
 use App\Models\Registration;
 use App\Models\RegistrationInfo;
 use App\Models\SchoolLocation;
+use App\Models\Timeline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -379,11 +380,115 @@ class AdminController extends Controller
 
     public function ppdb_timeline()
     {
+        $levels = Level::with('timelines')->get();
         $data = [
             'title' => 'PPDB Timeline',
+            'levels' => $levels,
         ];
 
         return view('pages.dashboard.admin.ppdb.timeline', $data);
+    }
+
+    public function requirement_timeline()
+    {
+        $timelines = Timeline::with('level')->get()->groupBy('level_id');
+        // Get levels that do not have timelines
+        $usedLevelIds = Timeline::pluck('level_id')->unique()->toArray();
+        $availableLevels = Level::whereNotIn('id', $usedLevelIds)->get();
+        $levels = Level::all(); // For displaying all levels in the list
+        $data = [
+            'title' => 'Kelola Timeline Pendaftaran',
+            'timelines' => $timelines,
+            'availableLevels' => $availableLevels,
+            'levels' => $levels,
+        ];
+
+        return view('pages.dashboard.admin.ppdb.requirement_timeline', $data);
+    }
+
+    public function storeTimeline(Request $request)
+    {
+        $validated = $request->validate([
+            'level_id' => 'required|exists:levels,id',
+            'timelines' => 'required|array',
+            'timelines.*.title' => 'required|string|max:255',
+            'timelines.*.description' => 'required|string',
+            'timelines.*.date_range' => 'required|string|max:255',
+        ]);
+
+        // Prevent adding timelines if the level already has them
+        if (Timeline::where('level_id', $validated['level_id'])->exists()) {
+            return redirect()->back()->withErrors(['level_id' => 'Jenjang ini sudah memiliki timeline. Gunakan edit atau tambah di daftar untuk mengubah.']);
+        }
+
+        // Create new timelines
+        foreach ($validated['timelines'] as $timeline) {
+            Timeline::create([
+                'level_id' => $validated['level_id'],
+                'title' => $timeline['title'],
+                'description' => $timeline['description'],
+                'date_range' => $timeline['date_range'],
+            ]);
+        }
+
+        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil disimpan.');
+    }
+
+    public function addTimeline(Request $request)
+    {
+        $validated = $request->validate([
+            'level_id' => 'required|exists:levels,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_range' => 'required|string|max:255',
+        ]);
+
+        Timeline::create([
+            'level_id' => $validated['level_id'],
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'date_range' => $validated['date_range'],
+        ]);
+
+        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline baru berhasil ditambahkan ke jenjang.');
+    }
+
+    public function editTimeline($id)
+    {
+        $timeline = Timeline::findOrFail($id);
+        $data = [
+            'title' => 'Edit Timeline Pendaftaran',
+            'timeline' => $timeline,
+        ];
+
+        return view('pages.dashboard.admin.ppdb.requirement_timeline_edit', $data);
+    }
+
+    public function updateTimeline(Request $request, $id)
+    {
+        $timeline = Timeline::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_range' => 'required|string|max:255',
+        ]);
+
+        $timeline->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'date_range' => $validated['date_range'],
+        ]);
+
+        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil diperbarui.');
+    }
+
+    public function destroyTimeline($id)
+    {
+        $timeline = Timeline::findOrFail($id);
+        $timeline->delete();
+
+        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil dihapus.');
     }
 
     public function ppdb_faq()

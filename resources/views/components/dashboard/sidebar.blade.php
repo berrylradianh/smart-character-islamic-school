@@ -6,7 +6,7 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-accelerator"></i><span> Dashboard <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="{{route('admin.index')}}">Dashboard</a></li>
-                        <li><a href="{{route('admin.stats')}}">Setting</a></li>
+                        <li><a href="{{route('admin.stats')}}">Setting Dashboard</a></li>
                     </ul>
                 </li>
 
@@ -23,8 +23,9 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-todolist"></i><span> PPDB <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="{{route('admin.ppdb_info')}}">Informasi</a></li>
-                        <li><a href="{{route('admin.requirement_information')}}">Requirement</a></li>
+                        <li><a href="{{route('admin.requirement_information')}}">Setting Informasi</a></li>
                         <li><a href="{{route('admin.ppdb_timeline')}}">Timeline</a></li>
+                        <li><a href="{{route('admin.requirement_timeline')}}">Setting Timeline</a></li>
                         <li><a href="{{route('admin.ppdb_faq')}}">FAQs</a></li>
                         <li><a href="{{route('admin.ppdb_pendaftaran')}}">Pendaftaran</a></li>
                         <li><a href="{{route('admin.list_pendaftar')}}">List Pendaftar</a></li>

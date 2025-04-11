@@ -18,4 +18,9 @@ class Level extends Model
     {
         return $this->hasMany(RegistrationInfo::class);
     }
+
+    public function timelines()
+    {
+        return $this->hasMany(Timeline::class);
+    }
 }

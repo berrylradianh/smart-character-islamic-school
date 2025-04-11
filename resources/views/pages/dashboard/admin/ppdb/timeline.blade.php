@@ -23,318 +23,50 @@
                 <div class="col-12">
                     <div class="btn-group" role="group" aria-label="Filter Jenjang">
                         <button type="button" class="btn btn-primary filter-btn" data-filter="all">All</button>
-                        <button type="button" class="btn btn-secondary filter-btn" data-filter="tk">TK</button>
-                        <button type="button" class="btn btn-secondary filter-btn" data-filter="sd">SD</button>
-                        <button type="button" class="btn btn-secondary filter-btn" data-filter="smp">SMP</button>
-                        <button type="button" class="btn btn-secondary filter-btn" data-filter="sma">SMA</button>
+                        @foreach ($levels as $level)
+                            <button type="button" class="btn btn-secondary filter-btn" data-filter="{{ $level->slug }}">{{ $level->name }}</button>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <!-- TK Card -->
-                <div class="col-lg-12 timeline-card" data-category="tk">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Timeline TK</h5>
-                            <section class="cd-container">
-                                <div class="main-timeline">
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 - 15 Mei 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pendaftaran Online TK</h3>
-                                            <p class="description text-muted">
-                                                Orang tua mendaftarkan anak usia 4-6 tahun melalui website resmi sekolah.
-                                            </p>
+                @foreach ($levels as $level)
+                    @if ($level->timelines->isNotEmpty())
+                        <div class="col-lg-12 timeline-card" data-category="{{ $level->slug }}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Timeline {{ $level->name }}</h5>
+                                    <section class="cd-container">
+                                        <div class="main-timeline">
+                                            @foreach ($level->timelines as $timeline)
+                                                <div class="timeline">
+                                                    <span class="timeline-icon"></span>
+                                                    <span class="year">{{ $timeline->date_range }}</span>
+                                                    <div class="timeline-content">
+                                                        <h3 class="title">{{ $timeline->title }}</h3>
+                                                        <p class="description text-muted">
+                                                            {{ $timeline->description }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">16 - 20 Mei 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumpulan Berkas</h3>
-                                            <p class="description text-muted">
-                                                Penyerahan akta kelahiran, KK, dan foto anak ke sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">25 - 27 Mei 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Observasi Anak</h3>
-                                            <p class="description text-muted">
-                                                Observasi kemampuan motorik dan sosial anak oleh guru TK.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">30 Mei 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumuman Hasil</h3>
-                                            <p class="description text-muted">
-                                                Pengumuman siswa diterima diumumkan melalui website dan papan pengumuman.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">5 - 10 Juni 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Daftar Ulang</h3>
-                                            <p class="description text-muted">
-                                                Pembayaran biaya masuk dan pengambilan seragam sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Masuk Sekolah</h3>
-                                            <p class="description text-muted">
-                                                Hari pertama masuk sekolah untuk siswa TK.
-                                            </p>
-                                        </div>
-                                    </div>
+                                    </section>
                                 </div>
-                            </section>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- SD Card -->
-                <div class="col-lg-12 timeline-card" data-category="sd">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Timeline SD</h5>
-                            <section class="cd-container">
-                                <div class="main-timeline">
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 - 20 Juni 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pendaftaran Online SD</h3>
-                                            <p class="description text-muted">
-                                                Pendaftaran untuk anak usia 6-7 tahun melalui portal sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">21 - 25 Juni 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumpulan Berkas</h3>
-                                            <p class="description text-muted">
-                                                Penyerahan akta kelahiran, KK, dan rapor TK ke sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">28 - 30 Juni 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Tes Masuk SD</h3>
-                                            <p class="description text-muted">
-                                                Tes membaca, menulis, dan berhitung untuk calon siswa.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">5 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumuman Hasil</h3>
-                                            <p class="description text-muted">
-                                                Pengumuman siswa diterima melalui website resmi.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">10 - 15 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Daftar Ulang</h3>
-                                            <p class="description text-muted">
-                                                Pembayaran biaya masuk dan pengukuran seragam.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">20 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Masuk Sekolah</h3>
-                                            <p class="description text-muted">
-                                                Hari pertama masuk sekolah untuk siswa SD.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SMP Card -->
-                <div class="col-lg-12 timeline-card" data-category="smp">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Timeline SMP</h5>
-                            <section class="cd-container">
-                                <div class="main-timeline">
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 - 25 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pendaftaran Online SMP</h3>
-                                            <p class="description text-muted">
-                                                Pendaftaran untuk lulusan SD melalui website sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">26 - 30 Juli 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumpulan Berkas</h3>
-                                            <p class="description text-muted">
-                                                Penyerahan ijazah SD, SKHUN, dan rapor terakhir.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">2 - 5 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Ujian Masuk SMP</h3>
-                                            <p class="description text-muted">
-                                                Ujian tertulis: Matematika, IPA, dan Bahasa Indonesia.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">10 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumuman Hasil</h3>
-                                            <p class="description text-muted">
-                                                Pengumuman siswa diterima di website dan sekolah.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">15 - 20 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Daftar Ulang</h3>
-                                            <p class="description text-muted">
-                                                Pembayaran biaya masuk dan pengambilan buku pelajaran.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 September 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Masuk Sekolah</h3>
-                                            <p class="description text-muted">
-                                                Hari pertama masuk sekolah untuk siswa SMP.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SMA Card -->
-                <div class="col-lg-12 timeline-card" data-category="sma">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Timeline SMA</h5>
-                            <section class="cd-container">
-                                <div class="main-timeline">
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">1 - 20 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pendaftaran Online SMA</h3>
-                                            <p class="description text-muted">
-                                                Pendaftaran untuk lulusan SMP melalui portal resmi.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">21 - 25 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumpulan Berkas</h3>
-                                            <p class="description text-muted">
-                                                Penyerahan ijazah SMP, SKHUN, dan rapor terakhir.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">28 - 31 Agustus 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Tes Masuk SMA</h3>
-                                            <p class="description text-muted">
-                                                Tes akademik: Matematika, Bahasa Inggris, dan IPA/IPS sesuai jurusan.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">5 September 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Pengumuman Hasil</h3>
-                                            <p class="description text-muted">
-                                                Pengumuman siswa diterima diumumkan secara online.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">10 - 15 September 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Daftar Ulang</h3>
-                                            <p class="description text-muted">
-                                                Pembayaran biaya masuk dan orientasi siswa baru.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline">
-                                        <span class="timeline-icon"></span>
-                                        <span class="year">20 September 2025</span>
-                                        <div class="timeline-content">
-                                            <h3 class="title">Masuk Sekolah</h3>
-                                            <p class="description text-muted">
-                                                Hari pertama masuk sekolah untuk siswa SMA.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
             </div>
         </div>
-        <!-- container-fluid -->
     </div>
-    <!-- content -->
 
     <footer class="footer">
         © SCIS, 2024. All Right Reserved
     </footer>
 </div>
 
-<!-- JavaScript untuk Filter -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const filterButtons = document.querySelectorAll('.filter-btn');
