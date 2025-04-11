@@ -21,6 +21,10 @@ Route::prefix('auth')->group(function () {
 // Dashboard Admin
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/stats', [AdminController::class, 'stats'])->name('admin.stats');
+    Route::post('/stats', [AdminController::class, 'storeStat'])->name('admin.stats.store');
+    Route::put('/stats/{id}', [AdminController::class, 'updateStat'])->name('admin.stats.update');
+    Route::delete('/stats/{id}', [AdminController::class, 'destroyStat'])->name('admin.stats.destroy');
     Route::get('/content-hero', [AdminController::class, 'hero'])->name('admin.hero');
     Route::post('/content-hero', [AdminController::class, 'storeHero'])->name('hero.store');
     Route::delete('/content-hero/{id}', [AdminController::class, 'destroyHero'])->name('hero.destroy');

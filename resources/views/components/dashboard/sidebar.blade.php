@@ -3,15 +3,11 @@
         <div id="sidebar-menu">
             <ul class="metismenu" id="side-menu">
                 <li>
-                    @if ($title == 'Dashboard Admin')
-                    <a href="{{route('admin.index')}}" class="waves-effect active">
-                        <i class="icon-accelerator" style="color: white;"></i> <span style="color: white;"> Dashboard </span>
-                    </a>
-                    @else
-                    <a href="{{route('admin.index')}}" class="waves-effect">
-                        <i class="icon-accelerator"></i> <span> Dashboard </span>
-                    </a>
-                    @endif
+                    <a href="javascript:void(0);" class="waves-effect"><i class="icon-accelerator"></i><span> Dashboard <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                    <ul class="submenu">
+                        <li><a href="{{route('admin.index')}}">Dashboard</a></li>
+                        <li><a href="{{route('admin.stats')}}">Setting</a></li>
+                    </ul>
                 </li>
 
                 <li>

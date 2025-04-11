@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard\Admin;
 
-use App\Exports\RegistrationsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Agenda;
+use App\Models\DashboardStat;
 use App\Models\Faqs;
 use App\Models\Hero;
 use App\Models\News;
 use App\Models\Registration;
 use App\Models\SchoolLocation;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Excel;
 
 class AdminController extends Controller
 {
@@ -21,9 +19,81 @@ class AdminController extends Controller
     {
         $data = [
             'title' => 'Dashboard Admin',
+            'stats' => DashboardStat::all(),
         ];
 
         return view('pages.dashboard.admin.index', $data);
+    }
+
+    public function stats()
+    {
+        $stats = DashboardStat::all();
+
+        $data = [
+            'title' => 'Manage Dashboard Stats',
+            'stats' => $stats,
+        ];
+
+        return view('pages.dashboard.admin.stats', $data);
+    }
+
+    public function storeStat(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'value' => 'required|integer',
+            'previous_period_percentage' => 'required|integer|min:0|max:100',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'color' => 'nullable|string',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('icon')) {
+            $data['icon'] = $request->file('icon')->store('dashboard/icons', 'public');
+        }
+
+        DashboardStat::create($data);
+
+        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil ditambahkan.');
+    }
+
+    public function updateStat(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'value' => 'required|integer',
+            'previous_period_percentage' => 'required|integer|min:0|max:100',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'color' => 'nullable|string',
+        ]);
+
+        $stat = DashboardStat::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->hasFile('icon')) {
+            if ($stat->icon) {
+                storage::disk('public')->delete($stat->icon);
+            }
+            $data['icon'] = $request->file('icon')->store('dashboard/icons', 'public');
+        }
+
+        $stat->update($data);
+
+        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil diperbarui.');
+    }
+
+    public function destroyStat($id)
+    {
+        $stat = DashboardStat::findOrFail($id);
+
+        if ($stat->icon) {
+            storage::disk('public')->delete($stat->icon);
+        }
+
+        $stat->delete();
+
+        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil dihapus.');
     }
 
     public function hero()
