@@ -125,10 +125,14 @@ return [
 
     'provider' => [
         Ladumor\LaravelPwa\PWAServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     'aliases' => [
         'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ]
 
 ];

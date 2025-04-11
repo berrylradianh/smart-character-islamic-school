@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Admin;
 
+use App\Exports\RegistrationsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Agenda;
 use App\Models\Faqs;
@@ -9,8 +10,10 @@ use App\Models\Hero;
 use App\Models\News;
 use App\Models\Registration;
 use App\Models\SchoolLocation;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Excel;
 
 class AdminController extends Controller
 {
@@ -294,5 +297,19 @@ class AdminController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
+    }
+
+    public function export($format)
+    {
+        $registrations = Registration::with('schoolLocation')->get();
+
+        if ($format === 'pdf') {
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.dashboard.admin.ppdb.registrations_pdf', compact('registrations'));
+            return $pdf->download('daftar_pendaftar_' . now()->format('Ymd_His') . '.pdf');
+        } elseif ($format === 'excel') {
+            return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\RegistrationsExport, 'daftar_pendaftar_' . now()->format('Ymd_His') . '.xlsx');
+        }
+
+        return redirect()->back()->with('error', 'Format ekspor tidak valid.');
     }
 }

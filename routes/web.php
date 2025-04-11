@@ -38,4 +38,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/list-pendaftar', [AdminController::class, 'listPendaftar'])->name('admin.list_pendaftar');
     Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('admin.show_pendaftar');
     Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('admin.update_status');
+    Route::get('/export/{format}', [AdminController::class, 'export'])->name('admin.export');
 });

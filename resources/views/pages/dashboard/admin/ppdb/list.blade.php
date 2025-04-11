@@ -32,8 +32,8 @@
                             </div>
                             @endif
 
-                            <!-- Filter Section -->
-                            <div class="row mb-3">
+                            <!-- Filter and Export Section -->
+                            <div class="row mb-3 align-items-end">
                                 <div class="col-md-4">
                                     <label for="jenjangFilter">Filter Jenjang:</label>
                                     <select id="jenjangFilter" class="form-control">
@@ -53,8 +53,19 @@
                                         <option value="approve">Approve</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4 d-flex align-items-end">
+                                <div class="col-md-2 d-flex align-items-end">
                                     <button id="resetFilter" class="btn btn-secondary w-100">Reset Filter</button>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <div class="dropdown w-100">
+                                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-download mr-1"></i> Export Data
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="exportDropdown">
+                                            <a class="dropdown-item" href="{{ route('admin.export', 'pdf') }}">PDF</a>
+                                            <a class="dropdown-item" href="{{ route('admin.export', 'excel') }}">Excel</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -139,12 +150,21 @@
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-    #resetFilter {
+    #resetFilter,
+    .btn-primary {
         transition: background-color 0.2s;
     }
 
     #resetFilter:hover {
         background-color: #6c757d;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .dropdown-menu {
+        min-width: 100%;
     }
 </style>
 @endsection
