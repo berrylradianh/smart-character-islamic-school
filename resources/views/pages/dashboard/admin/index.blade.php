@@ -34,9 +34,19 @@
                             </div>
                             <h3 class="mt-4">{{ number_format($stat->value, 0, ',', '.') }}</h3>
                             <div class="progress mt-4" style="height: 4px;">
-                                <div class="progress-bar bg-{{ $stat->name == 'Staff' ? 'primary' : ($stat->name == 'Peserta Didik' ? 'success' : ($stat->name == 'Alumni' ? 'warning' : 'danger')) }}" role="progressbar" style="width: {{ $stat->previous_period_percentage }}%" aria-valuenow="{{ $stat->previous_period_percentage }}" ಎ aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar
+                                    @if($stat->name == 'Staff') bg-primary
+                                    @elseif($stat->name == 'Peserta Didik') bg-success
+                                    @elseif($stat->name == 'Alumni') bg-warning
+                                    @else bg-danger @endif"
+                                    role="progressbar"
+                                    @if($stat->previous_period_percentage !== null && is_numeric($stat->previous_period_percentage)) style="width: {{ $stat->previous_period_percentage }}%;" @else style="width: 0%;" @endif
+                                    aria-valuenow="{{ $stat->previous_period_percentage ?? 0 }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
                             </div>
-                            <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">{{ $stat->previous_period_percentage }}%</span></p>
+                            <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">{{ $stat->previous_period_percentage ?? 0 }}%</span></p>
                         </div>
                     </div>
                 </div>

@@ -38,14 +38,12 @@
     .icon-container {
         display: inline-block;
         padding: 5px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        /* Border untuk kejelasan */
+        border-radius: 50%;
     }
 
     .icon-image {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         object-fit: contain;
         /* Memastikan ikon tidak terdistorsi */
     }
@@ -134,7 +132,7 @@
                                         <td>{{ $stat->previous_period_percentage }}%</td>
                                         <td>
                                             @if ($stat->icon)
-                                            <div class="icon-container" style="background-color: {{ $stat->color }};">
+                                            <div class="icon-container" @if($stat->color) style="background-color: {{ $stat->color }}; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;" @else style="background-color: #3b82f6; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;" @endif>
                                                 <img src="{{ asset('storage/' . $stat->icon) }}" alt="{{ $stat->name }}" class="icon-image">
                                             </div>
                                             @else
@@ -188,7 +186,7 @@
                                                             <label>Ikon</label>
                                                             <input type="file" name="icon" class="form-control-file">
                                                             @if ($stat->icon)
-                                                            <div class="icon-container mt-2" style="background-color: {{ $stat->color }};">
+                                                            <div class="icon-container mt-2" @if($stat->color) style="background-color: {{ $stat->color }}; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;" @else style="background-color: #3b82f6; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;" @endif>
                                                                 <img src="{{ asset('storage/' . $stat->icon) }}" alt="{{ $stat->name }}" class="icon-image">
                                                             </div>
                                                             @endif
