@@ -15,6 +15,7 @@ class DashboardStatSeeder extends Seeder
             'previous_period_percentage' => 75,
             'icon' => 'dashboard/icons/staff.png',
             'color' => '#3b82f6',
+            'progress_bar_color' => '#3b82f6',
         ]);
 
         DashboardStat::create([
@@ -23,6 +24,7 @@ class DashboardStatSeeder extends Seeder
             'previous_period_percentage' => 88,
             'icon' => 'dashboard/icons/student.png',
             'color' => 'rgb(25, 194, 22)',
+            'progress_bar_color' => 'rgb(25, 194, 22)',
         ]);
 
         DashboardStat::create([
@@ -31,6 +33,7 @@ class DashboardStatSeeder extends Seeder
             'previous_period_percentage' => 68,
             'icon' => 'dashboard/icons/alumni.png',
             'color' => 'rgb(200, 200, 11)',
+            'progress_bar_color' => 'rgb(200, 200, 11)',
         ]);
 
         DashboardStat::create([
@@ -39,6 +42,7 @@ class DashboardStatSeeder extends Seeder
             'previous_period_percentage' => 82,
             'icon' => 'dashboard/icons/pendaftar.png',
             'color' => 'rgb(194, 22, 22)',
+            'progress_bar_color' => 'rgb(194, 22, 22)',
         ]);
     }
 }

@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.dashboard.app')
 
 @section('content')
@@ -35,7 +39,7 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('dashboard.users.update', $selectedUser->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('dashboard.users.update', $selectedUser->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -44,12 +48,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="role_id">Role</label>
-                                    <select class="form-control" id="role_id" name="role_id" required>
-                                        <option value="">Pilih Role</option>
-                                        @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" {{ old('role_id', $selectedUser->role_id) == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" id="role_id" value="{{ $selectedUser->role->name }}" readonly>
+                                    <input type="hidden" name="role_id" value="{{ $selectedUser->role_id }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $selectedUser->tanggal_lahir) }}">
+                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $selectedUser->tanggal_lahir ? $selectedUser->tanggal_lahir->format('Y-m-d') : '') }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="no_hp">No HP</label>
@@ -84,64 +84,12 @@
                                     <input type="text" class="form-control" id="no_hp_orang_tua" name="no_hp_orang_tua" value="{{ old('no_hp_orang_tua', $selectedUser->no_hp_orang_tua) }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="jenjang">Jenjang</label>
-                                    <select class="form-control" id="jenjang" name="jenjang">
-                                        <option value="">Pilih Jenjang</option>
-                                        <option value="tk" {{ old('jenjang', $selectedUser->jenjang) == 'tk' ? 'selected' : '' }}>TK</option>
-                                        <option value="sd" {{ old('jenjang', $selectedUser->jenjang) == 'sd' ? 'selected' : '' }}>SD</option>
-                                        <option value="smp" {{ old('jenjang', $selectedUser->jenjang) == 'smp' ? 'selected' : '' }}>SMP</option>
-                                        <option value="sma" {{ old('jenjang', $selectedUser->jenjang) == 'sma' ? 'selected' : '' }}>SMA</option>
-                                        <option value="kuliah" {{ old('jenjang', $selectedUser->jenjang) == 'kuliah' ? 'selected' : '' }}>Kuliah</option>
+                                    <label for="level_id">Jenjang</label>
+                                    <select class="form-control" id="level_id" name="level_id">
+                                        @foreach ($levels as $level)
+                                        <option value="{{ $level->id }}" {{ old('level_id', $selectedUser->level_id) == $level->id ? 'selected' : '' }}>{{ $level->name }}</option>
+                                        @endforeach
                                     </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kk_path">Kartu Keluarga (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="kk_path" name="kk_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->kk_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->kk_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="akta_path">Akta Kelahiran (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="akta_path" name="akta_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->akta_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->akta_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="pasfoto_path">Pas Foto (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="pasfoto_path" name="pasfoto_path" accept=".jpg,.png">
-                                    @if ($selectedUser->pasfoto_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->pasfoto_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="ijazah_sd_path">Ijazah SD (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="ijazah_sd_path" name="ijazah_sd_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->ijazah_sd_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sd_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="ijazah_smp_path">Ijazah SMP (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="ijazah_smp_path" name="ijazah_smp_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->ijazah_smp_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_smp_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="ijazah_sma_path">Ijazah SMA (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="ijazah_sma_path" name="ijazah_sma_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->ijazah_sma_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sma_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="piagam_path">Piagam (Kosongkan jika tidak ingin mengubah)</label>
-                                    <input type="file" class="form-control-file" id="piagam_path" name="piagam_path" accept=".pdf,.jpg,.png">
-                                    @if ($selectedUser->piagam_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->piagam_path) }}" target="_blank">Lihat</a></small>
-                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                                 <a href="{{ route('dashboard.users.index') }}" class="btn btn-secondary">Batal</a>

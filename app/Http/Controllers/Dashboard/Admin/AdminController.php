@@ -899,6 +899,7 @@ class AdminController extends Controller
             'user' => $user,
             'selectedUser' => User::findOrFail($id),
             'roles' => Role::all(),
+            'levels' => Level::all(),
         ];
 
         return view('pages.dashboard.users.edit', $data);
@@ -917,15 +918,8 @@ class AdminController extends Controller
             'alamat' => 'nullable|string',
             'nama_orang_tua' => 'nullable|string|max:255',
             'no_hp_orang_tua' => 'nullable|regex:/^[0-9]{10,13}$/',
-            'jenjang' => 'nullable|in:tk,sd,smp,sma,kuliah',
+            'level_id' => 'required|exists:levels,id', // Validasi level_id
             'role_id' => 'required|exists:roles,id',
-            'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
-            'ijazah_sd_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_smp_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_sma_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
         $data = [
@@ -936,56 +930,12 @@ class AdminController extends Controller
             'alamat' => $validated['alamat'],
             'nama_orang_tua' => $validated['nama_orang_tua'],
             'no_hp_orang_tua' => $validated['no_hp_orang_tua'],
-            'jenjang' => $validated['jenjang'],
+            'level_id' => $validated['level_id'], // Menggunakan level_id
             'role_id' => $validated['role_id'],
         ];
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($validated['password']);
-        }
-
-        // Handle file uploads and delete old files if new ones are uploaded
-        if ($request->hasFile('kk_path')) {
-            if ($selectedUser->kk_path) {
-                Storage::disk('public')->delete($selectedUser->kk_path);
-            }
-            $data['kk_path'] = $request->file('kk_path')->store('documents/kk', 'public');
-        }
-        if ($request->hasFile('akta_path')) {
-            if ($selectedUser->akta_path) {
-                Storage::disk('public')->delete($selectedUser->akta_path);
-            }
-            $data['akta_path'] = $request->file('akta_path')->store('documents/akta', 'public');
-        }
-        if ($request->hasFile('pasfoto_path')) {
-            if ($selectedUser->pasfoto_path) {
-                Storage::disk('public')->delete($selectedUser->pasfoto_path);
-            }
-            $data['pasfoto_path'] = $request->file('pasfoto_path')->store('documents/pasfoto', 'public');
-        }
-        if ($request->hasFile('ijazah_sd_path')) {
-            if ($selectedUser->ijazah_sd_path) {
-                Storage::disk('public')->delete($selectedUser->ijazah_sd_path);
-            }
-            $data['ijazah_sd_path'] = $request->file('ijazah_sd_path')->store('documents/ijazah_sd', 'public');
-        }
-        if ($request->hasFile('ijazah_smp_path')) {
-            if ($selectedUser->ijazah_smp_path) {
-                Storage::disk('public')->delete($selectedUser->ijazah_smp_path);
-            }
-            $data['ijazah_smp_path'] = $request->file('ijazah_smp_path')->store('documents/ijazah_smp', 'public');
-        }
-        if ($request->hasFile('ijazah_sma_path')) {
-            if ($selectedUser->ijazah_sma_path) {
-                Storage::disk('public')->delete($selectedUser->ijazah_sma_path);
-            }
-            $data['ijazah_sma_path'] = $request->file('ijazah_sma_path')->store('documents/ijazah_sma', 'public');
-        }
-        if ($request->hasFile('piagam_path')) {
-            if ($selectedUser->piagam_path) {
-                Storage::disk('public')->delete($selectedUser->piagam_path);
-            }
-            $data['piagam_path'] = $request->file('piagam_path')->store('documents/piagam', 'public');
         }
 
         $selectedUser->update($data);
