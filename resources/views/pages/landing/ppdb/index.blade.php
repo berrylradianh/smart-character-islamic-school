@@ -106,22 +106,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenjang Pendidikan *</label><br>
+                            @foreach (\App\Models\Level::orderByRaw("FIELD(slug, 'tk', 'sd', 'smp', 'sma', 'kuliah')")->orderBy('name')->get() as $level)
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenjang" id="tk" value="TK" required>
-                                <label class="form-check-label" for="tk">TK</label>
+                                <input class="form-check-input" type="radio" name="jenjang" id="{{ $level->slug }}" value="{{ $level->slug }}" {{ old('jenjang') == $level->slug ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="{{ $level->slug }}">{{strtoupper($level->slug)}}</label>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenjang" id="sd" value="SD">
-                                <label class="form-check-label" for="sd">SD</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenjang" id="smp" value="SMP">
-                                <label class="form-check-label" for="smp">SMP</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenjang" id="sma" value="SMA">
-                                <label class="form-check-label" for="sma">SMA</label>
-                            </div>
+                            @endforeach
                         </div>
                         <div class="mb-3">
                             <label for="pesan" class="form-label">Pesan Tambahan</label>
