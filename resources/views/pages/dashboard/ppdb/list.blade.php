@@ -88,10 +88,10 @@
                                     @foreach ($registrations as $index => $registration)
                                     <tr class="table-row-hover">
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ strtoupper($registration->jenjang) }}</td>
-                                        <td>{{ $registration->nama_anak }}</td>
-                                        <td>{{ $registration->nama_orang_tua }}</td>
-                                        <td>{{ $registration->no_hp_orang_tua }}</td>
+                                        <td>{{ $registration->user->level ? strtoupper($registration->user->level->slug) : 'Tidak Ditetapkan' }}</td>
+                                        <td>{{ $registration->user->name }}</td>
+                                        <td>{{ $registration->user->nama_orang_tua ?? 'Tidak Ditetapkan' }}</td>
+                                        <td>{{ $registration->user->no_hp_orang_tua ?? 'Tidak Ditetapkan' }}</td>
                                         <td>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan' }}</td>
                                         <td>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan' }}</td>
                                         <td>

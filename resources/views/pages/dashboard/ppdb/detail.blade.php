@@ -56,28 +56,28 @@
                                                                 <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Jenjang:</strong>
-                                                                    <span>{{ strtoupper($registration->jenjang) }}</span>
+                                                                    <span>{{ $registration->user->level ? strtoupper($registration->user->level->name) : 'Tidak Ditetapkan' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-user fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Nama Anak:</strong>
-                                                                    <span>{{ $registration->nama_anak }}</span>
+                                                                    <span>{{ $registration->user->name }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-users fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Nama Orang Tua:</strong>
-                                                                    <span>{{ $registration->nama_orang_tua }}</span>
+                                                                    <span>{{ $registration->user->nama_orang_tua ?? 'Tidak Ditetapkan' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-phone fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>No HP Orang Tua:</strong>
-                                                                    <span>{{ $registration->no_hp_orang_tua }}</span>
+                                                                    <span>{{ $registration->user->no_hp_orang_tua ?? 'Tidak Ditetapkan' }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -86,7 +86,7 @@
                                                                 <i class="fas fa-calendar-alt fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Tanggal Lahir:</strong>
-                                                                    <span>{{ $registration->tanggal_lahir ? \Carbon\Carbon::parse($registration->tanggal_lahir)->format('d F Y') : '-' }}</span>
+                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->format('d F Y') : '-' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
@@ -115,103 +115,130 @@
                                 <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                                     <div class="row mt-3">
                                         <!-- Kartu Keluarga -->
+                                        @if ($registration->user->kk_path)
                                         <div class="col-md-4 document-item mb-3">
                                             <div class="card h-100 shadow-sm">
                                                 <div class="card-body text-center">
                                                     <strong>Kartu Keluarga</strong>
                                                     <div class="mt-2 document-preview">
-                                                        @if (pathinfo($registration->kk_path, PATHINFO_EXTENSION) == 'pdf')
+                                                        @if (pathinfo($registration->user->kk_path, PATHINFO_EXTENSION) == 'pdf')
                                                         <i class="fas fa-file-pdf fa-3x text-danger"></i>
                                                         @else
-                                                        <img src="{{ asset('storage/' . $registration->kk_path) }}" alt="Kartu Keluarga" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                        <img src="{{ asset('storage/' . $registration->user->kk_path) }}" alt="Kartu Keluarga" class="img-fluid" style="max-width: 300px; max-height: 300px;">
                                                         @endif
                                                     </div>
                                                     <div class="mt-3">
-                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->kk_path) }}" data-type="{{ pathinfo($registration->kk_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
-                                                        <a href="{{ asset('storage/' . $registration->kk_path) }}" download class="btn btn-sm btn-primary">Download</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Akta Kelahiran -->
-                                        <div class="col-md-4 document-item mb-3">
-                                            <div class="card h-100 shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <strong>Akta Kelahiran</strong>
-                                                    <div class="mt-2 document-preview">
-                                                        @if (pathinfo($registration->akta_path, PATHINFO_EXTENSION) == 'pdf')
-                                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                                                        @else
-                                                        <img src="{{ asset('storage/' . $registration->akta_path) }}" alt="Akta Kelahiran" class="img-fluid" style="max-width: 300px; max-height: 300px;">
-                                                        @endif
-                                                    </div>
-                                                    <div class="mt-3">
-                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->akta_path) }}" data-type="{{ pathinfo($registration->akta_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
-                                                        <a href="{{ asset('storage/' . $registration->akta_path) }}" download class="btn btn-sm btn-primary">Download</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Pas Foto -->
-                                        <div class="col-md-4 document-item mb-3">
-                                            <div class="card h-100 shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <strong>Pas Foto</strong>
-                                                    <div class="mt-2 document-preview">
-                                                        <img src="{{ asset('storage/' . $registration->pasfoto_path) }}" alt="Pas Foto" class="img-fluid" style="max-width: 300px; max-height: 300px;">
-                                                    </div>
-                                                    <div class="mt-3">
-                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->pasfoto_path) }}" data-type="image">Preview</button>
-                                                        <a href="{{ asset('storage/' . $registration->pasfoto_path) }}" download class="btn btn-sm btn-primary">Download</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Piagam (Opsional) -->
-                                        @if ($registration->piagam_path)
-                                        <div class="col-md-4 document-item mb-3">
-                                            <div class="card h-100 shadow-sm">
-                                                <div class="card-body text-center">
-                                                    <strong>Piagam</strong>
-                                                    <div class="mt-2 document-preview">
-                                                        @if (pathinfo($registration->piagam_path, PATHINFO_EXTENSION) == 'pdf')
-                                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                                                        @else
-                                                        <img src="{{ asset('storage/' . $registration->piagam_path) }}" alt="Piagam" class="img-fluid" style="max-width: 300px; max-height: 300px;">
-                                                        @endif
-                                                    </div>
-                                                    <div class="mt-3">
-                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->piagam_path) }}" data-type="{{ pathinfo($registration->piagam_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
-                                                        <a href="{{ asset('storage/' . $registration->piagam_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->kk_path) }}" data-type="{{ pathinfo($registration->user->kk_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->kk_path) }}" download class="btn btn-sm btn-primary">Download</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         @endif
 
-                                        <!-- Ijazah (Opsional) -->
-                                        @if ($registration->ijazah_path)
+                                        <!-- Akta Kelahiran -->
+                                        @if ($registration->user->akta_path)
                                         <div class="col-md-4 document-item mb-3">
                                             <div class="card h-100 shadow-sm">
                                                 <div class="card-body text-center">
-                                                    <strong>Ijazah</strong>
+                                                    <strong>Akta Kelahiran</strong>
                                                     <div class="mt-2 document-preview">
-                                                        @if (pathinfo($registration->ijazah_path, PATHINFO_EXTENSION) == 'pdf')
+                                                        @if (pathinfo($registration->user->akta_path, PATHINFO_EXTENSION) == 'pdf')
                                                         <i class="fas fa-file-pdf fa-3x text-danger"></i>
                                                         @else
-                                                        <img src="{{ asset('storage/' . $registration->ijazah_path) }}" alt="Ijazah" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                        <img src="{{ asset('storage/' . $registration->user->akta_path) }}" alt="Akta Kelahiran" class="img-fluid" style="max-width: 300px; max-height: 300px;">
                                                         @endif
                                                     </div>
                                                     <div class="mt-3">
-                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->ijazah_path) }}" data-type="{{ pathinfo($registration->ijazah_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
-                                                        <a href="{{ asset('storage/' . $registration->ijazah_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->akta_path) }}" data-type="{{ pathinfo($registration->user->akta_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->akta_path) }}" download class="btn btn-sm btn-primary">Download</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
+
+                                        <!-- Pas Foto -->
+                                        @if ($registration->user->pasfoto_path)
+                                        <div class="col-md-4 document-item mb-3">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <strong>Pas Foto</strong>
+                                                    <div class="mt-2 document-preview">
+                                                        <img src="{{ asset('storage/' . $registration->user->pasfoto_path) }}" alt="Pas Foto" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->pasfoto_path) }}" data-type="image">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->pasfoto_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        <!-- Piagam (Opsional) -->
+                                        @if ($registration->user->piagam_path)
+                                        <div class="col-md-4 document-item mb-3">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <strong>Piagam</strong>
+                                                    <div class="mt-2 document-preview">
+                                                        @if (pathinfo($registration->user->piagam_path, PATHINFO_EXTENSION) == 'pdf')
+                                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                                        @else
+                                                        <img src="{{ asset('storage/' . $registration->user->piagam_path) }}" alt="Piagam" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->piagam_path) }}" data-type="{{ pathinfo($registration->user->piagam_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->piagam_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        <!-- Ijazah (Berdasarkan Jenjang) -->
+                                        @if ($registration->user->level && in_array($registration->user->level->slug, ['smp', 'sma']))
+                                        @if ($registration->user->level->slug == 'smp' && $registration->user->ijazah_sd_path)
+                                        <div class="col-md-4 document-item mb-3">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <strong>Ijazah SD</strong>
+                                                    <div class="mt-2 document-preview">
+                                                        @if (pathinfo($registration->user->ijazah_sd_path, PATHINFO_EXTENSION) == 'pdf')
+                                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                                        @else
+                                                        <img src="{{ asset('storage/' . $registration->user->ijazah_sd_path) }}" alt="Ijazah SD" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->ijazah_sd_path) }}" data-type="{{ pathinfo($registration->user->ijazah_sd_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->ijazah_sd_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @elseif ($registration->user->level->slug == 'sma' && $registration->user->ijazah_smp_path)
+                                        <div class="col-md-4 document-item mb-3">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body text-center">
+                                                    <strong>Ijazah SMP</strong>
+                                                    <div class="mt-2 document-preview">
+                                                        @if (pathinfo($registration->user->ijazah_smp_path, PATHINFO_EXTENSION) == 'pdf')
+                                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                                        @else
+                                                        <img src="{{ asset('storage/' . $registration->user->ijazah_smp_path) }}" alt="Ijazah SMP" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal" data-src="{{ asset('storage/' . $registration->user->ijazah_smp_path) }}" data-type="{{ pathinfo($registration->user->ijazah_smp_path, PATHINFO_EXTENSION) == 'pdf' ? 'pdf' : 'image' }}">Preview</button>
+                                                        <a href="{{ asset('storage/' . $registration->user->ijazah_smp_path) }}" download class="btn btn-sm btn-primary">Download</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
                                         @endif
 
                                         <!-- Bukti Pembayaran -->
@@ -236,7 +263,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Tab Status -->
                                 <!-- Tab Status -->
                                 <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
                                     <div class="mt-3">
@@ -288,7 +314,7 @@
                                                             @if ($registration->status == 'approve')
                                                             <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check mr-1"></i> Approve</span>
                                                             @elseif ($registration->status == 'decline')
-                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> Decline</span>
+                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> verleden</span>
                                                             @endif
                                                         </span>
                                                     </div>
@@ -331,11 +357,18 @@
                                                                 <i class="fas fa-check-circle mr-2 text-success"></i>
                                                                 Bukti Pembayaran (Asli)
                                                             </li>
-                                                            @if ($registration->ijazah_path)
+                                                            @if ($registration->user->level && in_array($registration->user->level->slug, ['smp', 'sma']))
+                                                            @if ($registration->user->level->slug == 'smp' && $registration->user->ijazah_sd_path)
                                                             <li class="document-item d-flex align-items-center py-2">
                                                                 <i class="fas fa-check-circle mr-2 text-success"></i>
-                                                                Ijazah (Asli dan Fotokopi)
+                                                                Ijazah SD (Asli dan Fotokopi)
                                                             </li>
+                                                            @elseif ($registration->user->level->slug == 'sma' && $registration->user->ijazah_smp_path)
+                                                            <li class="document-item d-flex align-items-center py-2">
+                                                                <i class="fas fa-check-circle mr-2 text-success"></i>
+                                                                Ijazah SMP (Asli dan Fotokopi)
+                                                            </li>
+                                                            @endif
                                                             @endif
                                                         </ol>
                                                     </div>

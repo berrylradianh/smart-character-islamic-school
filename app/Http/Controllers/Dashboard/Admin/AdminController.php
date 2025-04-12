@@ -594,9 +594,12 @@ class AdminController extends Controller
     public function ppdb_pendaftaran()
     {
         $user = Auth::user();
+        $registration = Registration::where('user_id', $user->id)->first();
+
         $data = [
             'title' => 'PPDB Pendaftaran',
             'user' => $user,
+            'registration' => $registration,
         ];
 
         return view('pages.dashboard.ppdb.pendaftaran', $data);
@@ -606,34 +609,29 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
+        if (Registration::where('user_id', $user->id)->exists()) {
+            return redirect()->route('dashboard.ppdb_pendaftaran')->with('error', 'Anda sudah terdaftar. Silakan pantau status pendaftaran Anda.');
+        }
+
         $validated = $request->validate([
-            'jenjang' => 'required|in:tk,sd,smp,sma,kuliah',
+            'level_id' => 'required|exists:levels,id',
             'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
-        if ($user->jenjang && $validated['jenjang'] !== $user->jenjang) {
-            return redirect()->back()->withErrors(['jenjang' => 'Jenjang tidak sesuai dengan data pengguna.']);
-        }
-
-        if (!$user->jenjang || !$user->name || !$user->nama_orang_tua || !$user->no_hp_orang_tua || !$user->tanggal_lahir || !$user->kk_path || !$user->akta_path || !$user->pasfoto_path) {
+        if (!$user->name || !$user->nama_orang_tua || !$user->no_hp_orang_tua || !$user->tanggal_lahir || !$user->kk_path || !$user->akta_path || !$user->pasfoto_path) {
             return redirect()->route('profile.edit')->with('error', 'Data profil Anda belum lengkap. Silakan lengkapi profil terlebih dahulu.');
         }
 
-        if (in_array($validated['jenjang'], ['smp', 'sma']) && !$user->ijazah_sd_path && !$user->ijazah_smp_path) {
-            return redirect()->route('profile.edit')->with('error', 'Ijazah SD atau SMP diperlukan untuk jenjang ' . strtoupper($validated['jenjang']) . '. Silakan lengkapi profil Anda.');
+        if ($user->level_id && in_array(Level::find($user->level_id)->slug, ['smp', 'sma']) && !$user->ijazah_sd_path && !$user->ijazah_smp_path) {
+            return redirect()->route('profile.edit')->with('error', 'Ijazah SD atau SMP diperlukan untuk jenjang ' . strtoupper(Level::find($user->level_id)->name) . '. Silakan lengkapi profil Anda.');
         }
 
         $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('registrations/bukti_pembayaran', 'public');
 
-        $ijazahPath = null;
-        if ($validated['jenjang'] === 'smp') {
-            $ijazahPath = $user->ijazah_sd_path;
-        } elseif ($validated['jenjang'] === 'sma') {
-            $ijazahPath = $user->ijazah_smp_path;
-        }
-
         Registration::create([
-            'jenjang' => $validated['jenjang'],
+            'user_id' => $user->id,
+            'bukti_pembayaran_path' => $buktiPembayaranPath,
+            'status' => 'waiting',
             'nama_anak' => $user->name,
             'nama_orang_tua' => $user->nama_orang_tua,
             'no_hp_orang_tua' => $user->no_hp_orang_tua,
@@ -642,8 +640,6 @@ class AdminController extends Controller
             'akta_path' => $user->akta_path,
             'pasfoto_path' => $user->pasfoto_path,
             'piagam_path' => $user->piagam_path,
-            'bukti_pembayaran_path' => $buktiPembayaranPath,
-            'ijazah_path' => $ijazahPath,
         ]);
 
         return redirect()->route('dashboard.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
@@ -654,7 +650,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $data = [
             'title' => 'PPDB List Pendaftar',
-            'registrations' => Registration::with('schoolLocation')->get(),
+            'registrations' => Registration::with(['schoolLocation', 'user.level'])->get(),
             'user' => $user,
         ];
 
