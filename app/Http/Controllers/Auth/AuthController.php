@@ -51,7 +51,8 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
-                'jenjang' => 'nullable|in:sd,smp,sma,kuliah',
+                'level_id' => 'required|exists:levels,id', // Validasi level_id
+                'terms' => 'accepted', // Validasi checkbox terms
             ]);
 
             if ($validator->fails()) {
@@ -64,8 +65,8 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'jenjang' => $request->jenjang ?? null,
-                'role_id' => 3,
+                'level_id' => $request->level_id,
+                'role_id' => 3, // Default role_id
             ]);
 
             Auth::login($user);

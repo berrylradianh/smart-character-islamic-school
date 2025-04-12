@@ -17,8 +17,17 @@ class LevelAndRegistrationInfoSeeder extends Seeder
             ['name' => 'Sekolah Menengah Atas (SMA)', 'slug' => 'sma'],
         ];
 
+        $levelMap = [];
+
         foreach ($levels as $levelData) {
-            $level = Level::create($levelData);
+            $level = Level::updateOrCreate(
+                ['slug' => $levelData['slug']],
+                [
+                    'name' => $levelData['name'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
             $levelMap[$levelData['slug']] = $level->id;
         }
 

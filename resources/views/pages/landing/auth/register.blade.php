@@ -56,14 +56,15 @@
                                 </div>
                             </div>
                             <div class="sign__input-wrapper" style="margin-bottom: 80px;">
-                                <h5>Jenjang</h5>
+                                <h5>Education Level</h5>
                                 <div class="sign__input">
-                                    <select name="jenjang" required>
+                                    <select name="level_id" required>
                                         <option value="" disabled selected>Select Education Level</option>
-                                        <option value="sd" {{ old('jenjang') == 'sd' ? 'selected' : '' }}>SD (Elementary School)</option>
-                                        <option value="smp" {{ old('jenjang') == 'smp' ? 'selected' : '' }}>SMP (Junior High School)</option>
-                                        <option value="sma" {{ old('jenjang') == 'sma' ? 'selected' : '' }}>SMA (Senior High School)</option>
-                                        <option value="kuliah" {{ old('jenjang') == 'kuliah' ? 'selected' : '' }}>Kuliah (University)</option>
+                                        @foreach (\App\Models\Level::orderByRaw("FIELD(slug, 'tk', 'sd', 'smp', 'sma', 'kuliah')")->orderBy('name')->get() as $level)
+                                        <option value="{{ $level->id }}" {{ old('level_id') == $level->id ? 'selected' : '' }}>
+                                            {{ $level->name }}
+                                        </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -90,7 +91,7 @@
                             </div>
                             <button type="submit" class="tp-btn w-100"> <span></span> Sign Up</button>
                             <div class="sign__new text-center mt-20">
-                                <p>Have an account? <a href="{{route('auth.login')}}">Sign in</a></p>
+                                <p>Have an account? <a href="{{ route('auth.login') }}">Sign in</a></p>
                             </div>
                         </form>
                     </div>
