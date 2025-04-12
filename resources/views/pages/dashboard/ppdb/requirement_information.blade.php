@@ -40,11 +40,30 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">Nama Jenjang</label>
-                                    <input type="text" name="name" id="name" class="form-control" required placeholder="e.g., Taman Kanak-Kanak (TK)">
+                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" required placeholder="e.g., Taman Kanak-Kanak (TK)" value="{{ old('name') }}">
+                                    @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="slug">Slug</label>
-                                    <input type="text" name="slug" id="slug" class="form-control" required placeholder="e.g., tk">
+                                    <input type="text" name="slug" id="slug" class="form-control @error('slug') is-invalid @enderror" required placeholder="e.g., tk" value="{{ old('slug') }}">
+                                    @error('slug')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="biaya">Biaya (Rp)</label>
+                                    <input type="number" name="biaya" id="biaya" class="form-control @error('biaya') is-invalid @enderror" required placeholder="e.g., 1000000" step="0.01" value="{{ old('biaya') }}">
+                                    @error('biaya')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary">Tambah Jenjang</button>
                             </form>
@@ -63,12 +82,17 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="level_id">Jenjang</label>
-                                    <select name="level_id" id="level_id" class="form-control" required>
+                                    <select name="level_id" id="level_id" class="form-control @error('level_id') is-invalid @enderror" required>
                                         <option value="">Pilih Jenjang</option>
                                         @foreach ($availableLevels as $level)
                                         <option value="{{ $level->id }}">{{ $level->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('level_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
                                     @if ($availableLevels->isEmpty())
                                     <small class="text-muted">Semua jenjang sudah memiliki informasi pendaftaran. Tambah jenjang baru jika diperlukan.</small>
                                     @endif
@@ -134,6 +158,7 @@
                                     <tr>
                                         <th>Nama</th>
                                         <th>Slug</th>
+                                        <th>Biaya (Rp)</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -142,6 +167,7 @@
                                     <tr>
                                         <td>{{ $level->name }}</td>
                                         <td>{{ $level->slug }}</td>
+                                        <td>{{ number_format($level->biaya, 2, ',', '.') }}</td>
                                         <td>
                                             <form action="{{ route('dashboard.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jenjang ini?');">
                                                 @csrf

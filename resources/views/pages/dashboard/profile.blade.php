@@ -61,16 +61,19 @@ use Illuminate\Support\Facades\Storage;
                                             <th scope="row">Email</th>
                                             <td>{{ $user->email ?? '-' }}</td>
                                         </tr>
+                                        @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                                         <tr>
                                             <th scope="row">Tanggal Lahir</th>
                                             <td>{{ $user->tanggal_lahir ? \Carbon\Carbon::parse($user->tanggal_lahir)->format('d F Y') : '-' }}</td>
                                         </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
+                    @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                     <!-- Informasi Kontak -->
                     <div class="card">
                         <div class="card-body">
@@ -137,16 +140,45 @@ use Illuminate\Support\Facades\Storage;
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Dokumen -->
                     <div class="card">
                         <div class="card-body">
+                            @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                             <h4 class="card-title mb-4"><i class="fas fa-file-alt mr-2"></i> Dokumen Pendaftaran</h4>
+                            @else
+                            <h4 class="card-title mb-4"><i class="fas fa-file-alt mr-2"></i> Dokumen</h4>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-borderless mb-0">
                                     <tbody>
+                                        @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                                         <tr>
-                                            <th scope="row" style="width: 30%;">Kartu Keluarga (KK)</th>
+                                            <th scope="row" style="width: 30%;">Pasfoto</th>
+                                            <td>
+                                                @if ($user->pasfoto_path)
+                                                <a href="{{ Storage::url($user->pasfoto_path) }}" target="_blank" class="text-primary"><i class="fas fa-image mr-1"></i> Lihat Pasfoto</a>
+                                                @else
+                                                <span class="text-muted">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <th scope="row" style="width: 30%;">Foto Profil</th>
+                                            <td>
+                                                @if ($user->pasfoto_path)
+                                                <a href="{{ Storage::url($user->pasfoto_path) }}" target="_blank" class="text-primary"><i class="fas fa-image mr-1"></i> Lihat Pasfoto</a>
+                                                @else
+                                                <span class="text-muted">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
+                                        <tr>
+                                            <th scope="row">Kartu Keluarga (KK)</th>
                                             <td>
                                                 @if ($user->kk_path)
                                                 <a href="{{ Storage::url($user->kk_path) }}" target="_blank" class="text-primary"><i class="fas fa-file mr-1"></i> Lihat KK</a>
@@ -160,16 +192,6 @@ use Illuminate\Support\Facades\Storage;
                                             <td>
                                                 @if ($user->akta_path)
                                                 <a href="{{ Storage::url($user->akta_path) }}" target="_blank" class="text-primary"><i class="fas fa-file mr-1"></i> Lihat Akta</a>
-                                                @else
-                                                <span class="text-muted">Belum diunggah</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Pasfoto</th>
-                                            <td>
-                                                @if ($user->pasfoto_path)
-                                                <a href="{{ Storage::url($user->pasfoto_path) }}" target="_blank" class="text-primary"><i class="fas fa-image mr-1"></i> Lihat Pasfoto</a>
                                                 @else
                                                 <span class="text-muted">Belum diunggah</span>
                                                 @endif
@@ -249,17 +271,19 @@ use Illuminate\Support\Facades\Storage;
                                                 @endif
                                             </td>
                                         </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Peringatan jika data tidak lengkap -->
+                    @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                     @if (!$user->isProfileComplete())
                     <div class="alert alert-warning" role="alert">
                         <i class="fas fa-exclamation-circle mr-2"></i> Profil Anda belum lengkap. Silakan <a href="{{ route('profile.edit') }}" class="alert-link">lengkapi profil</a> untuk melanjutkan pendaftaran.
                     </div>
+                    @endif
                     @endif
                 </div>
             </div>

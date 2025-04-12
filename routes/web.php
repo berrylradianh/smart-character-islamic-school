@@ -19,7 +19,7 @@ Route::prefix('auth')->group(function () {
 });
 
 // Dashboard
-Route::prefix('dashboards')->middleware('auth')->group(function () {
+Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard.index');
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('profile.show');
     Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');

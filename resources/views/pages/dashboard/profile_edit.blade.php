@@ -61,8 +61,14 @@ use Illuminate\Support\Facades\Storage;
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}"
+                                        {{ $user->role && $user->role->name !== 'Superadmin' ? 'readonly' : '' }} required>
+                                    @if ($user->role && $user->role->name !== 'Superadmin')
+                                    <small class="form-text text-muted">Email hanya dapat diubah oleh Superadmin.</small>
+                                    @endif
                                 </div>
+
+                                @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                                 <div class="form-group">
                                     <label for="tanggal_lahir">Tanggal Lahir</label>
                                     <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir ? \Carbon\Carbon::parse($user->tanggal_lahir)->format('Y-m-d') : '') }}">
@@ -102,8 +108,18 @@ use Illuminate\Support\Facades\Storage;
                                         <option value="kuliah" {{ old('jenjang', $user->jenjang) == 'kuliah' ? 'selected' : '' }}>Kuliah</option>
                                     </select>
                                 </div>
+                                @endif
 
                                 <!-- Dokumen -->
+                                <div class="form-group">
+                                    <label for="pasfoto_path">Pasfoto</label>
+                                    <input type="file" name="pasfoto_path" id="pasfoto_path" class="form-control-file">
+                                    @if ($user->pasfoto_path)
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->pasfoto_path) }}" target="_blank">Lihat Pasfoto</a></small>
+                                    @endif
+                                </div>
+
+                                @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                                 <div class="form-group">
                                     <label for="kk_path">Kartu Keluarga (KK)</label>
                                     <input type="file" name="kk_path" id="kk_path" class="form-control-file">
@@ -116,13 +132,6 @@ use Illuminate\Support\Facades\Storage;
                                     <input type="file" name="akta_path" id="akta_path" class="form-control-file">
                                     @if ($user->akta_path)
                                     <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->akta_path) }}" target="_blank">Lihat Akta</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="pasfoto_path">Pasfoto</label>
-                                    <input type="file" name="pasfoto_path" id="pasfoto_path" class="form-control-file">
-                                    @if ($user->pasfoto_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->pasfoto_path) }}" target="_blank">Lihat Pasfoto</a></small>
                                     @endif
                                 </div>
                                 <!-- Dokumen Ijazah -->
@@ -161,6 +170,7 @@ use Illuminate\Support\Facades\Storage;
                                     <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->piagam_path) }}" target="_blank">Lihat Piagam</a></small>
                                     @endif
                                 </div>
+                                @endif
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Simpan Perubahan</button>
@@ -183,40 +193,42 @@ use Illuminate\Support\Facades\Storage;
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const jenjangSelect = document.getElementById('jenjang');
-        const ijazahTkGroup = document.getElementById('ijazah_tk_group');
-        const ijazahSdGroup = document.getElementById('ijazah_sd_group');
-        const ijazahSmpGroup = document.getElementById('ijazah_smp_group');
-        const ijazahSmaGroup = document.getElementById('ijazah_sma_group');
 
-        function updateDokumenFields() {
-            // Sembunyikan semua field ijazah
-            ijazahTkGroup.style.display = 'none';
-            ijazahSdGroup.style.display = 'none';
-            ijazahSmpGroup.style.display = 'none';
-            ijazahSmaGroup.style.display = 'none';
+        // Pastikan elemen jenjangSelect ada sebelum menjalankan logika
+        if (jenjangSelect) {
+            const ijazahTkGroup = document.getElementById('ijazah_tk_group');
+            const ijazahSdGroup = document.getElementById('ijazah_sd_group');
+            const ijazahSmpGroup = document.getElementById('ijazah_smp_group');
+            const ijazahSmaGroup = document.getElementById('ijazah_sma_group');
 
-            // Tampilkan field sesuai jenjang
-            const jenjang = jenjangSelect.value;
-            if (jenjang === 'sd') {
-                ijazahTkGroup.style.display = 'block';
-            } else if (jenjang === 'smp') {
-                ijazahSdGroup.style.display = 'block';
-            } else if (jenjang === 'sma') {
-                ijazahSdGroup.style.display = 'block';
-                ijazahSmpGroup.style.display = 'block';
-            } else if (jenjang === 'kuliah') {
-                ijazahSdGroup.style.display = 'block';
-                ijazahSmpGroup.style.display = 'block';
-                ijazahSmaGroup.style.display = 'block';
+            function updateDokumenFields() {
+                // Sembunyikan semua field ijazah
+                if (ijazahTkGroup) ijazahTkGroup.style.display = 'none';
+                if (ijazahSdGroup) ijazahSdGroup.style.display = 'none';
+                if (ijazahSmpGroup) ijazahSmpGroup.style.display = 'none';
+                if (ijazahSmaGroup) ijazahSmaGroup.style.display = 'none';
+
+                // Tampilkan field sesuai jenjang
+                const jenjang = jenjangSelect.value;
+                if (jenjang === 'smp' && ijazahSdGroup) {
+                    ijazahSdGroup.style.display = 'block';
+                } else if (jenjang === 'sma' && ijazahSdGroup && ijazahSmpGroup) {
+                    ijazahSdGroup.style.display = 'block';
+                    ijazahSmpGroup.style.display = 'block';
+                } else if (jenjang === 'kuliah' && ijazahSdGroup && ijazahSmpGroup && ijazahSmaGroup) {
+                    ijazahSdGroup.style.display = 'block';
+                    ijazahSmpGroup.style.display = 'block';
+                    ijazahSmaGroup.style.display = 'block';
+                }
+                // Untuk TK atau kosong, tidak ada ijazah yang ditampilkan
             }
-            // Untuk TK atau kosong, tidak ada ijazah yang ditampilkan
+
+            // Panggil fungsi saat halaman dimuat
+            updateDokumenFields();
+
+            // Panggil fungsi saat jenjang berubah
+            jenjangSelect.addEventListener('change', updateDokumenFields);
         }
-
-        // Panggil fungsi saat halaman dimuat
-        updateDokumenFields();
-
-        // Panggil fungsi saat jenjang berubah
-        jenjangSelect.addEventListener('change', updateDokumenFields);
     });
 </script>
 @endsection

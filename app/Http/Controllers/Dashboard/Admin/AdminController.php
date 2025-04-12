@@ -386,11 +386,13 @@ class AdminController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:levels,slug',
+            'biaya' => 'required|numeric|min:0',
         ]);
 
         Level::create([
             'name' => $validated['name'],
             'slug' => $validated['slug'],
+            'biaya' => $validated['biaya'],
         ]);
 
         return redirect()->route('dashboard.requirement_information')->with('success', 'Jenjang berhasil ditambahkan.');
@@ -602,37 +604,44 @@ class AdminController extends Controller
 
     public function storeRegistration(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
-            'jenjang' => 'required|in:tk,sd,smp,sma',
-            'nama_anak' => 'required|string|max:255',
-            'nama_orang_tua' => 'required|string|max:255',
-            'no_hp_orang_tua' => 'required|regex:/^[0-9]{10,13}$/',
-            'tanggal_lahir' => 'required|date',
-            'kk' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'akta' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'pasfoto' => 'required|file|mimes:jpg,png|max:2048',
-            'piagam' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'jenjang' => 'required|in:tk,sd,smp,sma,kuliah',
             'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah' => 'required_if:jenjang,smp,sma|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
-        $kkPath = $request->file('kk')->store('registrations/kk', 'public');
-        $aktaPath = $request->file('akta')->store('registrations/akta', 'public');
-        $pasfotoPath = $request->file('pasfoto')->store('registrations/pasfoto', 'public');
+        if ($user->jenjang && $validated['jenjang'] !== $user->jenjang) {
+            return redirect()->back()->withErrors(['jenjang' => 'Jenjang tidak sesuai dengan data pengguna.']);
+        }
+
+        if (!$user->jenjang || !$user->name || !$user->nama_orang_tua || !$user->no_hp_orang_tua || !$user->tanggal_lahir || !$user->kk_path || !$user->akta_path || !$user->pasfoto_path) {
+            return redirect()->route('profile.edit')->with('error', 'Data profil Anda belum lengkap. Silakan lengkapi profil terlebih dahulu.');
+        }
+
+        if (in_array($validated['jenjang'], ['smp', 'sma']) && !$user->ijazah_sd_path && !$user->ijazah_smp_path) {
+            return redirect()->route('profile.edit')->with('error', 'Ijazah SD atau SMP diperlukan untuk jenjang ' . strtoupper($validated['jenjang']) . '. Silakan lengkapi profil Anda.');
+        }
+
         $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('registrations/bukti_pembayaran', 'public');
-        $piagamPath = $request->hasFile('piagam') ? $request->file('piagam')->store('registrations/piagam', 'public') : null;
-        $ijazahPath = $request->hasFile('ijazah') ? $request->file('ijazah')->store('registrations/ijazah', 'public') : null;
+
+        $ijazahPath = null;
+        if ($validated['jenjang'] === 'smp') {
+            $ijazahPath = $user->ijazah_sd_path;
+        } elseif ($validated['jenjang'] === 'sma') {
+            $ijazahPath = $user->ijazah_smp_path;
+        }
 
         Registration::create([
-            'jenjang' => $request->jenjang,
-            'nama_anak' => $request->nama_anak,
-            'nama_orang_tua' => $request->nama_orang_tua,
-            'no_hp_orang_tua' => $request->no_hp_orang_tua,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'kk_path' => $kkPath,
-            'akta_path' => $aktaPath,
-            'pasfoto_path' => $pasfotoPath,
-            'piagam_path' => $piagamPath,
+            'jenjang' => $validated['jenjang'],
+            'nama_anak' => $user->name,
+            'nama_orang_tua' => $user->nama_orang_tua,
+            'no_hp_orang_tua' => $user->no_hp_orang_tua,
+            'tanggal_lahir' => $user->tanggal_lahir,
+            'kk_path' => $user->kk_path,
+            'akta_path' => $user->akta_path,
+            'pasfoto_path' => $user->pasfoto_path,
+            'piagam_path' => $user->piagam_path,
             'bukti_pembayaran_path' => $buktiPembayaranPath,
             'ijazah_path' => $ijazahPath,
         ]);
