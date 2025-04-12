@@ -63,7 +63,7 @@
                                             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editFaqModal{{ $faq->id }}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <form action="{{ route('admin.faq.destroy', $faq->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('dashboard.faq.destroy', $faq->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus FAQ ini?')">
@@ -88,7 +88,7 @@
             <div class="modal fade" id="addFaqModal" tabindex="-1" role="dialog" aria-labelledby="addFaqModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('admin.faq.store') }}" method="POST">
+                        <form action="{{ route('dashboard.faq.store') }}" method="POST">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addFaqModalLabel">Tambah FAQ</h5>
@@ -146,7 +146,7 @@
             <div class="modal fade" id="editFaqModal{{ $faq->id }}" tabindex="-1" role="dialog" aria-labelledby="editFaqModalLabel{{ $faq->id }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('admin.faq.update', $faq->id) }}" method="POST">
+                        <form action="{{ route('dashboard.faq.update', $faq->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal-header">

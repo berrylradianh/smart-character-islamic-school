@@ -62,8 +62,8 @@
                                             <i class="fas fa-download mr-1"></i> Export Data
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                                            <a class="dropdown-item" href="{{ route('admin.export', 'pdf') }}">PDF</a>
-                                            <a class="dropdown-item" href="{{ route('admin.export', 'excel') }}">Excel</a>
+                                            <a class="dropdown-item" href="{{ route('dashboard.export', 'pdf') }}">PDF</a>
+                                            <a class="dropdown-item" href="{{ route('dashboard.export', 'excel') }}">Excel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.show_pendaftar', $registration->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye mr-1"></i> Detail</a>
+                                            <a href="{{ route('dashboard.show_pendaftar', $registration->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye mr-1"></i> Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach

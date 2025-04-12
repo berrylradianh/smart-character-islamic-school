@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
         'tanggal_lahir',
         'no_hp',
         'alamat',
@@ -85,5 +86,10 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

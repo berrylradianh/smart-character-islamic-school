@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Stats</li>
                         </ol>
                     </div>
@@ -154,7 +154,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Tambah Statistik</h4>
-                            <form action="{{ route('admin.stats.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('dashboard.stats.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label>Nama Statistik</label>
@@ -262,7 +262,7 @@
                                                     <button class="btn btn-warning btn-icon" data-toggle="modal" data-target="#editModal{{ $stat->id }}" title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <form action="{{ route('admin.stats.destroy', $stat->id) }}" method="POST" style="display: inline;">
+                                                    <form action="{{ route('dashboard.stats.destroy', $stat->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-icon" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
@@ -283,7 +283,7 @@
                                                             <span aria-hidden="true">×</span>
                                                         </button>
                                                     </div>
-                                                    <form action="{{ route('admin.stats.update', $stat->id) }}" method="POST" enctype="multipart/form-data">
+                                                    <form action="{{ route('dashboard.stats.update', $stat->id) }}" method="POST" enctype="multipart/form-data">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="modal-body">

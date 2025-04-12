@@ -11,8 +11,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Daftar Pengguna</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.users.index') }}">Daftar Pengguna</a></li>
                             <li class="breadcrumb-item active">Edit Pengguna</li>
                         </ol>
                     </div>
@@ -35,12 +35,21 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('admin.users.update', $selectedUser->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('dashboard.users.update', $selectedUser->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="name">Nama</label>
                                     <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $selectedUser->name) }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="role_id">Role</label>
+                                    <select class="form-control" id="role_id" name="role_id" required>
+                                        <option value="">Pilih Role</option>
+                                        @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ old('role_id', $selectedUser->role_id) == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -89,53 +98,53 @@
                                     <label for="kk_path">Kartu Keluarga (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="kk_path" name="kk_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->kk_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->kk_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->kk_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="akta_path">Akta Kelahiran (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="akta_path" name="akta_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->akta_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->akta_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->akta_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="pasfoto_path">Pas Foto (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="pasfoto_path" name="pasfoto_path" accept=".jpg,.png">
                                     @if ($selectedUser->pasfoto_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->pasfoto_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->pasfoto_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="ijazah_sd_path">Ijazah SD (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="ijazah_sd_path" name="ijazah_sd_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->ijazah_sd_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sd_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sd_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="ijazah_smp_path">Ijazah SMP (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="ijazah_smp_path" name="ijazah_smp_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->ijazah_smp_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_smp_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_smp_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="ijazah_sma_path">Ijazah SMA (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="ijazah_sma_path" name="ijazah_sma_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->ijazah_sma_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sma_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->ijazah_sma_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="piagam_path">Piagam (Kosongkan jika tidak ingin mengubah)</label>
                                     <input type="file" class="form-control-file" id="piagam_path" name="piagam_path" accept=".pdf,.jpg,.png">
                                     @if ($selectedUser->piagam_path)
-                                        <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->piagam_path) }}" target="_blank">Lihat</a></small>
+                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($selectedUser->piagam_path) }}" target="_blank">Lihat</a></small>
                                     @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Batal</a>
+                                <a href="{{ route('dashboard.users.index') }}" class="btn btn-secondary">Batal</a>
                             </form>
                         </div>
                     </div>

@@ -31,7 +31,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Edit Timeline untuk {{ $timeline->level->name }}</h4>
-                            <form action="{{ route('admin.requirement_timeline.update', $timeline->id) }}" method="POST">
+                            <form action="{{ route('dashboard.requirement_timeline.update', $timeline->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -47,7 +47,7 @@
                                     <textarea name="description" class="form-control" required placeholder="e.g., Orang tua mendaftarkan anak...">{{ $timeline->description }}</textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Perbarui</button>
-                                <a href="{{ route('admin.requirement_timeline') }}" class="btn btn-secondary">Kembali</a>
+                                <a href="{{ route('dashboard.requirement_timeline') }}" class="btn btn-secondary">Kembali</a>
                             </form>
                         </div>
                     </div>

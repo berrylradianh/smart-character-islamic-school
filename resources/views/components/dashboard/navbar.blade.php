@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 
 <div class="topbar">
     <div class="topbar-left">
-        <a href="{{ route('admin.index') }}" class="logo">
+        <a href="{{ route('dashboard.index') }}" class="logo">
             <span class="logo-light">
                 <img src="{{ asset('assets/img/logo/logo-name.png') }}" alt="Stexo Logo" style="height: 60px;">
             </span>

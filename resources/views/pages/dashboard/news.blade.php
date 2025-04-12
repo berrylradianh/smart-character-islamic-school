@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
             @endif
 
             <div id="news-sections">
-                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" id="news-form">
+                <form action="{{ route('dashboard.news.store') }}" method="POST" enctype="multipart/form-data" id="news-form">
                     @csrf
                     <div id="input-sections">
                         <div class="row news-item" data-news-index="0">

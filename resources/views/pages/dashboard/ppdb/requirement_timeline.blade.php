@@ -36,7 +36,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Tambah Timeline</h4>
-                            <form action="{{ route('admin.requirement_timeline.store') }}" method="POST">
+                            <form action="{{ route('dashboard.requirement_timeline.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="level_id">Jenjang</label>
@@ -103,8 +103,8 @@
                                                     <td>{{ $timeline->title }}</td>
                                                     <td>{{ $timeline->description }}</td>
                                                     <td>
-                                                        <a href="{{ route('admin.requirement_timeline.edit', $timeline->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                        <form action="{{ route('admin.requirement_timeline.destroy', $timeline->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus timeline ini?');" style="display:inline;">
+                                                        <a href="{{ route('dashboard.requirement_timeline.edit', $timeline->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                        <form action="{{ route('dashboard.requirement_timeline.destroy', $timeline->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus timeline ini?');" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
@@ -118,7 +118,7 @@
                                     <!-- Form to Add New Timeline for This Jenjang -->
                                     <div class="mb-4">
                                         <h6>Tambah Timeline Baru untuk {{ $level->name }}</h6>
-                                        <form action="{{ route('admin.requirement_timeline.add') }}" method="POST">
+                                        <form action="{{ route('dashboard.requirement_timeline.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="level_id" value="{{ $level->id }}">
                                             <div class="form-group">

@@ -27,7 +27,7 @@
             @endif
 
             <div id="hero-sections">
-                <form action="{{ route('hero.store') }}" method="POST" enctype="multipart/form-data" id="hero-form">
+                <form action="{{ route('dashboard.hero.store') }}" method="POST" enctype="multipart/form-data" id="hero-form">
                     @csrf
                     <div id="hero-input-section">
                         <div class="row hero-item" data-hero-index="0">
@@ -83,7 +83,7 @@
                             <div class="card m-b-30">
                                 <div class="card-body">
                                     <h4 class="mt-0 header-title">Hero Content #{{ $index + 1 }}</h4>
-                                    <form action="{{ route('hero.destroy', $hero->id) }}" method="POST">
+                                    <form action="{{ route('dashboard.hero.destroy', $hero->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <div class="hero-card">

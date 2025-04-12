@@ -36,7 +36,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Tambah Jenjang</h4>
-                            <form action="{{ route('admin.levels.store') }}" method="POST">
+                            <form action="{{ route('dashboard.levels.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">Nama Jenjang</label>
@@ -59,7 +59,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Tambah Informasi Pendaftaran</h4>
-                            <form action="{{ route('admin.requirement_information.store') }}" method="POST">
+                            <form action="{{ route('dashboard.requirement_information.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="level_id">Jenjang</label>
@@ -143,7 +143,7 @@
                                         <td>{{ $level->name }}</td>
                                         <td>{{ $level->slug }}</td>
                                         <td>
-                                            <form action="{{ route('admin.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jenjang ini?');">
+                                            <form action="{{ route('dashboard.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jenjang ini?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
@@ -200,8 +200,8 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.requirement_information.edit', $info->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                            <form action="{{ route('admin.requirement_information.destroy', $info->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');" style="display:inline;">
+                                            <a href="{{ route('dashboard.requirement_information.edit', $info->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                            <form action="{{ route('dashboard.requirement_information.destroy', $info->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>

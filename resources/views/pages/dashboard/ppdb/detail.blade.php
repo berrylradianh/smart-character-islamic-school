@@ -13,7 +13,7 @@
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item">SCIS</li>
                             <li class="breadcrumb-item">PPDB</li>
-                            <li class="breadcrumb-item"><a href="{{ route('admin.list_pendaftar') }}">Daftar Pendaftar</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.list_pendaftar') }}">Daftar Pendaftar</a></li>
                             <li class="breadcrumb-item active">Detail</li>
                         </ol>
                     </div>
@@ -242,7 +242,7 @@
                                     <div class="mt-3">
                                         @if ($registration->status == 'waiting')
                                         <!-- Form Edit jika Status "Waiting" -->
-                                        <form action="{{ route('admin.update_status', $registration->id) }}" method="POST">
+                                        <form action="{{ route('dashboard.update_status', $registration->id) }}" method="POST">
                                             @csrf
                                             <div class="form-group">
                                                 <label>Status Pendaftaran</label>
@@ -273,7 +273,7 @@
 
                                             <div class="form-group mt-3">
                                                 <button type="submit" class="btn btn-primary">Simpan Status</button>
-                                                <a href="{{ route('admin.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
+                                                <a href="{{ route('dashboard.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
                                             </div>
                                         </form>
                                         @else
@@ -342,7 +342,7 @@
                                                 </div>
                                                 @endif
                                                 <div class="mt-3">
-                                                    <a href="{{ route('admin.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
+                                                    <a href="{{ route('dashboard.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
                                                 </div>
                                             </div>
                                         </div>

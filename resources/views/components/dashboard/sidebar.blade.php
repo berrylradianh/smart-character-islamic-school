@@ -5,42 +5,42 @@
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-accelerator"></i><span> Dashboard <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('admin.index')}}">Dashboard</a></li>
-                        <li><a href="{{route('admin.stats')}}">Setting Dashboard</a></li>
+                        <li><a href="{{route('dashboard.index')}}">Dashboard</a></li>
+                        <li><a href="{{route('dashboard.stats')}}">Setting Dashboard</a></li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-spread"></i><span> Content <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('admin.hero')}}">Hero</a></li>
-                        <li><a href="{{route('admin.news')}}">Berita</a></li>
-                        <li><a href="{{route('admin.agenda')}}">Agenda</a></li>
+                        <li><a href="{{route('dashboard.hero')}}">Hero</a></li>
+                        <li><a href="{{route('dashboard.news')}}">Berita</a></li>
+                        <li><a href="{{route('dashboard.agenda')}}">Agenda</a></li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-todolist"></i><span> PPDB <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('admin.ppdb_info')}}">Informasi</a></li>
-                        <li><a href="{{route('admin.requirement_information')}}">Setting Informasi</a></li>
-                        <li><a href="{{route('admin.ppdb_timeline')}}">Timeline</a></li>
-                        <li><a href="{{route('admin.requirement_timeline')}}">Setting Timeline</a></li>
-                        <li><a href="{{route('admin.ppdb_faq')}}">FAQs</a></li>
-                        <li><a href="{{route('admin.requirement_faq')}}">Setting FAQs</a></li>
-                        <li><a href="{{route('admin.ppdb_pendaftaran')}}">Pendaftaran</a></li>
-                        <li><a href="{{route('admin.list_pendaftar')}}">List Pendaftar</a></li>
+                        <li><a href="{{route('dashboard.ppdb_info')}}">Informasi</a></li>
+                        <li><a href="{{route('dashboard.requirement_information')}}">Setting Informasi</a></li>
+                        <li><a href="{{route('dashboard.ppdb_timeline')}}">Timeline</a></li>
+                        <li><a href="{{route('dashboard.requirement_timeline')}}">Setting Timeline</a></li>
+                        <li><a href="{{route('dashboard.ppdb_faq')}}">FAQs</a></li>
+                        <li><a href="{{route('dashboard.requirement_faq')}}">Setting FAQs</a></li>
+                        <li><a href="{{route('dashboard.ppdb_pendaftaran')}}">Pendaftaran</a></li>
+                        <li><a href="{{route('dashboard.list_pendaftar')}}">List Pendaftar</a></li>
                     </ul>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="icon-profile"></i><span> User Management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="{{route('admin.users.index')}}">Daftar Pengguna</a></li>
-                    </ul>
+                    <a href="{{route('dashboard.users.index')}}" class="waves-effect"><i class="icon-profile"></i><span> User Management </span></a>
+                </li>
+
+                <li>
+                    <a href="{{route('dashboard.roles.index')}}" class="waves-effect"><i class="icon-setting-2"></i><span> Role Management </span></a>
                 </li>
             </ul>
-
         </div>
         <div class="clearfix"></div>
     </div>

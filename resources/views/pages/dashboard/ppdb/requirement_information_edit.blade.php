@@ -36,7 +36,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Edit Informasi untuk {{ $registrationInfo->level->name }}</h4>
-                            <form action="{{ route('admin.requirement_information.update', $registrationInfo->id) }}" method="POST">
+                            <form action="{{ route('dashboard.requirement_information.update', $registrationInfo->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -98,7 +98,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Perbarui</button>
-                                <a href="{{ route('admin.requirement_information') }}" class="btn btn-secondary">Kembali</a>
+                                <a href="{{ route('dashboard.requirement_information') }}" class="btn btn-secondary">Kembali</a>
                             </form>
                         </div>
                     </div>

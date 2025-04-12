@@ -11,6 +11,7 @@ use App\Models\Level;
 use App\Models\News;
 use App\Models\Registration;
 use App\Models\RegistrationInfo;
+use App\Models\Role;
 use App\Models\SchoolLocation;
 use App\Models\Timeline;
 use App\Models\User;
@@ -32,7 +33,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.index', $data);
+        return view('pages.dashboard.index', $data);
     }
 
     public function stats()
@@ -47,7 +48,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.stats', $data);
+        return view('pages.dashboard.stats', $data);
     }
 
     public function storeStat(Request $request)
@@ -69,7 +70,7 @@ class AdminController extends Controller
 
         DashboardStat::create($data);
 
-        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil ditambahkan.');
+        return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil ditambahkan.');
     }
 
     public function updateStat(Request $request, $id)
@@ -95,7 +96,7 @@ class AdminController extends Controller
 
         $stat->update($data);
 
-        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil diperbarui.');
+        return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil diperbarui.');
     }
 
     public function destroyStat($id)
@@ -108,7 +109,7 @@ class AdminController extends Controller
 
         $stat->delete();
 
-        return redirect()->route('admin.stats')->with('success', 'Statistik berhasil dihapus.');
+        return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil dihapus.');
     }
 
     public function hero()
@@ -121,7 +122,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.hero', $data);
+        return view('pages.dashboard.hero', $data);
     }
 
     public function storeHero(Request $request)
@@ -172,7 +173,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.news', $data);
+        return view('pages.dashboard.news', $data);
     }
 
     public function storeNews(Request $request)
@@ -201,7 +202,7 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->route('admin.news')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('dashboard.news')->with('success', 'Berita berhasil ditambahkan!');
     }
     public function destroyNews($id)
     {
@@ -224,7 +225,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.agenda', $data);
+        return view('pages.dashboard.agenda', $data);
     }
 
     public function storeAgenda(Request $request)
@@ -253,7 +254,7 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->route('admin.agenda')->with('success', 'Agenda berhasil ditambahkan!');
+        return redirect()->route('dashboard.agenda')->with('success', 'Agenda berhasil ditambahkan!');
     }
 
     public function destroyAgenda($id)
@@ -262,7 +263,7 @@ class AdminController extends Controller
         Storage::disk('public')->delete($agenda->image);
         $agenda->delete();
 
-        return redirect()->route('admin.agenda')->with('success', 'Agenda berhasil dihapus.');
+        return redirect()->route('dashboard.agenda')->with('success', 'Agenda berhasil dihapus.');
     }
 
     public function ppdb_info()
@@ -277,7 +278,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.information', $data);
+        return view('pages.dashboard.ppdb.information', $data);
     }
 
     public function requirement_information()
@@ -296,7 +297,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.requirement_information', $data);
+        return view('pages.dashboard.ppdb.requirement_information', $data);
     }
 
     public function storeRequirementInformation(Request $request)
@@ -323,7 +324,7 @@ class AdminController extends Controller
             'fees' => $validated['fees'],
         ]);
 
-        return redirect()->route('admin.requirement_information')->with('success', 'Informasi pendaftaran berhasil disimpan.');
+        return redirect()->route('dashboard.requirement_information')->with('success', 'Informasi pendaftaran berhasil disimpan.');
     }
 
     public function editRequirementInformation($id)
@@ -340,7 +341,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.requirement_information_edit', $data);
+        return view('pages.dashboard.ppdb.requirement_information_edit', $data);
     }
 
     public function updateRequirementInformation(Request $request, $id)
@@ -369,7 +370,7 @@ class AdminController extends Controller
             'fees' => $validated['fees'],
         ]);
 
-        return redirect()->route('admin.requirement_information')->with('success', 'Informasi pendaftaran berhasil diperbarui.');
+        return redirect()->route('dashboard.requirement_information')->with('success', 'Informasi pendaftaran berhasil diperbarui.');
     }
 
     public function destroyRequirementInformation($id)
@@ -377,7 +378,7 @@ class AdminController extends Controller
         $info = RegistrationInfo::findOrFail($id);
         $info->delete();
 
-        return redirect()->route('admin.requirement_information')->with('success', 'Informasi pendaftaran berhasil dihapus.');
+        return redirect()->route('dashboard.requirement_information')->with('success', 'Informasi pendaftaran berhasil dihapus.');
     }
 
     public function storeLevel(Request $request)
@@ -392,7 +393,7 @@ class AdminController extends Controller
             'slug' => $validated['slug'],
         ]);
 
-        return redirect()->route('admin.requirement_information')->with('success', 'Jenjang berhasil ditambahkan.');
+        return redirect()->route('dashboard.requirement_information')->with('success', 'Jenjang berhasil ditambahkan.');
     }
 
     public function destroyLevel($id)
@@ -400,7 +401,7 @@ class AdminController extends Controller
         $level = Level::findOrFail($id);
         $level->delete(); // Cascade will delete related registration_infos
 
-        return redirect()->route('admin.requirement_information')->with('success', 'Jenjang berhasil dihapus.');
+        return redirect()->route('dashboard.requirement_information')->with('success', 'Jenjang berhasil dihapus.');
     }
 
     public function ppdb_timeline()
@@ -413,7 +414,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.timeline', $data);
+        return view('pages.dashboard.ppdb.timeline', $data);
     }
 
     public function requirement_timeline()
@@ -432,7 +433,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.requirement_timeline', $data);
+        return view('pages.dashboard.ppdb.requirement_timeline', $data);
     }
 
     public function storeTimeline(Request $request)
@@ -460,7 +461,7 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil disimpan.');
+        return redirect()->route('dashboard.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil disimpan.');
     }
 
     public function addTimeline(Request $request)
@@ -479,7 +480,7 @@ class AdminController extends Controller
             'date_range' => $validated['date_range'],
         ]);
 
-        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline baru berhasil ditambahkan ke jenjang.');
+        return redirect()->route('dashboard.requirement_timeline')->with('success', 'Timeline baru berhasil ditambahkan ke jenjang.');
     }
 
     public function editTimeline($id)
@@ -492,7 +493,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.requirement_timeline_edit', $data);
+        return view('pages.dashboard.ppdb.requirement_timeline_edit', $data);
     }
 
     public function updateTimeline(Request $request, $id)
@@ -511,7 +512,7 @@ class AdminController extends Controller
             'date_range' => $validated['date_range'],
         ]);
 
-        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil diperbarui.');
+        return redirect()->route('dashboard.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil diperbarui.');
     }
 
     public function destroyTimeline($id)
@@ -519,7 +520,7 @@ class AdminController extends Controller
         $timeline = Timeline::findOrFail($id);
         $timeline->delete();
 
-        return redirect()->route('admin.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil dihapus.');
+        return redirect()->route('dashboard.requirement_timeline')->with('success', 'Timeline pendaftaran berhasil dihapus.');
     }
 
     public function ppdb_faq()
@@ -533,7 +534,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.faq', $data);
+        return view('pages.dashboard.ppdb.faq', $data);
     }
 
     public function requirementFaq()
@@ -547,7 +548,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.requirement_faq', $data);
+        return view('pages.dashboard.ppdb.requirement_faq', $data);
     }
 
     public function storeFaq(Request $request)
@@ -561,7 +562,7 @@ class AdminController extends Controller
 
         Faqs::create($validated);
 
-        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil ditambahkan.');
+        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil ditambahkan.');
     }
 
     public function updateFaq(Request $request, $id)
@@ -577,7 +578,7 @@ class AdminController extends Controller
 
         $faq->update($validated);
 
-        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil diperbarui.');
+        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroyFaq($id)
@@ -585,7 +586,7 @@ class AdminController extends Controller
         $faq = Faqs::findOrFail($id);
         $faq->delete();
 
-        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil dihapus.');
+        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil dihapus.');
     }
 
     public function ppdb_pendaftaran()
@@ -596,7 +597,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.pendaftaran', $data);
+        return view('pages.dashboard.ppdb.pendaftaran', $data);
     }
 
     public function storeRegistration(Request $request)
@@ -636,7 +637,7 @@ class AdminController extends Controller
             'ijazah_path' => $ijazahPath,
         ]);
 
-        return redirect()->route('admin.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
+        return redirect()->route('dashboard.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
     }
 
     public function listPendaftar()
@@ -648,7 +649,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.list', $data);
+        return view('pages.dashboard.ppdb.list', $data);
     }
 
     public function showPendaftar($id)
@@ -661,7 +662,7 @@ class AdminController extends Controller
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.ppdb.detail', $data);
+        return view('pages.dashboard.ppdb.detail', $data);
     }
 
     public function updateStatus(Request $request, $id)
@@ -686,7 +687,7 @@ class AdminController extends Controller
 
             $registration->update($data);
 
-            return redirect()->route('admin.list_pendaftar')->with('success', 'Status berhasil diperbarui.');
+            return redirect()->route('dashboard.list_pendaftar')->with('success', 'Status berhasil diperbarui.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
@@ -697,7 +698,7 @@ class AdminController extends Controller
         $registrations = Registration::with('schoolLocation')->get();
 
         if ($format === 'pdf') {
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.dashboard.admin.ppdb.registrations_pdf', compact('registrations'));
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.dashboard.ppdb.registrations_pdf', compact('registrations'));
             return $pdf->download('daftar_pendaftar_' . now()->format('Ymd_His') . '.pdf');
         } elseif ($format === 'excel') {
             return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\RegistrationsExport, 'daftar_pendaftar_' . now()->format('Ymd_His') . '.xlsx');
@@ -710,7 +711,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        return view('pages.dashboard.admin.profile', [
+        return view('pages.dashboard.profile', [
             'title' => 'Profil Pengguna',
             'user' => $user,
         ]);
@@ -720,7 +721,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        return view('pages.dashboard.admin.profile_edit', [
+        return view('pages.dashboard.profile_edit', [
             'title' => 'Edit Profil',
             'user' => $user,
         ]);
@@ -825,22 +826,27 @@ class AdminController extends Controller
         $user = Auth::user();
         $data = [
             'title' => 'Daftar Pengguna',
-            'users' => User::all(),
+            'users' => User::with('role')->get(),
             'user' => $user,
         ];
 
-        return view('pages.dashboard.admin.users.index', $data);
+        return view('pages.dashboard.users.index', $data);
     }
 
     public function createUser()
     {
         $user = Auth::user();
+        $adminRole = Role::where('name', 'Admin')->firstOrFail();
+        if (!$adminRole) {
+            return redirect()->route('dashboard.users.index')->with('error', 'Role Admin tidak ditemukan. Silakan buat role Admin terlebih dahulu.');
+        }
         $data = [
             'title' => 'Tambah Pengguna',
             'user' => $user,
+            'adminRole' => $adminRole,
         ];
 
-        return view('pages.dashboard.admin.users.create', $data);
+        return view('pages.dashboard.users.create', $data);
     }
 
     public function storeUser(Request $request)
@@ -849,59 +855,19 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'tanggal_lahir' => 'nullable|date',
-            'no_hp' => 'nullable|regex:/^[0-9]{10,13}$/',
-            'alamat' => 'nullable|string',
-            'nama_orang_tua' => 'nullable|string|max:255',
-            'no_hp_orang_tua' => 'nullable|regex:/^[0-9]{10,13}$/',
-            'jenjang' => 'nullable|in:tk,sd,smp,sma,kuliah',
-            'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
-            'ijazah_sd_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_smp_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_sma_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-            'no_hp' => $validated['no_hp'],
-            'alamat' => $validated['alamat'],
-            'nama_orang_tua' => $validated['nama_orang_tua'],
-            'no_hp_orang_tua' => $validated['no_hp_orang_tua'],
-            'jenjang' => $validated['jenjang'],
+            'role_id' => $validated['role_id'],
         ];
-
-        // Handle file uploads
-        if ($request->hasFile('kk_path')) {
-            $data['kk_path'] = $request->file('kk_path')->store('documents/kk', 'public');
-        }
-        if ($request->hasFile('akta_path')) {
-            $data['akta_path'] = $request->file('akta_path')->store('documents/akta', 'public');
-        }
-        if ($request->hasFile('pasfoto_path')) {
-            $data['pasfoto_path'] = $request->file('pasfoto_path')->store('documents/pasfoto', 'public');
-        }
-        if ($request->hasFile('ijazah_sd_path')) {
-            $data['ijazah_sd_path'] = $request->file('ijazah_sd_path')->store('documents/ijazah_sd', 'public');
-        }
-        if ($request->hasFile('ijazah_smp_path')) {
-            $data['ijazah_smp_path'] = $request->file('ijazah_smp_path')->store('documents/ijazah_smp', 'public');
-        }
-        if ($request->hasFile('ijazah_sma_path')) {
-            $data['ijazah_sma_path'] = $request->file('ijazah_sma_path')->store('documents/ijazah_sma', 'public');
-        }
-        if ($request->hasFile('piagam_path')) {
-            $data['piagam_path'] = $request->file('piagam_path')->store('documents/piagam', 'public');
-        }
 
         User::create($data);
 
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan.');
+        return redirect()->route('dashboard.users.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     public function showUser($id)
@@ -910,10 +876,10 @@ class AdminController extends Controller
         $data = [
             'title' => 'Detail Pengguna',
             'user' => $user,
-            'selectedUser' => User::findOrFail($id),
+            'selectedUser' => User::with('role')->findOrFail($id),
         ];
 
-        return view('pages.dashboard.admin.users.show', $data);
+        return view('pages.dashboard.users.show', $data);
     }
 
     public function editUser($id)
@@ -923,9 +889,10 @@ class AdminController extends Controller
             'title' => 'Edit Pengguna',
             'user' => $user,
             'selectedUser' => User::findOrFail($id),
+            'roles' => Role::all(),
         ];
 
-        return view('pages.dashboard.admin.users.edit', $data);
+        return view('pages.dashboard.users.edit', $data);
     }
 
     public function updateUser(Request $request, $id)
@@ -942,6 +909,7 @@ class AdminController extends Controller
             'nama_orang_tua' => 'nullable|string|max:255',
             'no_hp_orang_tua' => 'nullable|regex:/^[0-9]{10,13}$/',
             'jenjang' => 'nullable|in:tk,sd,smp,sma,kuliah',
+            'role_id' => 'required|exists:roles,id',
             'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
@@ -960,6 +928,7 @@ class AdminController extends Controller
             'nama_orang_tua' => $validated['nama_orang_tua'],
             'no_hp_orang_tua' => $validated['no_hp_orang_tua'],
             'jenjang' => $validated['jenjang'],
+            'role_id' => $validated['role_id'],
         ];
 
         if ($request->filled('password')) {
@@ -1012,7 +981,7 @@ class AdminController extends Controller
 
         $selectedUser->update($data);
 
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('dashboard.users.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function destroyUser($id)
@@ -1021,7 +990,7 @@ class AdminController extends Controller
 
         // Prevent deleting the current user
         if ($selectedUser->id === Auth::id()) {
-            return redirect()->route('admin.users.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+            return redirect()->route('dashboard.users.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
         // Delete associated files
@@ -1043,6 +1012,87 @@ class AdminController extends Controller
 
         $selectedUser->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('dashboard.users.index')->with('success', 'Pengguna berhasil dihapus.');
+    }
+
+    public function listRoles()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Daftar Role',
+            'roles' => Role::all(),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.roles.index', $data);
+    }
+
+    public function createRole()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Tambah Role',
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.roles.create', $data);
+    }
+
+    public function storeRole(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name',
+            'description' => 'nullable|string',
+        ]);
+
+        Role::create($validated);
+
+        return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil ditambahkan.');
+    }
+
+    public function showRole($id)
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Detail Role',
+            'role' => Role::findOrFail($id),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.roles.show', $data);
+    }
+
+    public function editRole($id)
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Edit Role',
+            'role' => Role::findOrFail($id),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.roles.edit', $data);
+    }
+
+    public function updateRole(Request $request, $id)
+    {
+        $role = Role::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name,' . $id,
+            'description' => 'nullable|string',
+        ]);
+
+        $role->update($validated);
+
+        return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil diperbarui.');
+    }
+
+    public function destroyRole($id)
+    {
+        $role = Role::findOrFail($id);
+        $role->delete();
+
+        return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil dihapus.');
     }
 }

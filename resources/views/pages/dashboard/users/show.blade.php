@@ -11,8 +11,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Daftar Pengguna</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.users.index') }}">Daftar Pengguna</a></li>
                             <li class="breadcrumb-item active">Detail Pengguna</li>
                         </ol>
                     </div>
@@ -29,6 +29,7 @@
                                 <div class="col-md-6">
                                     <p><strong>Nama:</strong> {{ $selectedUser->name }}</p>
                                     <p><strong>Email:</strong> {{ $selectedUser->email }}</p>
+                                    <p><strong>Role:</strong> {{ $selectedUser->role ? $selectedUser->role->name : '-' }}</p>
                                     <p><strong>Tanggal Lahir:</strong> {{ $selectedUser->tanggal_lahir ? \Carbon\Carbon::parse($selectedUser->tanggal_lahir)->format('d F Y') : '-' }}</p>
                                     <p><strong>No HP:</strong> {{ $selectedUser->no_hp ?? '-' }}</p>
                                     <p><strong>Alamat:</strong> {{ $selectedUser->alamat ?? '-' }}</p>
@@ -90,10 +91,10 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('admin.users.edit', $selectedUser->id) }}" class="btn btn-warning">
+                            <a href="{{ route('dashboard.users.edit', $selectedUser->id) }}" class="btn btn-warning">
                                 <i class="fas fa-edit mr-1"></i> Edit
                             </a>
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('dashboard.users.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                 </div>

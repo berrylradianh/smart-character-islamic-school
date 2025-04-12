@@ -7,12 +7,12 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Daftar Pengguna</h4>
+                        <h4 class="page-title">Daftar Role</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item">SCIS</li>
-                            <li class="breadcrumb-item active">Daftar Pengguna</li>
+                            <li class="breadcrumb-item active">Daftar Role</li>
                         </ol>
                     </div>
                 </div>
@@ -22,8 +22,8 @@
                 <div class="col-12">
                     <div class="card m-b-30 shadow-sm" style="border-radius: 10px;">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title">Daftar Pengguna</h4>
-                            <p class="sub-title">Berikut adalah daftar semua pengguna sistem.</p>
+                            <h4 class="mt-0 header-title">Daftar Role</h4>
+                            <p class="sub-title">Berikut adalah daftar semua role dalam sistem.</p>
 
                             @if (session('success'))
                             <div class="alert alert-success">
@@ -37,10 +37,10 @@
                             </div>
                             @endif
 
-                            <!-- Create User Button -->
+                            <!-- Create Role Button -->
                             <div class="mb-3">
-                                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus mr-1"></i> Tambah Pengguna
+                                <a href="{{ route('dashboard.roles.create') }}" class="btn btn-primary">
+                                    <i class="fas fa-plus mr-1"></i> Tambah Role
                                 </a>
                             </div>
 
@@ -49,34 +49,32 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th><i class="fas fa-hashtag mr-1"></i> No</th>
-                                        <th><i class="fas fa-user mr-1"></i> Nama</th>
-                                        <th><i class="fas fa-envelope mr-1"></i> Email</th>
-                                        <th><i class="fas fa-phone mr-1"></i> No HP</th>
-                                        <th><i class="fas fa-graduation-cap mr-1"></i> Jenjang</th>
+                                        <th><i class="fas fa-user-shield mr-1"></i> Nama Role</th>
+                                        <th><i class="fas fa-info-circle mr-1"></i> Deskripsi</th>
+                                        <th><i class="fas fa-users mr-1"></i> Jumlah Pengguna</th>
                                         <th><i class="fas fa-clock mr-1"></i> Dibuat Pada</th>
                                         <th><i class="fas fa-cog mr-1"></i> Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $index => $user)
+                                    @foreach ($roles as $index => $role)
                                     <tr class="table-row-hover">
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->no_hp ?? '-' }}</td>
-                                        <td>{{ $user->jenjang ? strtoupper($user->jenjang) : '-' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d F Y H:i') }}</td>
+                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->description ?? '-' }}</td>
+                                        <td>{{ $role->users()->count() }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($role->created_at)->format('d F Y H:i') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info btn-sm">
+                                            <a href="{{ route('dashboard.roles.show', $role->id) }}" class="btn btn-info btn-sm">
                                                 <i class="fas fa-eye mr-1"></i> Detail
                                             </a>
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning btn-sm">
+                                            <a href="{{ route('dashboard.roles.edit', $role->id) }}" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit mr-1"></i> Edit
                                             </a>
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('dashboard.roles.destroy', $role->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus role ini? Pengguna dengan role ini akan memiliki role null.')">
                                                     <i class="fas fa-trash mr-1"></i> Hapus
                                                 </button>
                                             </form>
@@ -150,7 +148,7 @@
             "autoWidth": false,
             "columnDefs": [{
                 "orderable": false,
-                "targets": 6
+                "targets": 5
             }]
         });
     });

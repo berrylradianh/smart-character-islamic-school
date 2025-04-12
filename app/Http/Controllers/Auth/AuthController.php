@@ -30,7 +30,7 @@ class AuthController extends Controller
                 'password' => $request->password
             ], $request->has('remember'))) {
                 $request->session()->regenerate();
-                return redirect()->route('admin.index')
+                return redirect()->route('dashboard.index')
                     ->with('success', 'Login successful!');
             }
 

@@ -54,7 +54,7 @@
                             </div>
 
                             <!-- Form untuk TK -->
-                            <form id="form-tk" style="display: none;" enctype="multipart/form-data" action="{{ route('admin.ppdb_pendaftaran.store') }}" method="POST">
+                            <form id="form-tk" style="display: none;" enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="jenjang" id="jenjang-tk">
                                 <h5>Pendaftaran TK</h5>
@@ -105,7 +105,7 @@
                             </form>
 
                             <!-- Form untuk SD -->
-                            <form id="form-sd" style="display: none;" enctype="multipart/form-data" action="{{ route('admin.ppdb_pendaftaran.store') }}" method="POST">
+                            <form id="form-sd" style="display: none;" enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="jenjang" id="jenjang-sd">
                                 <h5>Pendaftaran SD</h5>
@@ -156,7 +156,7 @@
                             </form>
 
                             <!-- Form untuk SMP -->
-                            <form id="form-smp" style="display: none;" enctype="multipart/form-data" action="{{ route('admin.ppdb_pendaftaran.store') }}" method="POST">
+                            <form id="form-smp" style="display: none;" enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="jenjang" id="jenjang-smp">
                                 <h5>Pendaftaran SMP</h5>
@@ -207,7 +207,7 @@
                             </form>
 
                             <!-- Form untuk SMA -->
-                            <form id="form-sma" style="display: none;" enctype="multipart/form-data" action="{{ route('admin.ppdb_pendaftaran.store') }}" method="POST">
+                            <form id="form-sma" style="display: none;" enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="jenjang" id="jenjang-sma">
                                 <h5>Pendaftaran SMA</h5>
