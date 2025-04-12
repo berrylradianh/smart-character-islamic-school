@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 
 <div class="topbar">
     <div class="topbar-left">
-        <a href="#" class="logo">
+        <a href="{{ route('admin.index') }}" class="logo">
             <span class="logo-light">
                 <img src="{{ asset('assets/img/logo/logo-name.png') }}" alt="Stexo Logo" style="height: 60px;">
             </span>
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
             <li class="dropdown notification-list list-inline-item">
                 <div class="dropdown notification-list nav-pro-img">
                     <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ $user->pasfoto_path && Storage::exists($user->pasfoto_path) ? Storage::url($user->pasfoto_path) : asset('dashboard/assets/images/users/user_default.jpg') }}" alt="user" class="rounded-circle">
+                        <img src="{{ $user->pasfoto_path ? Storage::url($user->pasfoto_path) : asset('dashboard/assets/images/users/user_default.jpg') }}" alt="user" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown">
                         <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="mdi mdi-account-circle text-primary"></i> Profile</a>

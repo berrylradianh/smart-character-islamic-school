@@ -64,4 +64,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('profile.show');
     Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/users', [AdminController::class, 'listUsers'])->name('admin.users.index');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+    Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
+    Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 });

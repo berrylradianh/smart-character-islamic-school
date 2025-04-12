@@ -13,8 +13,10 @@ use App\Models\Registration;
 use App\Models\RegistrationInfo;
 use App\Models\SchoolLocation;
 use App\Models\Timeline;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -816,5 +818,231 @@ class AdminController extends Controller
 
         return redirect()->route('profile.show')
             ->with('success', 'Profile updated successfully!');
+    }
+
+    public function listUsers()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Daftar Pengguna',
+            'users' => User::all(),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.admin.users.index', $data);
+    }
+
+    public function createUser()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Tambah Pengguna',
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.admin.users.create', $data);
+    }
+
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'tanggal_lahir' => 'nullable|date',
+            'no_hp' => 'nullable|regex:/^[0-9]{10,13}$/',
+            'alamat' => 'nullable|string',
+            'nama_orang_tua' => 'nullable|string|max:255',
+            'no_hp_orang_tua' => 'nullable|regex:/^[0-9]{10,13}$/',
+            'jenjang' => 'nullable|in:tk,sd,smp,sma,kuliah',
+            'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
+            'ijazah_sd_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_smp_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_sma_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+            'no_hp' => $validated['no_hp'],
+            'alamat' => $validated['alamat'],
+            'nama_orang_tua' => $validated['nama_orang_tua'],
+            'no_hp_orang_tua' => $validated['no_hp_orang_tua'],
+            'jenjang' => $validated['jenjang'],
+        ];
+
+        // Handle file uploads
+        if ($request->hasFile('kk_path')) {
+            $data['kk_path'] = $request->file('kk_path')->store('documents/kk', 'public');
+        }
+        if ($request->hasFile('akta_path')) {
+            $data['akta_path'] = $request->file('akta_path')->store('documents/akta', 'public');
+        }
+        if ($request->hasFile('pasfoto_path')) {
+            $data['pasfoto_path'] = $request->file('pasfoto_path')->store('documents/pasfoto', 'public');
+        }
+        if ($request->hasFile('ijazah_sd_path')) {
+            $data['ijazah_sd_path'] = $request->file('ijazah_sd_path')->store('documents/ijazah_sd', 'public');
+        }
+        if ($request->hasFile('ijazah_smp_path')) {
+            $data['ijazah_smp_path'] = $request->file('ijazah_smp_path')->store('documents/ijazah_smp', 'public');
+        }
+        if ($request->hasFile('ijazah_sma_path')) {
+            $data['ijazah_sma_path'] = $request->file('ijazah_sma_path')->store('documents/ijazah_sma', 'public');
+        }
+        if ($request->hasFile('piagam_path')) {
+            $data['piagam_path'] = $request->file('piagam_path')->store('documents/piagam', 'public');
+        }
+
+        User::create($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan.');
+    }
+
+    public function showUser($id)
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Detail Pengguna',
+            'user' => $user,
+            'selectedUser' => User::findOrFail($id),
+        ];
+
+        return view('pages.dashboard.admin.users.show', $data);
+    }
+
+    public function editUser($id)
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Edit Pengguna',
+            'user' => $user,
+            'selectedUser' => User::findOrFail($id),
+        ];
+
+        return view('pages.dashboard.admin.users.edit', $data);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $selectedUser = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'tanggal_lahir' => 'nullable|date',
+            'no_hp' => 'nullable|regex:/^[0-9]{10,13}$/',
+            'alamat' => 'nullable|string',
+            'nama_orang_tua' => 'nullable|string|max:255',
+            'no_hp_orang_tua' => 'nullable|regex:/^[0-9]{10,13}$/',
+            'jenjang' => 'nullable|in:tk,sd,smp,sma,kuliah',
+            'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
+            'ijazah_sd_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_smp_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_sma_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+            'no_hp' => $validated['no_hp'],
+            'alamat' => $validated['alamat'],
+            'nama_orang_tua' => $validated['nama_orang_tua'],
+            'no_hp_orang_tua' => $validated['no_hp_orang_tua'],
+            'jenjang' => $validated['jenjang'],
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        // Handle file uploads and delete old files if new ones are uploaded
+        if ($request->hasFile('kk_path')) {
+            if ($selectedUser->kk_path) {
+                Storage::disk('public')->delete($selectedUser->kk_path);
+            }
+            $data['kk_path'] = $request->file('kk_path')->store('documents/kk', 'public');
+        }
+        if ($request->hasFile('akta_path')) {
+            if ($selectedUser->akta_path) {
+                Storage::disk('public')->delete($selectedUser->akta_path);
+            }
+            $data['akta_path'] = $request->file('akta_path')->store('documents/akta', 'public');
+        }
+        if ($request->hasFile('pasfoto_path')) {
+            if ($selectedUser->pasfoto_path) {
+                Storage::disk('public')->delete($selectedUser->pasfoto_path);
+            }
+            $data['pasfoto_path'] = $request->file('pasfoto_path')->store('documents/pasfoto', 'public');
+        }
+        if ($request->hasFile('ijazah_sd_path')) {
+            if ($selectedUser->ijazah_sd_path) {
+                Storage::disk('public')->delete($selectedUser->ijazah_sd_path);
+            }
+            $data['ijazah_sd_path'] = $request->file('ijazah_sd_path')->store('documents/ijazah_sd', 'public');
+        }
+        if ($request->hasFile('ijazah_smp_path')) {
+            if ($selectedUser->ijazah_smp_path) {
+                Storage::disk('public')->delete($selectedUser->ijazah_smp_path);
+            }
+            $data['ijazah_smp_path'] = $request->file('ijazah_smp_path')->store('documents/ijazah_smp', 'public');
+        }
+        if ($request->hasFile('ijazah_sma_path')) {
+            if ($selectedUser->ijazah_sma_path) {
+                Storage::disk('public')->delete($selectedUser->ijazah_sma_path);
+            }
+            $data['ijazah_sma_path'] = $request->file('ijazah_sma_path')->store('documents/ijazah_sma', 'public');
+        }
+        if ($request->hasFile('piagam_path')) {
+            if ($selectedUser->piagam_path) {
+                Storage::disk('public')->delete($selectedUser->piagam_path);
+            }
+            $data['piagam_path'] = $request->file('piagam_path')->store('documents/piagam', 'public');
+        }
+
+        $selectedUser->update($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui.');
+    }
+
+    public function destroyUser($id)
+    {
+        $selectedUser = User::findOrFail($id);
+
+        // Prevent deleting the current user
+        if ($selectedUser->id === Auth::id()) {
+            return redirect()->route('admin.users.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        // Delete associated files
+        $paths = [
+            'kk_path',
+            'akta_path',
+            'pasfoto_path',
+            'ijazah_sd_path',
+            'ijazah_smp_path',
+            'ijazah_sma_path',
+            'piagam_path',
+        ];
+
+        foreach ($paths as $path) {
+            if ($selectedUser->$path) {
+                Storage::disk('public')->delete($selectedUser->$path);
+            }
+        }
+
+        $selectedUser->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus.');
     }
 }
