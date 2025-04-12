@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
             @endif
 
             <div id="agenda-sections">
-                <form action="{{ route('agenda.store') }}" method="POST" enctype="multipart/form-data" id="agenda-form">
+                <form action="{{ route('dashboard.agenda.store') }}" method="POST" enctype="multipart/form-data" id="agenda-form">
                     @csrf
                     <div id="input-sections">
                         <div class="row agenda-item" data-agenda-index="0">

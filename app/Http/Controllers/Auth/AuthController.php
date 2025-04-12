@@ -65,6 +65,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'jenjang' => $request->jenjang ?? null,
+                'role_id' => 3,
             ]);
 
             Auth::login($user);
