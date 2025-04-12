@@ -55,6 +55,18 @@
                                     <i class="fal fa-envelope"></i>
                                 </div>
                             </div>
+                            <div class="sign__input-wrapper" style="margin-bottom: 80px;">
+                                <h5>Jenjang</h5>
+                                <div class="sign__input">
+                                    <select name="jenjang" required>
+                                        <option value="" disabled selected>Select Education Level</option>
+                                        <option value="sd" {{ old('jenjang') == 'sd' ? 'selected' : '' }}>SD (Elementary School)</option>
+                                        <option value="smp" {{ old('jenjang') == 'smp' ? 'selected' : '' }}>SMP (Junior High School)</option>
+                                        <option value="sma" {{ old('jenjang') == 'sma' ? 'selected' : '' }}>SMA (Senior High School)</option>
+                                        <option value="kuliah" {{ old('jenjang') == 'kuliah' ? 'selected' : '' }}>Kuliah (University)</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Password</h5>
                                 <div class="sign__input">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\Admin\AdminController;
 use App\Http\Controllers\Landing\LandingController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
@@ -19,7 +20,7 @@ Route::prefix('auth')->group(function () {
 });
 
 // Dashboard Admin
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/stats', [AdminController::class, 'stats'])->name('admin.stats');
     Route::post('/stats', [AdminController::class, 'storeStat'])->name('admin.stats.store');
@@ -56,4 +57,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('admin.show_pendaftar');
     Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('admin.update_status');
     Route::get('/export/{format}', [AdminController::class, 'export'])->name('admin.export');
+    Route::get('/profile', [AdminController::class, 'showProfile'])->name('profile.show');
+    Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
 });
+

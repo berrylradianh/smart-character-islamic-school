@@ -39,11 +39,9 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        $data = [
+        return view('pages.landing.auth.login', [
             'title' => 'Login',
-        ];
-
-        return view('pages.landing.auth.login', $data);
+        ]);
     }
 
     public function register(Request $request)
@@ -53,6 +51,7 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
+                'jenjang' => 'nullable|in:sd,smp,sma,kuliah',
             ]);
 
             if ($validator->fails()) {
@@ -65,17 +64,18 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'jenjang' => $request->jenjang ?? null,
             ]);
 
-            return redirect()->route('auth.login')
-                ->with('success', 'Registration successful! Please login.');
+            Auth::login($user);
+
+            return redirect()->route('profile.show')
+                ->with('success', 'Registration successful! Welcome to your profile.');
         }
 
-        $data = [
+        return view('pages.landing.auth.register', [
             'title' => 'Register',
-        ];
-
-        return view('pages.landing.auth.register', $data);
+        ]);
     }
 
     public function logout(Request $request)
