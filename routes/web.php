@@ -51,6 +51,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/requirement-timeline/{id}', [AdminController::class, 'updateTimeline'])->name('admin.requirement_timeline.update');
     Route::delete('/requirement-timeline/{id}', [AdminController::class, 'destroyTimeline'])->name('admin.requirement_timeline.destroy');
     Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('admin.ppdb_faq');
+    Route::get('/requirement-faq', [AdminController::class, 'requirementFaq'])->name('admin.requirement_faq');
+    Route::post('/requirement-faq', [AdminController::class, 'storeFaq'])->name('admin.faq.store');
+    Route::put('/requirement-faq/{id}', [AdminController::class, 'updateFaq'])->name('admin.faq.update');
+    Route::delete('/requirement-faq/{id}', [AdminController::class, 'destroyFaq'])->name('admin.faq.destroy');
     Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('admin.ppdb_pendaftaran');
     Route::post('/ppdb-pendaftaran/store', [AdminController::class, 'storeRegistration'])->name('admin.ppdb_pendaftaran.store');
     Route::get('/list-pendaftar', [AdminController::class, 'listPendaftar'])->name('admin.list_pendaftar');
@@ -61,4 +65,3 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
 });
-

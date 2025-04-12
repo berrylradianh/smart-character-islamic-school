@@ -81,7 +81,7 @@
                                         <div class="input-group mb-2">
                                             <input type="text" name="requirements[]" class="form-control" required>
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-danger remove-field">Hapus</button>
+                                                <button type="button" class="btn btn-danger remove-field"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -95,7 +95,7 @@
                                         <div class="input-group mb-2">
                                             <input type="text" name="stages[]" class="form-control" required>
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-danger remove-field">Hapus</button>
+                                                <button type="button" class="btn btn-danger remove-field"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                         <div class="input-group mb-2">
                                             <input type="text" name="fees[]" class="form-control" required>
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-danger remove-field">Hapus</button>
+                                                <button type="button" class="btn btn-danger remove-field"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +146,7 @@
                                             <form action="{{ route('admin.levels.destroy', $level->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jenjang ini?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -200,11 +200,11 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.requirement_information.edit', $info->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{{ route('admin.requirement_information.edit', $info->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                             <form action="{{ route('admin.requirement_information.destroy', $info->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>

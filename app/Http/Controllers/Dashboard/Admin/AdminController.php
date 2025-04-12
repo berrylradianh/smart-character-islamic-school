@@ -534,6 +534,58 @@ class AdminController extends Controller
         return view('pages.dashboard.admin.ppdb.faq', $data);
     }
 
+    public function requirementFaq()
+    {
+        $user = Auth::user();
+        $faqs = Faqs::orderBy('order_number')->get();
+
+        $data = [
+            'title' => 'Kelola FAQs',
+            'faqs' => $faqs,
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.admin.ppdb.requirement_faq', $data);
+    }
+
+    public function storeFaq(Request $request)
+    {
+        $validated = $request->validate([
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'order_number' => 'required|integer|min:1',
+            'category_color' => 'required|in:success,primary,warning,danger,info',
+        ]);
+
+        Faqs::create($validated);
+
+        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil ditambahkan.');
+    }
+
+    public function updateFaq(Request $request, $id)
+    {
+        $faq = Faqs::findOrFail($id);
+
+        $validated = $request->validate([
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'order_number' => 'required|integer|min:1',
+            'category_color' => 'required|in:success,primary,warning,danger,info',
+        ]);
+
+        $faq->update($validated);
+
+        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil diperbarui.');
+    }
+
+    public function destroyFaq($id)
+    {
+        $faq = Faqs::findOrFail($id);
+        $faq->delete();
+
+        return redirect()->route('admin.requirement_faq')->with('success', 'FAQ berhasil dihapus.');
+    }
+
     public function ppdb_pendaftaran()
     {
         $user = Auth::user();
