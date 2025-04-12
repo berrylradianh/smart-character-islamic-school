@@ -22,9 +22,12 @@ class AdminController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
         $data = [
             'title' => 'Dashboard Admin',
             'stats' => DashboardStat::all(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.index', $data);
@@ -33,10 +36,13 @@ class AdminController extends Controller
     public function stats()
     {
         $stats = DashboardStat::all();
+        $user = Auth::user();
+
 
         $data = [
             'title' => 'Manage Dashboard Stats',
             'stats' => $stats,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.stats', $data);
@@ -105,9 +111,12 @@ class AdminController extends Controller
 
     public function hero()
     {
+        $user = Auth::user();
+
         $data = [
             'title' => 'Content Hero',
             'heroes' => Hero::all(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.hero', $data);
@@ -153,9 +162,12 @@ class AdminController extends Controller
 
     public function news()
     {
+        $user = Auth::user();
+
         $data = [
             'title' => 'Content Berita',
             'news' => News::all(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.news', $data);
@@ -202,9 +214,12 @@ class AdminController extends Controller
 
     public function agenda()
     {
+        $user = Auth::user();
+
         $data = [
             'title' => 'Content Agenda',
             'agendas' => Agenda::orderBy('date', 'desc')->get(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.agenda', $data);
@@ -250,12 +265,14 @@ class AdminController extends Controller
 
     public function ppdb_info()
     {
+        $user = Auth::user();
         $registrationInfos = RegistrationInfo::with('level')->get()->keyBy('level.slug');
         $levels = Level::all();
         $data = [
             'title' => 'PPDB Informasi',
             'registrationInfos' => $registrationInfos,
             'levels' => $levels,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.information', $data);
@@ -263,6 +280,7 @@ class AdminController extends Controller
 
     public function requirement_information()
     {
+        $user = Auth::user();
         $registrationInfos = RegistrationInfo::with('level')->get();
         // Get levels that do not have associated registration info
         $usedLevelIds = RegistrationInfo::pluck('level_id')->toArray();
@@ -273,6 +291,7 @@ class AdminController extends Controller
             'registrationInfos' => $registrationInfos,
             'availableLevels' => $availableLevels,
             'levels' => $levels,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.requirement_information', $data);
@@ -307,6 +326,7 @@ class AdminController extends Controller
 
     public function editRequirementInformation($id)
     {
+        $user = Auth::user();
         $registrationInfo = RegistrationInfo::with('level')->findOrFail($id);
         // Get levels that are either the current level or have no registration info
         $usedLevelIds = RegistrationInfo::where('id', '!=', $id)->pluck('level_id')->toArray();
@@ -315,6 +335,7 @@ class AdminController extends Controller
             'title' => 'Edit Informasi Pendaftaran',
             'registrationInfo' => $registrationInfo,
             'availableLevels' => $availableLevels,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.requirement_information_edit', $data);
@@ -382,10 +403,12 @@ class AdminController extends Controller
 
     public function ppdb_timeline()
     {
+        $user = Auth::user();
         $levels = Level::with('timelines')->get();
         $data = [
             'title' => 'PPDB Timeline',
             'levels' => $levels,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.timeline', $data);
@@ -393,6 +416,7 @@ class AdminController extends Controller
 
     public function requirement_timeline()
     {
+        $user = Auth::user();
         $timelines = Timeline::with('level')->get()->groupBy('level_id');
         // Get levels that do not have timelines
         $usedLevelIds = Timeline::pluck('level_id')->unique()->toArray();
@@ -403,6 +427,7 @@ class AdminController extends Controller
             'timelines' => $timelines,
             'availableLevels' => $availableLevels,
             'levels' => $levels,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.requirement_timeline', $data);
@@ -457,10 +482,12 @@ class AdminController extends Controller
 
     public function editTimeline($id)
     {
+        $user = Auth::user();
         $timeline = Timeline::findOrFail($id);
         $data = [
             'title' => 'Edit Timeline Pendaftaran',
             'timeline' => $timeline,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.requirement_timeline_edit', $data);
@@ -496,10 +523,12 @@ class AdminController extends Controller
     public function ppdb_faq()
     {
         $faqs = Faqs::orderBy('order_number')->get();
+        $user = Auth::user();
 
         $data = [
             'title' => 'PPDB FAQs',
-            'faqs' => $faqs
+            'faqs' => $faqs,
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.faq', $data);
@@ -507,8 +536,10 @@ class AdminController extends Controller
 
     public function ppdb_pendaftaran()
     {
+        $user = Auth::user();
         $data = [
             'title' => 'PPDB Pendaftaran',
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.pendaftaran', $data);
@@ -556,9 +587,11 @@ class AdminController extends Controller
 
     public function listPendaftar()
     {
+        $user = Auth::user();
         $data = [
             'title' => 'PPDB List Pendaftar',
             'registrations' => Registration::with('schoolLocation')->get(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.list', $data);
@@ -566,10 +599,12 @@ class AdminController extends Controller
 
     public function showPendaftar($id)
     {
+        $user = Auth::user();
         $data = [
             'title' => 'PPDB List Pendaftar',
             'registration' => Registration::with('schoolLocation')->findOrFail($id),
             'locations' => SchoolLocation::all(),
+            'user' => $user,
         ];
 
         return view('pages.dashboard.admin.ppdb.detail', $data);
