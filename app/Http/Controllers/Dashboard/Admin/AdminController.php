@@ -748,7 +748,6 @@ class AdminController extends Controller
             'alamat' => 'nullable|string',
             'nama_orang_tua' => 'nullable|string|max:255',
             'no_hp_orang_tua' => 'nullable|string|max:15',
-            'jenjang' => 'nullable|in:sd,smp,sma,kuliah',
             'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
@@ -766,13 +765,14 @@ class AdminController extends Controller
 
         // Update data pengguna
         $user->name = $request->name;
-        $user->email = $request->email;
+        if ($user->role && $user->role->name === 'Superadmin') {
+            $user->email = $request->email;
+        }
         $user->tanggal_lahir = $request->tanggal_lahir;
         $user->no_hp = $request->no_hp;
         $user->alamat = $request->alamat;
         $user->nama_orang_tua = $request->nama_orang_tua;
         $user->no_hp_orang_tua = $request->no_hp_orang_tua;
-        $user->jenjang = $request->jenjang;
 
         // Handle file uploads
         if ($request->hasFile('kk_path')) {

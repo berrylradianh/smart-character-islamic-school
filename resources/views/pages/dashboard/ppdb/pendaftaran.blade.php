@@ -48,27 +48,22 @@ use App\Models\Level;
 
                             <form enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST">
                                 @csrf
-                                <!-- Input hidden untuk jenjang -->
-                                <input type="hidden" name="jenjang" value="{{ Auth::user()->jenjang }}">
+                                <input type="hidden" name="level_id" value="{{ Auth::user()->level_id }}">
 
-                                <!-- Menampilkan jenjang sebagai informasi -->
                                 <div class="form-group">
                                     <label>Jenjang</label>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->jenjang ? strtoupper(Auth::user()->jenjang) : 'Belum diatur' }}" readonly>
+                                    <input type="text" class="form-control" value="{{ Auth::user()->level ? strtoupper(Auth::user()->level->name) : 'Belum diatur' }}" readonly>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Biaya Pendaftaran</label>
-                                    @php
-                                        $biaya = Auth::user()->jenjang ? Level::where('slug', Auth::user()->jenjang)->first()->biaya ?? null : null;
-                                    @endphp
-                                    <input type="text" class="form-control" value="{{ $biaya ? 'Rp. ' . number_format($biaya, 2, ',', '.') : 'Biaya belum diatur' }}" readonly>
+                                    <input type="text" class="form-control" value="{{ Auth::user()->level && Auth::user()->level->biaya ? 'Rp. ' . number_format(Auth::user()->level->biaya, 0, ',', '.') : 'Biaya belum diatur' }}" readonly>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Upload Bukti Pembayaran</label>
                                     <input type="file" class="form-control-file" name="bukti_pembayaran" accept=".pdf,.jpg,.png" required>
-                                    <small class="text-muted">Upload bukti pembayaran biaya pendaftaran {{ $biaya ? 'Rp. ' . number_format($biaya, 2, ',', '.') : '' }}</small>
+                                    <small class="text-muted">Upload bukti pembayaran biaya pendaftaran {{ Auth::user()->level && Auth::user()->level->biaya ? 'Rp. ' . number_format(Auth::user()->level->biaya, 0, ',', '.') : '' }}</small>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Daftar</button>

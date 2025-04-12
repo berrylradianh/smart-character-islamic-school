@@ -128,8 +128,8 @@ use Illuminate\Support\Facades\Storage;
                                         <tr>
                                             <th scope="row" style="width: 30%;">Jenjang</th>
                                             <td>
-                                                @if ($user->jenjang)
-                                                {{ strtoupper($user->jenjang) }}
+                                                @if ($user->level->name)
+                                                {{ strtoupper($user->level->name) }}
                                                 @else
                                                 <span class="text-muted">Belum dipilih</span>
                                                 @endif

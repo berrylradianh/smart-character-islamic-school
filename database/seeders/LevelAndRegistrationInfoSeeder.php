@@ -11,10 +11,11 @@ class LevelAndRegistrationInfoSeeder extends Seeder
     public function run()
     {
         $levels = [
-            ['name' => 'Taman Kanak-Kanak (TK)', 'slug' => 'tk'],
-            ['name' => 'Sekolah Dasar (SD)', 'slug' => 'sd'],
-            ['name' => 'Sekolah Menengah Pertama (SMP)', 'slug' => 'smp'],
-            ['name' => 'Sekolah Menengah Atas (SMA)', 'slug' => 'sma'],
+            ['name' => 'Taman Kanak-Kanak (TK)', 'slug' => 'tk', 'biaya' => '450000'],
+            ['name' => 'Sekolah Dasar (SD)', 'slug' => 'sd', 'biaya' => '560000'],
+            ['name' => 'Sekolah Menengah Pertama (SMP)', 'slug' => 'smp', 'biaya' => '700000'],
+            ['name' => 'Sekolah Menengah Atas (SMA)', 'slug' => 'sma', 'biaya' => '800000'],
+            ['name' => 'Kuliah', 'slug' => 'kuliah', 'biaya' => '8000000'],
         ];
 
         $levelMap = [];
@@ -26,6 +27,7 @@ class LevelAndRegistrationInfoSeeder extends Seeder
                     'name' => $levelData['name'],
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'biaya' => $levelData['biaya'],
                 ]
             );
             $levelMap[$levelData['slug']] = $level->id;

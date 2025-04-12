@@ -85,7 +85,7 @@ use Illuminate\Support\Facades\Storage;
                                 </div>
 
                                 <!-- Informasi Orang Tua -->
-                                @if ($user->jenjang !== 'kuliah')
+                                @if (!$user->level || $user->level->slug !== 'kuliah')
                                 <div class="form-group">
                                     <label for="nama_orang_tua">Nama Orang Tua/Wali</label>
                                     <input type="text" name="nama_orang_tua" id="nama_orang_tua" class="form-control" value="{{ old('nama_orang_tua', $user->nama_orang_tua) }}">
@@ -98,15 +98,12 @@ use Illuminate\Support\Facades\Storage;
 
                                 <!-- Jenjang -->
                                 <div class="form-group">
-                                    <label for="jenjang">Jenjang</label>
-                                    <select name="jenjang" id="jenjang" class="form-control">
-                                        <option value="">Pilih Jenjang</option>
-                                        <option value="tk" {{ old('jenjang', $user->jenjang) == 'tk' ? 'selected' : '' }}>TK</option>
-                                        <option value="sd" {{ old('jenjang', $user->jenjang) == 'sd' ? 'selected' : '' }}>SD</option>
-                                        <option value="smp" {{ old('jenjang', $user->jenjang) == 'smp' ? 'selected' : '' }}>SMP</option>
-                                        <option value="sma" {{ old('jenjang', $user->jenjang) == 'sma' ? 'selected' : '' }}>SMA</option>
-                                        <option value="kuliah" {{ old('jenjang', $user->jenjang) == 'kuliah' ? 'selected' : '' }}>Kuliah</option>
-                                    </select>
+                                    <label for="level_id">Jenjang</label>
+                                    <input type="text" class="form-control" value="{{ $user->level ? $user->level->name : 'Belum dipilih' }}" readonly>
+                                    <input type="hidden" name="level_id" value="{{ $user->level_id }}">
+                                    @if ($user->role && $user->role->name !== 'Superadmin')
+                                    <small class="form-text text-muted">Jenjang hanya dapat diubah oleh Superadmin.</small>
+                                    @endif
                                 </div>
                                 @endif
 
@@ -135,28 +132,21 @@ use Illuminate\Support\Facades\Storage;
                                     @endif
                                 </div>
                                 <!-- Dokumen Ijazah -->
-                                <div class="form-group dokumen-ijazah" id="ijazah_tk_group" style="display: none;">
-                                    <label for="ijazah_tk_path">Ijazah TK</label>
-                                    <input type="file" name="ijazah_tk_path" id="ijazah_tk_path" class="form-control-file">
-                                    @if ($user->ijazah_tk_path)
-                                    <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->ijazah_tk_path) }}" target="_blank">Lihat Ijazah TK</a></small>
-                                    @endif
-                                </div>
-                                <div class="form-group dokumen-ijazah" id="ijazah_sd_group" style="display: none;">
+                                <div class="form-group dokumen-ijazah" id="ijazah_sd_group" @if($user->level && in_array($user->level->slug, ['smp', 'sma', 'kuliah'])) style="display: block;" @else style="display: none;" @endif>
                                     <label for="ijazah_sd_path">Ijazah SD</label>
                                     <input type="file" name="ijazah_sd_path" id="ijazah_sd_path" class="form-control-file">
                                     @if ($user->ijazah_sd_path)
                                     <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->ijazah_sd_path) }}" target="_blank">Lihat Ijazah SD</a></small>
                                     @endif
                                 </div>
-                                <div class="form-group dokumen-ijazah" id="ijazah_smp_group" style="display: none;">
+                                <div class="form-group dokumen-ijazah" id="ijazah_smp_group" @if($user->level && in_array($user->level->slug, ['sma', 'kuliah'])) style="display: block;" @else style="display: none;" @endif>
                                     <label for="ijazah_smp_path">Ijazah SMP</label>
                                     <input type="file" name="ijazah_smp_path" id="ijazah_smp_path" class="form-control-file">
                                     @if ($user->ijazah_smp_path)
                                     <small class="form-text text-muted">File saat ini: <a href="{{ Storage::url($user->ijazah_smp_path) }}" target="_blank">Lihat Ijazah SMP</a></small>
                                     @endif
                                 </div>
-                                <div class="form-group dokumen-ijazah" id="ijazah_sma_group" style="display: none;">
+                                <div class="form-group dokumen-ijazah" id="ijazah_sma_group" @if($user->level && $user->level->slug === 'kuliah') style="display: block;" @else style="display: none;" @endif>
                                     <label for="ijazah_sma_path">Ijazah SMA</label>
                                     <input type="file" name="ijazah_sma_path" id="ijazah_sma_path" class="form-control-file">
                                     @if ($user->ijazah_sma_path)
@@ -192,42 +182,23 @@ use Illuminate\Support\Facades\Storage;
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const jenjangSelect = document.getElementById('jenjang');
+        // Logika untuk memastikan field ijazah ditampilkan sesuai jenjang saat halaman dimuat
+        const jenjangValue = '{{ $user->level ? $user->level->slug : '
+        ' }}';
 
-        // Pastikan elemen jenjangSelect ada sebelum menjalankan logika
-        if (jenjangSelect) {
-            const ijazahTkGroup = document.getElementById('ijazah_tk_group');
-            const ijazahSdGroup = document.getElementById('ijazah_sd_group');
-            const ijazahSmpGroup = document.getElementById('ijazah_smp_group');
-            const ijazahSmaGroup = document.getElementById('ijazah_sma_group');
+        const ijazahSdGroup = document.getElementById('ijazah_sd_group');
+        const ijazahSmpGroup = document.getElementById('ijazah_smp_group');
+        const ijazahSmaGroup = document.getElementById('ijazah_sma_group');
 
-            function updateDokumenFields() {
-                // Sembunyikan semua field ijazah
-                if (ijazahTkGroup) ijazahTkGroup.style.display = 'none';
-                if (ijazahSdGroup) ijazahSdGroup.style.display = 'none';
-                if (ijazahSmpGroup) ijazahSmpGroup.style.display = 'none';
-                if (ijazahSmaGroup) ijazahSmaGroup.style.display = 'none';
-
-                // Tampilkan field sesuai jenjang
-                const jenjang = jenjangSelect.value;
-                if (jenjang === 'smp' && ijazahSdGroup) {
-                    ijazahSdGroup.style.display = 'block';
-                } else if (jenjang === 'sma' && ijazahSdGroup && ijazahSmpGroup) {
-                    ijazahSdGroup.style.display = 'block';
-                    ijazahSmpGroup.style.display = 'block';
-                } else if (jenjang === 'kuliah' && ijazahSdGroup && ijazahSmpGroup && ijazahSmaGroup) {
-                    ijazahSdGroup.style.display = 'block';
-                    ijazahSmpGroup.style.display = 'block';
-                    ijazahSmaGroup.style.display = 'block';
-                }
-                // Untuk TK atau kosong, tidak ada ijazah yang ditampilkan
-            }
-
-            // Panggil fungsi saat halaman dimuat
-            updateDokumenFields();
-
-            // Panggil fungsi saat jenjang berubah
-            jenjangSelect.addEventListener('change', updateDokumenFields);
+        // Tampilkan field ijazah berdasarkan jenjang
+        if (['smp', 'sma', 'kuliah'].includes(jenjangValue)) {
+            ijazahSdGroup.style.display = 'block';
+        }
+        if (['sma', 'kuliah'].includes(jenjangValue)) {
+            ijazahSmpGroup.style.display = 'block';
+        }
+        if (jenjangValue === 'kuliah') {
+            ijazahSmaGroup.style.display = 'block';
         }
     });
 </script>
