@@ -79,4 +79,77 @@ class LandingController extends Controller
 
         return view('pages.landing.ppdb.index', $data);
     }
+
+    public function search(Request $request)
+    {
+        $query = strtolower(trim($request->input('query')));
+
+        $menus = [
+            ['title' => 'Beranda', 'route' => 'landing.home', 'keywords' => ['beranda', 'home']],
+            ['title' => 'Profil', 'route' => 'landing.profile', 'keywords' => ['profil', 'profile', 'tentang kami']],
+            ['title' => 'Visi dan Misi', 'route' => 'landing.vision', 'keywords' => ['visi', 'misi', 'vision', 'mission', 'tentang kami']],
+            ['title' => 'Program', 'route' => 'landing.program', 'keywords' => ['program', 'kegiatan', 'aktivitas']],
+            ['title' => 'PPDB', 'route' => 'ppdb', 'keywords' => ['ppdb', 'pendaftaran', 'siswa baru']],
+        ];
+
+        $results = [];
+
+        foreach ($menus as $menu) {
+            foreach ($menu['keywords'] as $keyword) {
+                if (str_contains(strtolower($keyword), $query)) {
+                    $results[] = [
+                        'title' => $menu['title'],
+                        'url' => route($menu['route']),
+                    ];
+                    break;
+                }
+            }
+        }
+
+        if (empty($results)) {
+            return view('pages.landing.search.index', [
+                'title' => 'Hasil Pencarian',
+                'query' => $query,
+                'results' => [],
+                'message' => 'Tidak ada hasil yang ditemukan untuk "' . $query . '"',
+            ]);
+        }
+
+        return view('pages.landing.search.index', [
+            'title' => 'Hasil Pencarian',
+            'query' => $query,
+            'results' => $results,
+        ]);
+    }
+
+    public function searchSuggestions(Request $request)
+    {
+        $query = strtolower(trim($request->input('query')));
+
+        $menus = [
+            ['title' => 'Beranda', 'route' => 'landing.home', 'keywords' => ['beranda', 'home']],
+            ['title' => 'Profil', 'route' => 'landing.profile', 'keywords' => ['profil', 'profile', 'tentang kami']],
+            ['title' => 'Visi dan Misi', 'route' => 'landing.vision', 'keywords' => ['visi', 'misi', 'vision', 'mission', 'tentang kami']],
+            ['title' => 'Program', 'route' => 'landing.program', 'keywords' => ['program', 'kegiatan', 'aktivitas']],
+            ['title' => 'PPDB', 'route' => 'ppdb', 'keywords' => ['ppdb', 'pendaftaran', 'siswa baru']],
+        ];
+
+        $suggestions = [];
+
+        if (!empty($query)) {
+            foreach ($menus as $menu) {
+                foreach ($menu['keywords'] as $keyword) {
+                    if (str_contains(strtolower($keyword), $query)) {
+                        $suggestions[] = [
+                            'title' => $menu['title'],
+                            'url' => route($menu['route']),
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return response()->json($suggestions);
+    }
 }

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
@@ -23,7 +23,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-pro.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/spacing.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
 </head>
 
 <body>
@@ -86,8 +85,62 @@
                 }, 200);
             }
         }
-    </script>
 
+        // Search Suggestions
+        $(document).ready(function() {
+            $('#search-input').on('keyup', function() {
+                var query = $(this).val().trim();
+                var suggestionsBox = $('#search-suggestions');
+                var suggestionsList = suggestionsBox.find('ul');
+
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '{{ route("landing.search.suggestions") }}',
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function(data) {
+                            suggestionsList.empty();
+                            if (data.length > 0) {
+                                $.each(data, function(index, suggestion) {
+                                    suggestionsList.append(
+                                        '<li style="padding: 8px 15px; cursor: pointer; transition: background 0.2s;" ' +
+                                        'onmouseover="this.style.background=\'#f0f0f0\';" ' +
+                                        'onmouseout="this.style.background=\'white\';" ' +
+                                        'onclick="window.location.href=\'' + suggestion.url + '\'">' +
+                                        suggestion.title +
+                                        '</li>'
+                                    );
+                                });
+                                suggestionsBox.show();
+                            } else {
+                                suggestionsList.append(
+                                    '<li style="padding: 8px 15px; color: #999;">Tidak ada saran</li>'
+                                );
+                                suggestionsBox.show();
+                            }
+                        },
+                        error: function() {
+                            suggestionsList.empty().append(
+                                '<li style="padding: 8px 15px; color: #999;">Terjadi kesalahan</li>'
+                            );
+                            suggestionsBox.show();
+                        }
+                    });
+                } else {
+                    suggestionsBox.hide();
+                }
+            });
+
+            // Sembunyikan suggestions saat klik di luar
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.header__search').length) {
+                    $('#search-suggestions').hide();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

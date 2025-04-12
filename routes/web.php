@@ -10,6 +10,8 @@ Route::get('/profile', [LandingController::class, 'profile'])->name('landing.pro
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
 Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
 Route::match(['get', 'post'], '/ppdb', [LandingController::class, 'ppdb'])->name('ppdb');
+Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
+Route::get('/search-suggestions', [LandingController::class, 'searchSuggestions'])->name('landing.search.suggestions');
 
 // Auth
 Route::prefix('auth')->group(function () {
