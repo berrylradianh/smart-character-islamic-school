@@ -38,7 +38,7 @@ use App\Models\Level;
                                     @endforeach
                                 </ul>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             @endif
@@ -46,7 +46,7 @@ use App\Models\Level;
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             @endif
@@ -54,7 +54,7 @@ use App\Models\Level;
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ session('error') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             @endif
@@ -174,7 +174,7 @@ use App\Models\Level;
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 mt-3">
                                     <i class="fas fa-paper-plane mr-2"></i> Daftar Sekarang
                                 </button>
                             </form>
@@ -190,4 +190,17 @@ use App\Models\Level;
         © SCIS, 2025. All Rights Reserved
     </footer>
 </div>
+
+@section('scripts')
+<script>
+    document.getElementById('bukti_pembayaran').addEventListener('change', function(event) {
+        const fileInput = event.target;
+        const label = fileInput.nextElementSibling;
+        if (fileInput.files.length > 0) {
+            label.textContent = fileInput.files[0].name;
+        } else {
+            label.textContent = 'Pilih file...';
+        }
+    });
+</script>
 @endsection

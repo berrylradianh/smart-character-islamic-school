@@ -91,7 +91,7 @@ use Illuminate\Support\Facades\Storage;
                         <div class="card m-b-30">
                             <div class="card-body">
                                 <h4 class="mt-0 header-title">Berita Content #{{ $index + 1 }}</h4>
-                                <form action="{{ route('news.destroy', $item->id) }}" method="POST">
+                                <form action="{{ route('dashboard.news.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <div class="news-card">

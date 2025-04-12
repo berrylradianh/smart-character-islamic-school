@@ -314,7 +314,7 @@
                                                             @if ($registration->status == 'approve')
                                                             <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check mr-1"></i> Approve</span>
                                                             @elseif ($registration->status == 'decline')
-                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> verleden</span>
+                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> Decline</span>
                                                             @endif
                                                         </span>
                                                     </div>
