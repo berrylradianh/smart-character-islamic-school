@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
     <nav class="navbar-custom">
         <ul class="navbar-right list-inline float-right mb-0">
-            <li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
-                <a class="nav-link waves-effect" href="#" id="btn-fullscreen">
-                    <i class="mdi mdi-arrow-expand-all noti-icon"></i>
-                </a>
-            </li>
-
             <li class="dropdown notification-list list-inline-item">
                 <div class="dropdown notification-list nav-pro-img">
                     <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
