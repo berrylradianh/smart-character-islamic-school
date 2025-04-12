@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LevelAndRegistrationInfoSeeder::class);
         $this->call(TimelineSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
