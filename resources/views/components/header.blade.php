@@ -20,7 +20,7 @@
 
                     <!-- Social Media -->
                     <div class="header__top-right" style="display: flex; align-items: center; gap: 10px;">
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
+                        <a href="https://www.facebook.com/profile.php?id=61573868848841" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-facebook"></i>
@@ -28,14 +28,9 @@
                         <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
-                            <i class="fa-brands fa-twitter"></i>
-                        </a>
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
-                            onmouseover="this.style.color='#008000';"
-                            onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-youtube"></i>
                         </a>
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
+                        <a href="https://www.instagram.com/pesantrenscis?igsh=ZjI2bWIyaGhubndh" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-instagram"></i>
