@@ -27,7 +27,7 @@
                         </ul>
                     </div>
                     <div class="about__btn">
-                        <a href="#" style="display: inline-flex; align-items: center; padding: 12px 24px; background-color: #E47804; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; margin-top: 20px;" onmouseover="this.style.backgroundColor='#FF9800';"
+                        <a href="{{route('auth.register')}}" style="display: inline-flex; align-items: center; padding: 12px 24px; background-color: #E47804; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; margin-top: 20px;" onmouseover="this.style.backgroundColor='#FF9800';"
                             onmouseout="this.style.backgroundColor='#E47804';">
                             Klik Daftar <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
                         </a>

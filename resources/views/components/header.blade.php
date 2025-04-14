@@ -4,7 +4,6 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-12 d-flex justify-content-between">
-
                     <!-- Location -->
                     <div class="header__top-left">
                         <a href="https://maps.app.goo.gl/GmLnp8cWdumje7d86?g_st=aw" target="_blank"
@@ -21,7 +20,7 @@
 
                     <!-- Social Media -->
                     <div class="header__top-right" style="display: flex; align-items: center; gap: 10px;">
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
+                        <a href="https://www.facebook.com/profile.php?id=61573868848841" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-facebook"></i>
@@ -29,24 +28,17 @@
                         <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
-                            <i class="fa-brands fa-twitter"></i>
-                        </a>
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
-                            onmouseover="this.style.color='#008000';"
-                            onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-youtube"></i>
                         </a>
-                        <a href="#" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
+                        <a href="https://www.instagram.com/pesantrenscis?igsh=ZjI2bWIyaGhubndh" style="color: #9AA6B2; text-decoration: none; font-size: 20px; transition: color 0.3s ease-in-out;"
                             onmouseover="this.style.color='#008000';"
                             onmouseout="this.style.color='#9AA6B2';">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- Bottom Header (Logo, Navigation, Search, Registration) -->
@@ -57,19 +49,17 @@
                     <!-- Logo -->
                     <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-6">
                         <div class="logo">
-                            <a href="{{route('landing.home')}}">
-                                <img src="assets/img/logo/logo-name.png"
+                            <a href="{{ route('landing.home') }}">
+                                <img src="{{ asset('assets/img/logo/logo-name.png') }}"
                                     alt="Smart Character Islamic School Logo"
                                     style="max-width: 100%; height: auto; width: clamp(150px, 40%, 250px);">
                             </a>
                         </div>
-
                     </div>
 
                     <!-- Menu, Search, dan Registration -->
                     <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-6 col-6">
                         <div class="header__right" style="display: flex; align-items: center; justify-content: flex-end; gap: 20px;">
-
                             <!-- Navigation -->
                             <div class="main-menu">
                                 <nav id="mobile-menu">
@@ -85,14 +75,14 @@
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
-                                                {{ $title }}
+                                                Beranda
                                             </a>
                                             @endif
                                         </li>
 
                                         <!-- Dropdown -->
                                         <li class="has-dropdown" style="position: relative;" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi Dan Misi' || $title == 'Program')
+                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi dan Misi' || $title == 'Program')
                                             <a href="#"
                                                 style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
                                                 Tentang Kami
@@ -100,15 +90,15 @@
                                             @else
                                             <a href="#"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
-                                                onmouseover="this.style.color='#28a745'; showDropdown(this);"
-                                                onmouseout="this.style.color='#031220'; hideDropdown(this);">
+                                                onmouseover="this.style.color='#28a745';"
+                                                onmouseout="this.style.color='#031220';">
                                                 Tentang Kami
                                             </a>
                                             @endif
                                             <ul class="submenu"
                                                 style="display: none; position: absolute; background-color: white; border: 1px solid #ddd; border-radius: 5px; padding: 10px 0; min-width: 160px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); top: 100%; left: 0;">
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{ route('landing.profile') }}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -116,7 +106,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{ route('landing.vision') }}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -124,7 +114,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
+                                                    <a href="{{ route('landing.program') }}"
                                                         style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
@@ -135,12 +125,12 @@
                                         </li>
                                         <li style="position: relative;">
                                             @if ($title == 'PPDB')
-                                            <a href="#"
+                                            <a href="{{ route('ppdb') }}"
                                                 style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
                                                 PPDB
                                             </a>
                                             @else
-                                            <a href="#"
+                                            <a href="{{ route('ppdb') }}"
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
@@ -153,11 +143,11 @@
                             </div>
 
                             <!-- Search -->
-                            <div class="header__search">
-                                <form action="#">
+                            <div class="header__search" style="position: relative;">
+                                <form action="{{ route('landing.search') }}" method="GET">
                                     <div class="header__search-input" style="padding: 5px 10px; display: flex; align-items: center; width: 200px;">
-                                        <input type="text" placeholder="Search..." style="border: none; outline: none; width: 100%; padding: 0 5px;">
-                                        <button class="header__search-btn" style="background: none; border: none; cursor: pointer;">
+                                        <input type="text" name="query" id="search-input" placeholder="Search..." style="border: none; outline: none; width: 100%; padding: 0 5px;" autocomplete="off">
+                                        <button class="header__search-btn" type="submit" style="background: none; border: none; cursor: pointer;">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.11117 15.2222C12.0385 15.2222 15.2223 12.0385 15.2223 8.11111C15.2223 4.18375 12.0385 1 8.11117 1C4.18381 1 1.00006 4.18375 1.00006 8.11111C1.00006 12.0385 4.18381 15.2222 8.11117 15.2222Z" stroke="#031220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                 <path d="M17 17L13.1334 13.1333" stroke="#031220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -165,11 +155,17 @@
                                         </button>
                                     </div>
                                 </form>
+                                <!-- Suggestion Box -->
+                                <div id="search-suggestions" style="display: none; position: absolute; top: 100%; left: 0; width: 200px; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+                                    <ul style="list-style: none; margin: 0; padding: 5px 0;">
+                                        <!-- Suggestions will be injected here -->
+                                    </ul>
+                                </div>
                             </div>
 
                             <!-- Registration Button -->
                             <div class="header__btn">
-                                <a href="#" class="header-btn"
+                                <a href="{{ route('auth.register') }}" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                                     onmouseover="this.style.backgroundColor='#FF9800';"
                                     onmouseout="this.style.backgroundColor='#E47804';">

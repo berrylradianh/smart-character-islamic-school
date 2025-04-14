@@ -8,7 +8,7 @@
                         <div class="footer__widget footer-col-1 mb-50">
                             <div class="footer__logo">
                                 <a href="{{route('landing.home')}}">
-                                    <img src="assets/img/logo/logo.png" alt="" style="width: 100%; height: auto; max-width: 250px;">
+                                    <img src="{{asset('assets/img/logo/logo-name.png')}}" alt="" style="width: 100%; height: auto; max-width: 250px;">
                                 </a>
                             </div>
                             <div class="footer__widget-content">
@@ -35,21 +35,21 @@
                                     </a>
                                     <div class="submenu" style="display: none; position: absolute; left: 0; background: white; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); width: 150px; border-radius: 5px; z-index: 10;">
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.profile')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Profil</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.vision')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Visi dan Misi</a>
                                         </div>
                                         <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="#" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
+                                            <a href="{{route('landing.program')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Program</a>
                                         </div>
                                     </div>
                                 </li>
                                 <li style="margin-bottom: 10px;">
-                                    <a href="#" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
+                                    <a href="{{route('ppdb')}}" style="color: #031220; text-decoration: none;" onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">PPDB</a>
                                 </li>
                             </ul>
@@ -94,7 +94,7 @@
                         <div class="footer__widget mb-50">
                             <h3 class="footer__widget-title" style="font-weight: bold; color: #031220; margin-bottom: 15px;">Pendaftaran</h3>
                             <p style="color: #031220; margin-bottom: 20px;">Isi Formulir Pendaftaran secara online sesuai dengan jenjang yang diinginkan, inden mulai sekarang untuk pendaftaran tahun ajaran yang akan datang.</p>
-                            <a href="#" style="display: inline-block; padding: 10px 20px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 5px; transition: 0.3s;"
+                            <a href="{{route('auth.register')}}" style="display: inline-block; padding: 10px 20px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 5px; transition: 0.3s;"
                                 onmouseover="this.style.backgroundColor='#FF9800';"
                                 onmouseout="this.style.backgroundColor='#E47804';">
                                 Daftar Sekarang

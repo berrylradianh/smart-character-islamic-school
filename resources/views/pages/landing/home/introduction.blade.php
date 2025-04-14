@@ -20,11 +20,6 @@
             <p style="font-size: 16px; line-height: 1.6; color: white;">
                 SCIS menyelenggarakan 2 (dua) model pendidikan dan pengkaderan, yaitu formal dan non-formal yang masing-masing terintegrasi dalam satu irama kehidupan Sistem Boarding School dan Fullday School. Kampus pusat SCIS terletak di Kebon Manggu, Jl. Situ Bojong, Kelurahan Tamanjaya, Kecamatan Tamansari, Kota Tasikmalaya, Jawa Barat.
             </p>
-            <a href="#" style="display: inline-flex; align-items: center; padding: 12px 24px; background-color: #E47804; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; margin-top: 20px;"
-                onmouseover="this.style.backgroundColor='#FF9800';"
-                onmouseout="this.style.backgroundColor='#E47804';">
-                Selengkapnya <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
-            </a>
         </div>
 
         <div style="max-width: 45%;">
