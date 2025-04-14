@@ -10,6 +10,11 @@
     <meta content="Themesdesign" name="author" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
+    <link rel="manifest" href="{{ asset('manifest_dashboard.json') }}">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!--Morris Chart CSS -->
     <link href="{{ asset('dashboard/assets/css/morris.css') }}" rel="stylesheet">
@@ -18,7 +23,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -28,12 +33,11 @@
     <link href="{{ asset('dashboard/assets/css/style.css') }}" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
-
     <!-- Begin page -->
     <div id="wrapper">
 
@@ -73,7 +77,9 @@
     <!-- App js -->
     <script src="{{ asset('dashboard/assets/js/app.js') }}"></script>
 
+
     @yield('scripts')
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>
