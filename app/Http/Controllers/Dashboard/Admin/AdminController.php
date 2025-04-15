@@ -700,7 +700,7 @@ class AdminController extends Controller
 
     public function export($format)
     {
-        $registrations = Registration::with('schoolLocation')->get();
+        $registrations = Registration::with(['schoolLocation', 'user.level'])->get();
 
         if ($format === 'pdf') {
             $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.dashboard.ppdb.registrations_pdf', compact('registrations'));

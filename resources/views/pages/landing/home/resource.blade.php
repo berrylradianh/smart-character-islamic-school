@@ -4,7 +4,7 @@
             @foreach ($stats as $stat)
             <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                 <div class="counter__item">
-                    <div class="counter__icon" style="background-color: {{ $stat->color ?? '#3b82f6' }};">
+                    <div class="counter__icon" @if($stat->color) style="background-color: {{ $stat->color }};" @else style="background-color: #3b82f6;" @endif>
                         <img src="{{ $stat->icon ? asset('storage/' . $stat->icon) : asset('assets/img/default.png') }}" alt="{{ $stat->name }}">
                     </div>
                     <div class="counter__content">

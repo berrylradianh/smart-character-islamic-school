@@ -13,10 +13,10 @@ class RegistrationsExport implements FromCollection, WithHeadings
         return Registration::with('schoolLocation')->get()->map(function ($registration) {
             return [
                 'No' => $registration->id,
-                'Jenjang' => strtoupper($registration->jenjang),
-                'Nama Anak' => $registration->nama_anak,
-                'Nama Orang Tua' => $registration->nama_orang_tua,
-                'No HP' => $registration->no_hp_orang_tua,
+                'Jenjang' => strtoupper($registration->user->level->name),
+                'Nama Anak' => $registration->user->name,
+                'Nama Orang Tua' => $registration->user->nama_orang_tua,
+                'No HP' => $registration->user->no_hp_orang_tua,
                 'Jadwal Tes' => $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan',
                 'Lokasi Tes' => $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan',
                 'Status' => ucfirst($registration->status),
