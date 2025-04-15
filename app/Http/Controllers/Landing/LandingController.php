@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Landing;
 use App\Http\Controllers\Controller;
 use App\Mail\PpdbInquiry;
 use App\Models\Agenda;
+use App\Models\DashboardStat;
 use App\Models\Hero;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class LandingController extends Controller
             'heroes' => Hero::all(),
             'news' => News::orderBy('date', 'desc')->get(),
             'agendas' => Agenda::orderBy('date', 'desc')->get(),
+            'stats' => DashboardStat::all(),
         ];
 
         return view('pages.landing.home.index', $data);

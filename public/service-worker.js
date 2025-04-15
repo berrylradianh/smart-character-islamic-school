@@ -2,7 +2,6 @@
 const CACHE_NAME = 'scis-pwa-v1';
 const DYNAMIC_CACHE = 'dynamic-cache';
 const urlsToCache = [
-  "/",
   "/assets/css/animate.css",
   "/assets/css/backtotop.css",
   "/assets/css/bootstrap.css",
@@ -392,18 +391,67 @@ const urlsToCache = [
   "/dashboard/assets/pages/table-editable.int.js",
   "/dashboard/assets/pages/table-responsive.init.js",
   "/dashboard/assets/pages/xeditable.js",
-//   "/storage/app/public/agenda_images/4BqkbScxNERqPLtj1zvI1psGhWMytukpTlyoMhXN.jpg"
+  "/storage/agenda_images/4BqkbScxNERqPLtj1zvI1psGhWMytukpTlyoMhXN.jpg",
+  "/storage/agenda_images/wBuzV16nEpObQigvHYo4jJgrqxU6zGo8eDW7mKiG.png",
+  "/storage/dashboard/icons/alumni.png",
+  "/storage/dashboard/icons/pendaftar.png",
+  "/storage/dashboard/icons/staff.png",
+  "/storage/dashboard/icons/student.png",
+  "/storage/dashboard/icons/wehfLaCrdGazzsouUSCJWNubiNIRL13xgk6mJ3g7.jpg",
+  "/storage/heroes/KYCIqQyHyplXLkyYKjlEOz4nrs71KhyXzm7RxvRJ.jpg",
+  "/storage/heroes/qzYYy5pSSutYgTO70K0qXAzM84jELI0i4QggZ5jf.png",
+  "/storage/heroes/RaiZ2P7qhGyRq1Ay3yw95Wfv2F3zzSsLBQo9patm.png",
+  "/storage/heroes/Z2N5yVzaFUb6TgksdaNgZnjsaO8RqX01zT0ul5Bs.png",
+  "/storage/news_images/Bm7vwWX2tsi0qOiP3ciOjWsJqKehbe2fYOZvgRbJ.png",
+  "/storage/news_images/bwRtXnyFRAhCRWdygQWKowIokSPDQIUHd1Dq59bm.png",
+  "/storage/news_images/ccwrSpu7QQiG2dzk0aMmEpnrOVpxtNiZLUlUcuMF.jpg",
+  "/",
+  "/profile",
+  "/vision",
+  "/program",
+  "/ppdb",
+  "/search",
+  "/search-suggestions",
+  "/auth/login",
+  "/auth/register",
+  "/dashboards",
+  "/dashboards/profile",
+  "/dashboards/profile/edit",
+  "/dashboards/ppdb-information",
+  "/dashboards/ppdb-timeline",
+  "/dashboards/ppdb-faq",
+  "/dashboards/ppdb-pendaftaran"
 ];
 
 // Install Service Worker
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            console.log('Caching static assets:', urlsToCache);
-            return cache.addAll(urlsToCache).catch(error => {
-                console.error('Failed to cache static assets:', error);
-                throw error;
+            console.log('Membuka cache:', CACHE_NAME);
+            // Cache setiap URL secara individual untuk menghindari kegagalan total
+            const cachePromises = urlsToCache.map(url => {
+                return fetch(url, { credentials: 'same-origin' })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn('Gagal meng-cache URL:', url, 'Status:', response.status);
+                            return Promise.resolve(); // Lanjutkan meski gagal
+                        }
+                        return cache.put(url, response);
+                    })
+                    .catch(error => {
+                        console.warn('Error meng-cache URL:', url, error);
+                        return Promise.resolve(); // Lanjutkan meski gagal
+                    });
             });
+            return Promise.all(cachePromises)
+                .then(() => console.log('Caching selesai'))
+                .catch(error => {
+                    console.error('Error selama caching:', error);
+                    throw error;
+                });
+        }).catch(error => {
+            console.error('Gagal membuka cache:', error);
+            throw error;
         })
     );
 });
@@ -415,6 +463,7 @@ self.addEventListener('activate', event => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME && cacheName !== DYNAMIC_CACHE) {
+                        console.log('Menghapus cache lama:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -425,7 +474,10 @@ self.addEventListener('activate', event => {
 
 // Fetch Event
 self.addEventListener('fetch', event => {
-    if (event.request.url.includes('/') || event.request.url.includes('/dashboards')) {
+    const requestUrl = new URL(event.request.url);
+
+    // Tangani permintaan API atau dashboard dengan Network-First
+    if (requestUrl.pathname.includes('/api') || requestUrl.pathname.includes('/dashboard')) {
         event.respondWith(
             fetch(event.request)
                 .then(response => {
@@ -440,7 +492,11 @@ self.addEventListener('fetch', event => {
                 })
                 .catch(() => {
                     return caches.match(event.request).then(cachedResponse => {
-                        return cachedResponse || new Response(
+                        if (cachedResponse) {
+                            console.log('Mengambil dari cache dinamis:', event.request.url);
+                            return cachedResponse;
+                        }
+                        return new Response(
                             JSON.stringify({ error: 'Offline, no data available' }),
                             { status: 503, headers: { 'Content-Type': 'application/json' } }
                         );
@@ -448,16 +504,35 @@ self.addEventListener('fetch', event => {
                 })
         );
     } else {
+        // Tangani aset statis dan halaman dengan Cache-First
         event.respondWith(
             caches.match(event.request).then(response => {
-                return response || fetch(event.request).then(fetchResponse => {
-                    if (fetchResponse.status === 200 && event.request.method === 'GET') {
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, fetchResponse.clone());
-                        });
-                    }
-                    return fetchResponse;
-                });
+                if (response) {
+                    console.log('Mengambil dari cache:', event.request.url);
+                    return response;
+                }
+
+                return fetch(event.request)
+                    .then(fetchResponse => {
+                        // Cache respons baru untuk permintaan GET
+                        if (fetchResponse.status === 200 && event.request.method === 'GET') {
+                            caches.open(CACHE_NAME).then(cache => {
+                                cache.put(event.request, fetchResponse.clone());
+                                console.log('Cached baru:', event.request.url);
+                            });
+                        }
+                        return fetchResponse;
+                    })
+                    .catch(() => {
+                        // Fallback ke halaman root untuk navigasi offline
+                        if (event.request.mode === 'navigate') {
+                            return caches.match('/');
+                        }
+                        return new Response(
+                            '<h1>Offline</h1><p>Konten tidak tersedia saat offline.</p>',
+                            { status: 503, headers: { 'Content-Type': 'text/html' } }
+                        );
+                    });
             })
         );
     }
