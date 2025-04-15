@@ -1,4 +1,4 @@
-<section class="about__area pt-120 p-relative">
+<section class="about__area p-relative">
     <div class="container">
         <div class="row">
             <div class="col-xxl-5 col-xl-5 col-lg-5">
