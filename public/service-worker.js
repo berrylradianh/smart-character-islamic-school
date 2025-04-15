@@ -1,57 +1,409 @@
+
 const CACHE_NAME = 'scis-pwa-v1';
+const DYNAMIC_CACHE = 'dynamic-cache';
 const urlsToCache = [
-    '/',
-    '/assets/img/favicon.png',
-    '/assets/img/android-chrome-192x192.png',
-    '/assets/img/android-chrome-512x512.png',
-    '/assets/css/bootstrap.css',
-    '/assets/css/meanmenu.css',
-    '/assets/css/animate.css',
-    '/assets/css/owl-carousel.css',
-    '/assets/css/swiper-bundle.css',
-    '/assets/css/backtotop.css',
-    '/assets/css/magnific-popup.css',
-    '/assets/css/nice-select.css',
-    '/assets/css/font-awesome-pro.css',
-    '/assets/css/spacing.css',
-    '/assets/css/style.css',
-    '/assets/js/vendor/jquery.js',
-    '/assets/js/vendor/waypoints.js',
-    '/assets/js/bootstrap-bundle.js',
-    '/assets/js/meanmenu.js',
-    '/assets/js/swiper-bundle.js',
-    '/assets/js/owl-carousel.js',
-    '/assets/js/magnific-popup.js',
-    '/assets/js/parallax.js',
-    '/assets/js/backtotop.js',
-    '/assets/js/nice-select.js',
-    '/assets/js/counterup.js',
-    '/assets/js/wow.js',
-    '/assets/js/isotope-pkgd.js',
-    '/assets/js/imagesloaded-pkgd.js',
-    '/assets/js/ajax-form.js',
-    '/assets/js/main.js',
-    '/dashboard/assets/css/bootstrap.min.css',
-    '/dashboard/assets/css/metismenu.min.css',
-    '/dashboard/assets/css/icons.css',
-    '/dashboard/assets/css/style.css',
-    '/dashboard/assets/css/morris.css',
-    '/dashboard/assets/js/jquery.min.js',
-    '/dashboard/assets/js/bootstrap.bundle.min.js',
-    '/dashboard/assets/js/metismenu.min.js',
-    '/dashboard/assets/js/jquery.slimscroll.js',
-    '/dashboard/assets/js/waves.min.js',
-    '/dashboard/assets/js/morris.min.js',
-    '/dashboard/assets/js/raphael.min.js',
-    '/dashboard/assets/js/app.js',
-    '/dashboard/assets/pages/dashboard.init.js'
+  "/",
+  "/assets/css/animate.css",
+  "/assets/css/backtotop.css",
+  "/assets/css/bootstrap.css",
+  "/assets/css/flaticon.css",
+  "/assets/css/font-awesome-pro.css",
+  "/assets/css/magnific-popup.css",
+  "/assets/css/meanmenu.css",
+  "/assets/css/nice-select.css",
+  "/assets/css/owl-carousel.css",
+  "/assets/css/spacing.css",
+  "/assets/css/style.css",
+  "/assets/css/swiper-bundle.css",
+  "/assets/fonts/fa-brands-400.ttf",
+  "/assets/fonts/fa-brands-400.woff2",
+  "/assets/fonts/fa-light-300.ttf",
+  "/assets/fonts/fa-light-300.woff2",
+  "/assets/fonts/fa-regular-400.ttf",
+  "/assets/fonts/fa-regular-400.woff2",
+  "/assets/fonts/fa-solid-900.ttf",
+  "/assets/fonts/fa-solid-900.woff2",
+  "/assets/fonts/fa-thin-100.ttf",
+  "/assets/fonts/fa-thin-100.woff2",
+  "/assets/fonts/fa-v4compatibility.ttf",
+  "/assets/fonts/fa-v4compatibility.woff2",
+  "/assets/img/about/about-1.jpg",
+  "/assets/img/about/about-2.jpg",
+  "/assets/img/about/about-3.jpg",
+  "/assets/img/about/about-shape-1.png",
+  "/assets/img/about/about-shape-2.png",
+  "/assets/img/about/about-shape-3.png",
+  "/assets/img/about/core-values.png",
+  "/assets/img/about/expert.png",
+  "/assets/img/about/social-care.png",
+  "/assets/img/agenda/agenda-1.png",
+  "/assets/img/agenda/agenda-2.png",
+  "/assets/img/agenda/agenda-3.png",
+  "/assets/img/agenda/agenda-4.png",
+  "/assets/img/android-chrome-192x192.png",
+  "/assets/img/android-chrome-512x512.png",
+  "/assets/img/app/app-shape-1.png",
+  "/assets/img/app/app-shape-2.png",
+  "/assets/img/app/apple.png",
+  "/assets/img/app/google-play.png",
+  "/assets/img/apple-touch-icon.png",
+  "/assets/img/blog/author/author-1.jpg",
+  "/assets/img/blog/author/author-2.jpg",
+  "/assets/img/blog/author/author-3.jpg",
+  "/assets/img/blog/author/blog-author-1.jpg",
+  "/assets/img/blog/banner/banner-1.jpg",
+  "/assets/img/blog/blog-1.jpg",
+  "/assets/img/blog/blog-2.jpg",
+  "/assets/img/blog/blog-3.jpg",
+  "/assets/img/blog/blog-big-1.jpg",
+  "/assets/img/blog/blog-big-2.jpg",
+  "/assets/img/blog/blog-big-3.jpg",
+  "/assets/img/blog/blog-big-4.jpg",
+  "/assets/img/blog/blog-big-5.jpg",
+  "/assets/img/blog/blog-big-6.jpg",
+  "/assets/img/blog/blog-big-7.jpg",
+  "/assets/img/blog/blog-shape-1.png",
+  "/assets/img/blog/blog-shape-2.png",
+  "/assets/img/blog/blog-shape-3.png",
+  "/assets/img/blog/blog-shape-4.png",
+  "/assets/img/blog/comments/comment-1.jpg",
+  "/assets/img/blog/comments/comment-2.jpg",
+  "/assets/img/blog/comments/comment-3.jpg",
+  "/assets/img/blog/quote-1.png",
+  "/assets/img/blog/sm/blog-sm-1.jpg",
+  "/assets/img/blog/sm/blog-sm-2.jpg",
+  "/assets/img/blog/sm/blog-sm-3.jpg",
+  "/assets/img/blog/tahfidz-super-camp.png",
+  "/assets/img/brand/brand-1.png",
+  "/assets/img/brand/brand-2.png",
+  "/assets/img/brand/brand-3.png",
+  "/assets/img/brand/brand-4.png",
+  "/assets/img/brand/brand-5.png",
+  "/assets/img/brand/brand-6.png",
+  "/assets/img/brand/brand-7.png",
+  "/assets/img/brand/kabar-periangan.png",
+  "/assets/img/brand/kapol.png",
+  "/assets/img/brand/priangan.png",
+  "/assets/img/brand/tribunnews.png",
+  "/assets/img/breadcrumb/breadcrumb-bg-1.jpg",
+  "/assets/img/breadcrumb/page-title-shape-1.png",
+  "/assets/img/breadcrumb/page-title-shape-2.png",
+  "/assets/img/breadcrumb/page-title-shape-3.png",
+  "/assets/img/breadcrumb/page-title-shape-4.png",
+  "/assets/img/breadcrumb/page-title-shape-5.png",
+  "/assets/img/breadcrumb/page-title-shape-6.png",
+  "/assets/img/campus/campus-1.jpg",
+  "/assets/img/campus/campus-2.jpg",
+  "/assets/img/campus/campus-3.jpg",
+  "/assets/img/campus/campus-4.jpg",
+  "/assets/img/certificate/certificate.png",
+  "/assets/img/course/2/course-1.jpg",
+  "/assets/img/course/2/course-2.jpg",
+  "/assets/img/course/2/course-3.jpg",
+  "/assets/img/course/2/course-4.jpg",
+  "/assets/img/course/2/course-5.jpg",
+  "/assets/img/course/2/course-6.jpg",
+  "/assets/img/course/bg/course-bg.png",
+  "/assets/img/course/cart/cart-1.jpg",
+  "/assets/img/course/cart/cart-2.jpg",
+  "/assets/img/course/cart/cart-3.jpg",
+  "/assets/img/course/comment/course-comment-1.jpg",
+  "/assets/img/course/comment/course-comment-2.jpg",
+  "/assets/img/course/course-1.jpg",
+  "/assets/img/course/course-2.jpg",
+  "/assets/img/course/course-3.jpg",
+  "/assets/img/course/course-4.jpg",
+  "/assets/img/course/course-5.jpg",
+  "/assets/img/course/course-6.jpg",
+  "/assets/img/course/course-dot.png",
+  "/assets/img/course/course-sm-1.jpg",
+  "/assets/img/course/details/course-details-1.jpg",
+  "/assets/img/course/instructor/course-instructor-1.jpg",
+  "/assets/img/course/instructor/course-instructor-2.jpg",
+  "/assets/img/course/instructor/course-instructor-3.jpg",
+  "/assets/img/course/list/course-1.jpg",
+  "/assets/img/course/list/course-2.jpg",
+  "/assets/img/course/list/course-3.jpg",
+  "/assets/img/course/list/course-4.jpg",
+  "/assets/img/course/list/course-5.jpg",
+  "/assets/img/course/list/course-6.jpg",
+  "/assets/img/course/payment/payment-1.png",
+  "/assets/img/course/sm/cart-1.jpg",
+  "/assets/img/course/sm/cart-2.jpg",
+  "/assets/img/course/sm/cart-3.jpg",
+  "/assets/img/course/sm/course-sm-1.jpg",
+  "/assets/img/course/sm/course-sm-2.jpg",
+  "/assets/img/course/sm/course-sm-3.jpg",
+  "/assets/img/course/tutor/course-tutor-1.jpg",
+  "/assets/img/course/tutor/course-tutor-2.jpg",
+  "/assets/img/course/tutor/course-tutor-3.jpg",
+  "/assets/img/course/tutor/course-tutor-4.jpg",
+  "/assets/img/course/tutor/course-tutor-5.jpg",
+  "/assets/img/course/tutor/course-tutor-6.jpg",
+  "/assets/img/course/video/course-video.jpg",
+  "/assets/img/error/error.png",
+  "/assets/img/event/event-person-1.jpg",
+  "/assets/img/event/event-person-2.jpg",
+  "/assets/img/events/event-1.jpg",
+  "/assets/img/events/event-shape-2.png",
+  "/assets/img/events/event-shape-3.png",
+  "/assets/img/events/events-shape.png",
+  "/assets/img/events/sponsor-logo.png",
+  "/assets/img/favicon-16x16.png",
+  "/assets/img/favicon-32x32.png",
+  "/assets/img/favicon.ico",
+  "/assets/img/favicon.png",
+  "/assets/img/icon/apple-store.png",
+  "/assets/img/icon/blog/blog-clock.svg",
+  "/assets/img/icon/blog/blog-eye.svg",
+  "/assets/img/icon/category/category-1.svg",
+  "/assets/img/icon/category/category-2.svg",
+  "/assets/img/icon/category/category-3.svg",
+  "/assets/img/icon/category/category-4.svg",
+  "/assets/img/icon/category/category-5.svg",
+  "/assets/img/icon/category/category-6.svg",
+  "/assets/img/icon/category/category-7.svg",
+  "/assets/img/icon/category/category-8.svg",
+  "/assets/img/icon/category/category-9.svg",
+  "/assets/img/icon/counter/counter-book.svg",
+  "/assets/img/icon/counter/counter-globe.svg",
+  "/assets/img/icon/counter/counter-monitor.svg",
+  "/assets/img/icon/counter/counter-user.svg",
+  "/assets/img/icon/course/course-book-2.svg",
+  "/assets/img/icon/course/course-book-3.svg",
+  "/assets/img/icon/course/course-book.svg",
+  "/assets/img/icon/course/course-eye.svg",
+  "/assets/img/icon/course/course-fire.svg",
+  "/assets/img/icon/course/course-label.svg",
+  "/assets/img/icon/course/course-paint.svg",
+  "/assets/img/icon/course/course-star-2.svg",
+  "/assets/img/icon/course/course-star.svg",
+  "/assets/img/icon/course/course-user.svg",
+  "/assets/img/icon/course/course-usr-2.svg",
+  "/assets/img/icon/cta/cta-cap.svg",
+  "/assets/img/icon/cta/cta-user.svg",
+  "/assets/img/icon/event/event-clock.svg",
+  "/assets/img/icon/event/event-location.svg",
+  "/assets/img/icon/features/book.svg",
+  "/assets/img/icon/features/graduation.svg",
+  "/assets/img/icon/features/university.svg",
+  "/assets/img/icon/flash.svg",
+  "/assets/img/icon/google-play-store.png",
+  "/assets/img/icon/header/header-call.svg",
+  "/assets/img/icon/header/header-dot-menu.svg",
+  "/assets/img/icon/header/header-home.svg",
+  "/assets/img/icon/header/header-location.svg",
+  "/assets/img/icon/header/header-mail.svg",
+  "/assets/img/icon/header/header-search-2.svg",
+  "/assets/img/icon/header/header-search.svg",
+  "/assets/img/icon/header/header-user-2.svg",
+  "/assets/img/icon/header/header-user.svg",
+  "/assets/img/icon/menu.svg",
+  "/assets/img/icon/play-2.svg",
+  "/assets/img/icon/play.svg",
+  "/assets/img/icon/research/research-monitor-mobile.svg",
+  "/assets/img/icon/research/research-monitor-video.svg",
+  "/assets/img/icon/research/research-video.svg",
+  "/assets/img/icon/sign/circle.png",
+  "/assets/img/icon/sign/dot.png",
+  "/assets/img/icon/sign/flower.png",
+  "/assets/img/icon/sign/man-1.png",
+  "/assets/img/icon/sign/man-2.png",
+  "/assets/img/icon/sign/man-3.png",
+  "/assets/img/icon/sign/sign-up.png",
+  "/assets/img/icon/sign/zigzag.png",
+  "/assets/img/icon/slider/slider-search.svg",
+  "/assets/img/icon/star-2.svg",
+  "/assets/img/icon/star.svg",
+  "/assets/img/lantern.png",
+  "/assets/img/logo/logo-name.png",
+  "/assets/img/logo/logo.png",
+  "/assets/img/moon.png",
+  "/assets/img/news/news-1.png",
+  "/assets/img/news/news-2.png",
+  "/assets/img/news/news-3.png",
+  "/assets/img/news/news-4.png",
+  "/assets/img/news/news-5.png",
+  "/assets/img/news/news-6.png",
+  "/assets/img/ppdb.png",
+  "/assets/img/price/price-shape.png",
+  "/assets/img/price/price-thumb.png",
+  "/assets/img/profile/profile-img.jpg",
+  "/assets/img/program/program-1.png",
+  "/assets/img/program/program-2.png",
+  "/assets/img/program/program-3.png",
+  "/assets/img/program.png",
+  "/assets/img/research/2/research-1.png",
+  "/assets/img/research/2/research-bg.jpg",
+  "/assets/img/research/research-1.jpg",
+  "/assets/img/research/research-2.jpg",
+  "/assets/img/research/research-3.jpg",
+  "/assets/img/research/research-shape-1.png",
+  "/assets/img/research/research-shape-2.png",
+  "/assets/img/research/research-shape-3.png",
+  "/assets/img/resource.png",
+  "/assets/img/slider/2/shape/slider-cap-1.png",
+  "/assets/img/slider/2/shape/slider-cap-2.png",
+  "/assets/img/slider/2/shape/slider-cap-3.png",
+  "/assets/img/slider/2/shape/slider-shape-1.jpg",
+  "/assets/img/slider/2/shape/slider-shape-2.jpg",
+  "/assets/img/slider/2/slider-2-bg.jpg",
+  "/assets/img/slider/2/slider-thumb.png",
+  "/assets/img/slider/3/slider-1.jpg",
+  "/assets/img/slider/3/slider-2.jpg",
+  "/assets/img/slider/slider-1.png",
+  "/assets/img/slider/slider-2.png",
+  "/assets/img/student.png",
+  "/assets/img/team/details/shape/shape-1.png",
+  "/assets/img/team/details/shape/shape-2.png",
+  "/assets/img/team/details/teacer-details-1.jpg",
+  "/assets/img/team/team-1.png",
+  "/assets/img/team/team-2.png",
+  "/assets/img/team/team-3.png",
+  "/assets/img/team/team-4.png",
+  "/assets/img/team/team-shape-1.png",
+  "/assets/img/team/team-shape-2.png",
+  "/assets/img/team/team-shape-3.png",
+  "/assets/img/team/team-shape-4.png",
+  "/assets/img/testimonial/testimonial-1.jpg",
+  "/assets/img/testimonial/testimonial-2.jpg",
+  "/assets/img/testimonial/testimonial-3.jpg",
+  "/assets/img/testimonial/testimonial-4.jpg",
+  "/assets/img/visi dan misi.png",
+  "/assets/js/ajax-form.js",
+  "/assets/js/backtotop.js",
+  "/assets/js/bootstrap-bundle.js",
+  "/assets/js/counterup.js",
+  "/assets/js/imagesloaded-pkgd.js",
+  "/assets/js/isotope-pkgd.js",
+  "/assets/js/magnific-popup.js",
+  "/assets/js/main.js",
+  "/assets/js/meanmenu.js",
+  "/assets/js/nice-select.js",
+  "/assets/js/owl-carousel.js",
+  "/assets/js/parallax.js",
+  "/assets/js/swiper-bundle.js",
+  "/assets/js/vendor/jquery.js",
+  "/assets/js/vendor/waypoints.js",
+  "/assets/js/wow.js",
+  "/dashboard/assets/css/bootstrap.min.css",
+  "/dashboard/assets/css/icons.css",
+  "/dashboard/assets/css/metismenu.min.css",
+  "/dashboard/assets/css/morris.css",
+  "/dashboard/assets/css/style.css",
+  "/dashboard/assets/css/summernote.min.css",
+  "/dashboard/assets/fonts/fa-brands-400.eot",
+  "/dashboard/assets/fonts/fa-brands-400.svg",
+  "/dashboard/assets/fonts/fa-brands-400.ttf",
+  "/dashboard/assets/fonts/fa-brands-400.woff",
+  "/dashboard/assets/fonts/fa-brands-400.woff2",
+  "/dashboard/assets/fonts/fa-regular-400.eot",
+  "/dashboard/assets/fonts/fa-regular-400.svg",
+  "/dashboard/assets/fonts/fa-regular-400.ttf",
+  "/dashboard/assets/fonts/fa-regular-400.woff",
+  "/dashboard/assets/fonts/fa-regular-400.woff2",
+  "/dashboard/assets/fonts/fa-solid-900.eot",
+  "/dashboard/assets/fonts/fa-solid-900.svg",
+  "/dashboard/assets/fonts/fa-solid-900.ttf",
+  "/dashboard/assets/fonts/fa-solid-900.woff",
+  "/dashboard/assets/fonts/fa-solid-900.woff2",
+  "/dashboard/assets/fonts/materialdesignicons-webfont.eot",
+  "/dashboard/assets/fonts/materialdesignicons-webfont.svg",
+  "/dashboard/assets/fonts/materialdesignicons-webfont.ttf",
+  "/dashboard/assets/fonts/materialdesignicons-webfont.woff",
+  "/dashboard/assets/fonts/materialdesignicons-webfont.woff2",
+  "/dashboard/assets/fonts/outlined-iconset.eot",
+  "/dashboard/assets/fonts/outlined-iconset.svg",
+  "/dashboard/assets/fonts/outlined-iconset.ttf",
+  "/dashboard/assets/fonts/outlined-iconset.woff",
+  "/dashboard/assets/fonts/themify.eot",
+  "/dashboard/assets/fonts/themify.svg",
+  "/dashboard/assets/fonts/themify.ttf",
+  "/dashboard/assets/fonts/themify.woff",
+  "/dashboard/assets/images/alumni.png",
+  "/dashboard/assets/images/error.png",
+  "/dashboard/assets/images/favicon.ico",
+  "/dashboard/assets/images/flags/french_flag.jpg",
+  "/dashboard/assets/images/flags/germany_flag.jpg",
+  "/dashboard/assets/images/flags/italy_flag.jpg",
+  "/dashboard/assets/images/flags/russia_flag.jpg",
+  "/dashboard/assets/images/flags/spain_flag.jpg",
+  "/dashboard/assets/images/flags/us_flag.jpg",
+  "/dashboard/assets/images/logo-dark.png",
+  "/dashboard/assets/images/logo-light.png",
+  "/dashboard/assets/images/maintenance-img.png",
+  "/dashboard/assets/images/pendaftar.png",
+  "/dashboard/assets/images/restaurant.png",
+  "/dashboard/assets/images/small/img-1.jpg",
+  "/dashboard/assets/images/small/img-2.jpg",
+  "/dashboard/assets/images/small/img-3.jpg",
+  "/dashboard/assets/images/small/img-4.jpg",
+  "/dashboard/assets/images/small/img-5.jpg",
+  "/dashboard/assets/images/small/img-6.jpg",
+  "/dashboard/assets/images/small/img-7.jpg",
+  "/dashboard/assets/images/staff.png",
+  "/dashboard/assets/images/student.png",
+  "/dashboard/assets/images/users/user-1.jpg",
+  "/dashboard/assets/images/users/user-10.jpg",
+  "/dashboard/assets/images/users/user-2.jpg",
+  "/dashboard/assets/images/users/user-3.jpg",
+  "/dashboard/assets/images/users/user-4.jpg",
+  "/dashboard/assets/images/users/user-5.jpg",
+  "/dashboard/assets/images/users/user-6.jpg",
+  "/dashboard/assets/images/users/user-7.jpg",
+  "/dashboard/assets/images/users/user-8.jpg",
+  "/dashboard/assets/images/users/user-9.jpg",
+  "/dashboard/assets/images/users/user_default.jpg",
+  "/dashboard/assets/js/app.js",
+  "/dashboard/assets/js/bootstrap.bundle.min.js",
+  "/dashboard/assets/js/jquery.min.js",
+  "/dashboard/assets/js/jquery.slimscroll.js",
+  "/dashboard/assets/js/metismenu.min.js",
+  "/dashboard/assets/js/morris.min.js",
+  "/dashboard/assets/js/raphael.min.js",
+  "/dashboard/assets/js/summernote.min.js",
+  "/dashboard/assets/js/waves.min.js",
+  "/dashboard/assets/pages/alertify-init.js",
+  "/dashboard/assets/pages/apexcharts.init.js",
+  "/dashboard/assets/pages/c3-chart-init.js",
+  "/dashboard/assets/pages/calendar-init.js",
+  "/dashboard/assets/pages/chartist.init.js",
+  "/dashboard/assets/pages/chartjs.init.js",
+  "/dashboard/assets/pages/countdown.int.js",
+  "/dashboard/assets/pages/dashboard.init.js",
+  "/dashboard/assets/pages/datatables.init.js",
+  "/dashboard/assets/pages/echart.int.js",
+  "/dashboard/assets/pages/flot.init.js",
+  "/dashboard/assets/pages/form-advanced.init.js",
+  "/dashboard/assets/pages/form-advanced.js",
+  "/dashboard/assets/pages/form-editors.int.js",
+  "/dashboard/assets/pages/form-validation.init.js",
+  "/dashboard/assets/pages/form-wizard.init.js",
+  "/dashboard/assets/pages/gmaps.js",
+  "/dashboard/assets/pages/jvectormap.init.js",
+  "/dashboard/assets/pages/lightbox.js",
+  "/dashboard/assets/pages/morris.init.js",
+  "/dashboard/assets/pages/nestable-init.js",
+  "/dashboard/assets/pages/rangeslider-init.js",
+  "/dashboard/assets/pages/rangeslider.init.js",
+  "/dashboard/assets/pages/rating-init.js",
+  "/dashboard/assets/pages/sparklines.init.js",
+  "/dashboard/assets/pages/sweet-alert.init.js",
+  "/dashboard/assets/pages/table-editable.int.js",
+  "/dashboard/assets/pages/table-responsive.init.js",
+  "/dashboard/assets/pages/xeditable.js",
+//   "/storage/app/public/agenda_images/4BqkbScxNERqPLtj1zvI1psGhWMytukpTlyoMhXN.jpg"
 ];
 
 // Install Service Worker
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(urlsToCache);
+            console.log('Caching static assets:', urlsToCache);
+            return cache.addAll(urlsToCache).catch(error => {
+                console.error('Failed to cache static assets:', error);
+                throw error;
+            });
         })
     );
 });
@@ -62,56 +414,51 @@ self.addEventListener('activate', event => {
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
-});
-
-// Fetch Event (Cache First Strategy)
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            return response || fetch(event.request);
-        })
-    );
-});
-
-self.addEventListener('fetch', event => {
-    if (event.request.url.includes('/dashboards') || event.request.url.includes('/')) {
-        event.respondWith(
-            fetch(event.request)
-                .then(response => {
-                    const responseClone = response.clone();
-                    caches.open('dynamic-cache').then(cache => {
-                        cache.put(event.request, responseClone);
-                    });
-                    return response;
-                })
-                .catch(() => caches.match(event.request))
-        );
-    } else {
-        event.respondWith(
-            caches.match(event.request).then(response => {
-                return response || fetch(event.request);
-            })
-        );
-    }
-});
-
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
+                    if (cacheName !== CACHE_NAME && cacheName !== DYNAMIC_CACHE) {
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => self.clients.claim())
     );
+});
+
+// Fetch Event
+self.addEventListener('fetch', event => {
+    if (event.request.url.includes('/') || event.request.url.includes('/dashboards')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    if (response.status === 200) {
+                        const responseClone = response.clone();
+                        caches.open(DYNAMIC_CACHE).then(cache => {
+                            cache.put(event.request, responseClone);
+                            console.log('Cached dynamic data:', event.request.url);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(event.request).then(cachedResponse => {
+                        return cachedResponse || new Response(
+                            JSON.stringify({ error: 'Offline, no data available' }),
+                            { status: 503, headers: { 'Content-Type': 'application/json' } }
+                        );
+                    });
+                })
+        );
+    } else {
+        event.respondWith(
+            caches.match(event.request).then(response => {
+                return response || fetch(event.request).then(fetchResponse => {
+                    if (fetchResponse.status === 200 && event.request.method === 'GET') {
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, fetchResponse.clone());
+                        });
+                    }
+                    return fetchResponse;
+                });
+            })
+        );
+    }
 });
