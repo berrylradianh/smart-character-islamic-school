@@ -64,24 +64,9 @@ class User extends Authenticatable
      */
     public function isProfileComplete()
     {
-        // Tentukan field wajib berdasarkan level_id
-        $requiredFields = ['name', 'email', 'level_id', 'kk_path', 'akta_path', 'pasfoto_path'];
+        $requiredFields = ['name', 'email', 'level_id', 'tanggal_lahir', 'no_hp', 'alamat'];
 
-        // Ambil slug level untuk logika jenjang
         $levelSlug = $this->level ? $this->level->slug : null;
-
-        if ($levelSlug == 'smp') {
-            $requiredFields[] = 'ijazah_sd_path';
-        } elseif ($levelSlug == 'sma') {
-            $requiredFields[] = 'ijazah_smp_path';
-        } elseif ($levelSlug == 'kuliah') {
-            $requiredFields[] = 'ijazah_sma_path';
-        }
-
-        if ($levelSlug !== 'kuliah') {
-            $requiredFields[] = 'nama_orang_tua';
-            $requiredFields[] = 'no_hp_orang_tua';
-        }
 
         foreach ($requiredFields as $field) {
             if (is_null($this->$field)) {

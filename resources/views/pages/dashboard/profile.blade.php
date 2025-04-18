@@ -73,7 +73,7 @@ use Illuminate\Support\Facades\Storage;
                         </div>
                     </div>
 
-                    @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
+                    <!-- @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin'])) -->
                     <!-- Informasi Kontak -->
                     <div class="card">
                         <div class="card-body">
@@ -96,7 +96,7 @@ use Illuminate\Support\Facades\Storage;
                     </div>
 
                     <!-- Informasi Orang Tua -->
-                    @if ($user->jenjang !== 'kuliah')
+                    <!-- @if ($user->jenjang !== 'kuliah')
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4"><i class="fas fa-users mr-2"></i> Informasi Orang Tua</h4>
@@ -116,10 +116,10 @@ use Illuminate\Support\Facades\Storage;
                             </div>
                         </div>
                     </div>
-                    @endif
+                    @endif -->
 
                     <!-- Jenjang -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4"><i class="fas fa-graduation-cap mr-2"></i> Jenjang Pendaftaran</h4>
                             <div class="table-responsive">
@@ -139,11 +139,11 @@ use Illuminate\Support\Facades\Storage;
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    @endif
+                    </div> -->
+                    <!-- @endif -->
 
                     <!-- Dokumen -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-body">
                             @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                             <h4 class="card-title mb-4"><i class="fas fa-file-alt mr-2"></i> Dokumen Pendaftaran</h4>
@@ -276,7 +276,7 @@ use Illuminate\Support\Facades\Storage;
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                     @if (!$user->isProfileComplete())

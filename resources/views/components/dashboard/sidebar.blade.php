@@ -35,12 +35,7 @@ use Illuminate\Support\Facades\Auth;
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-todolist"></i><span> PPDB <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('dashboard.ppdb_info')}}">Informasi</a></li>
-                        <li><a href="{{route('dashboard.requirement_information')}}">Setting Informasi</a></li>
-                        <li><a href="{{route('dashboard.ppdb_timeline')}}">Timeline</a></li>
-                        <li><a href="{{route('dashboard.requirement_timeline')}}">Setting Timeline</a></li>
-                        <li><a href="{{route('dashboard.ppdb_faq')}}">FAQs</a></li>
-                        <li><a href="{{route('dashboard.requirement_faq')}}">Setting FAQs</a></li>
+
                         <li><a href="{{route('dashboard.list_pendaftar')}}">List Pendaftar</a></li>
                     </ul>
                 </li>
@@ -48,9 +43,6 @@ use Illuminate\Support\Facades\Auth;
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-todolist"></i><span> PPDB <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('dashboard.ppdb_info')}}">Informasi</a></li>
-                        <li><a href="{{route('dashboard.ppdb_timeline')}}">Timeline</a></li>
-                        <li><a href="{{route('dashboard.ppdb_faq')}}">FAQs</a></li>
                         <li><a href="{{route('dashboard.ppdb_pendaftaran')}}">Pendaftaran</a></li>
                     </ul>
                 </li>

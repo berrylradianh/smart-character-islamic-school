@@ -607,42 +607,71 @@ class AdminController extends Controller
 
     public function storeRegistration(Request $request)
     {
-        $user = Auth::user();
-
-        if (Registration::where('user_id', $user->id)->exists()) {
-            return redirect()->route('dashboard.ppdb_pendaftaran')->with('error', 'Anda sudah terdaftar. Silakan pantau status pendaftaran Anda.');
-        }
-
+        // Validasi input
         $validated = $request->validate([
-            'level_id' => 'required|exists:levels,id',
+            'nama_orang_tua' => 'required_if:level_id,!=,kuliah|string|max:255',
+            'no_hp_orang_tua' => 'required_if:level_id,!=,kuliah|string|max:20',
+            'pasfoto_path' => 'required|file|mimes:jpg,png|max:2048',
+            'kk_path' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'akta_path' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_sd_path' => 'required_if:level_id,smp,sma,kuliah|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_smp_path' => 'required_if:level_id,sma,kuliah|file|mimes:pdf,jpg,png|max:2048',
+            'ijazah_sma_path' => 'required_if:level_id,kuliah|file|mimes:pdf,jpg,png|max:2048',
+            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
-        if (!$user->name || !$user->nama_orang_tua || !$user->no_hp_orang_tua || !$user->tanggal_lahir || !$user->kk_path || !$user->akta_path || !$user->pasfoto_path) {
-            return redirect()->route('profile.edit')->with('error', 'Data profil Anda belum lengkap. Silakan lengkapi profil terlebih dahulu.');
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Update data user
+        $user->nama_orang_tua = $validated['nama_orang_tua'] ?? null;
+        $user->no_hp_orang_tua = $validated['no_hp_orang_tua'] ?? null;
+
+        // Simpan file ke storage dan update path di tabel users
+        $userFields = [
+            'pasfoto_path' => 'pasfoto_path',
+            'kk_path' => 'kk_path',
+            'akta_path' => 'akta_path',
+            'ijazah_sd_path' => 'ijazah_sd_path',
+            'ijazah_smp_path' => 'ijazah_smp_path',
+            'ijazah_sma_path' => 'ijazah_sma_path',
+            'piagam_path' => 'piagam_path',
+        ];
+
+        foreach ($userFields as $inputName => $field) {
+            if ($request->hasFile($inputName)) {
+                // Hapus file lama jika ada
+                if ($user->$field && Storage::disk('public')->exists($user->$field)) {
+                    Storage::disk('public')->delete($user->$field);
+                }
+                // Simpan file baru
+                $file = $request->file($inputName);
+                $path = $file->store('registrations', 'public');
+                $user->$field = $path;
+            }
         }
 
-        if ($user->level_id && in_array(Level::find($user->level_id)->slug, ['smp', 'sma']) && !$user->ijazah_sd_path && !$user->ijazah_smp_path) {
-            return redirect()->route('profile.edit')->with('error', 'Ijazah SD atau SMP diperlukan untuk jenjang ' . strtoupper(Level::find($user->level_id)->name) . '. Silakan lengkapi profil Anda.');
+        // Simpan perubahan pada user
+        $user->save();
+
+        // Buat instance Registration
+        $registration = new Registration();
+        $registration->user_id = $user->id;
+        $registration->status = 'waiting';
+
+        // Simpan bukti pembayaran
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $path = $file->store('registrations', 'public');
+            $registration->bukti_pembayaran_path = $path;
         }
 
-        $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('registrations/bukti_pembayaran', 'public');
+        // Simpan data registration
+        $registration->save();
 
-        Registration::create([
-            'user_id' => $user->id,
-            'bukti_pembayaran_path' => $buktiPembayaranPath,
-            'status' => 'waiting',
-            'nama_anak' => $user->name,
-            'nama_orang_tua' => $user->nama_orang_tua,
-            'no_hp_orang_tua' => $user->no_hp_orang_tua,
-            'tanggal_lahir' => $user->tanggal_lahir,
-            'kk_path' => $user->kk_path,
-            'akta_path' => $user->akta_path,
-            'pasfoto_path' => $user->pasfoto_path,
-            'piagam_path' => $user->piagam_path,
-        ]);
-
-        return redirect()->route('dashboard.ppdb_pendaftaran')->with('success', 'Pendaftaran berhasil disimpan!');
+        return redirect()->route('dashboard.ppdb_pendaftaran')
+            ->with('success', 'Pendaftaran berhasil disimpan!');
     }
 
     public function listPendaftar()
@@ -742,15 +771,6 @@ class AdminController extends Controller
             'tanggal_lahir' => 'nullable|date',
             'no_hp' => 'nullable|string|max:15',
             'alamat' => 'nullable|string',
-            'nama_orang_tua' => 'nullable|string|max:255',
-            'no_hp_orang_tua' => 'nullable|string|max:15',
-            'kk_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'akta_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
-            'ijazah_sd_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_smp_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_sma_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -767,58 +787,6 @@ class AdminController extends Controller
         $user->tanggal_lahir = $request->tanggal_lahir;
         $user->no_hp = $request->no_hp;
         $user->alamat = $request->alamat;
-        $user->nama_orang_tua = $request->nama_orang_tua;
-        $user->no_hp_orang_tua = $request->no_hp_orang_tua;
-
-        // Handle file uploads
-        if ($request->hasFile('kk_path')) {
-            if ($user->kk_path) {
-                Storage::disk('public')->delete($user->kk_path);
-            }
-            $user->kk_path = $request->file('kk_path')->store('documents/kk', 'public');
-        }
-
-        if ($request->hasFile('akta_path')) {
-            if ($user->akta_path) {
-                Storage::disk('public')->delete($user->akta_path);
-            }
-            $user->akta_path = $request->file('akta_path')->store('documents/akta', 'public');
-        }
-
-        if ($request->hasFile('pasfoto_path')) {
-            if ($user->pasfoto_path) {
-                Storage::disk('public')->delete($user->pasfoto_path);
-            }
-            $user->pasfoto_path = $request->file('pasfoto_path')->store('documents/pasfoto', 'public');
-        }
-
-        if ($request->hasFile('ijazah_sd_path')) {
-            if ($user->ijazah_sd_path) {
-                Storage::disk('public')->delete($user->ijazah_sd_path);
-            }
-            $user->ijazah_sd_path = $request->file('ijazah_sd_path')->store('documents/ijazah_sd', 'public');
-        }
-
-        if ($request->hasFile('ijazah_smp_path')) {
-            if ($user->ijazah_smp_path) {
-                Storage::disk('public')->delete($user->ijazah_smp_path);
-            }
-            $user->ijazah_smp_path = $request->file('ijazah_smp_path')->store('documents/ijazah_smp', 'public');
-        }
-
-        if ($request->hasFile('ijazah_sma_path')) {
-            if ($user->ijazah_sma_path) {
-                Storage::disk('public')->delete($user->ijazah_sma_path);
-            }
-            $user->ijazah_sma_path = $request->file('ijazah_sma_path')->store('documents/ijazah_sma', 'public');
-        }
-
-        if ($request->hasFile('piagam_path')) {
-            if ($user->piagam_path) {
-                Storage::disk('public')->delete($user->piagam_path);
-            }
-            $user->piagam_path = $request->file('piagam_path')->store('documents/piagam', 'public');
-        }
 
         $user->save();
 
