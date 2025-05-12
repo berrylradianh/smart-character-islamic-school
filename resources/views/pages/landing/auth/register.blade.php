@@ -83,11 +83,6 @@
                                 </div>
                             </div>
                             <div class="sign__action d-flex justify-content-between mb-30">
-                                <div class="sign__agree d-flex align-items-center">
-                                    <input class="m-check-input" type="checkbox" id="m-agree" name="terms" required>
-                                    <label class="m-check-label" for="m-agree">I agree to the <a href="#">Terms & Conditions</a>
-                                    </label>
-                                </div>
                             </div>
                             <button type="submit" class="tp-btn w-100"> <span></span> Sign Up</button>
                             <div class="sign__new text-center mt-20">
