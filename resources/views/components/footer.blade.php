@@ -66,7 +66,7 @@
                                     <a href="https://maps.app.goo.gl/GmLnp8cWdumje7d86?g_st=aw" target="_blank" style="color: #031220; text-decoration: none;"
                                         onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">
-                                        Jl. Balaraja No. 67 Kp. Kalista Blok 1 Kec. Cibeureum, Kota Tasikmalaya, Jawa barat 46196
+                                        Sindangreret RT. 02 RW. 04, Blok Situ Bojong, Tamanjaya, Kec. Tamansari, Kota Tasikmalaya, Jawa Barat 46196
                                     </a>
                                 </li>
                                 <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; line-height: 1.6;">

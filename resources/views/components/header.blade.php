@@ -6,16 +6,6 @@
                 <div class="col-12 d-flex justify-content-between">
                     <!-- Location -->
                     <div class="header__top-left">
-                        <a href="https://maps.app.goo.gl/GmLnp8cWdumje7d86?g_st=aw" target="_blank"
-                            style="display: inline-flex; align-items: center; gap: 5px; color: #4B535A; text-decoration: none; transition: color 0.3s ease-in-out;"
-                            onmouseover="this.style.color='#008000';"
-                            onmouseout="this.style.color='#4B535A';">
-                            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.9235 4.66671C5.23068 4.66671 4.66709 5.2303 4.66709 5.92383C4.66709 6.61666 5.23068 7.17953 5.9235 7.17953C6.61632 7.17953 7.17991 6.61666 7.17991 5.92383C7.17991 5.2303 6.61632 4.66671 5.9235 4.66671ZM5.92354 8.25642C4.63698 8.25642 3.59021 7.21037 3.59021 5.9238C3.59021 4.63652 4.63698 3.58975 5.92354 3.58975C7.21011 3.58975 8.25688 4.63652 8.25688 5.9238C8.25688 7.21037 7.21011 8.25642 5.92354 8.25642Z" fill="currentColor" />
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.92278 1.07695C3.25058 1.07695 1.07663 3.27172 1.07663 5.96834C1.07663 9.39942 5.11437 12.7422 5.92278 12.9202C6.73119 12.7415 10.7689 9.3987 10.7689 5.96834C10.7689 3.27172 8.59499 1.07695 5.92278 1.07695ZM5.92259 14C4.63459 14 -0.000488281 10.0139 -0.000488281 5.96831C-0.000488281 2.67723 2.65664 0 5.92259 0C9.18854 0 11.8457 2.67723 11.8457 5.96831C11.8457 10.0139 7.21059 14 5.92259 14Z" fill="currentColor" />
-                            </svg>
-                            Jl. Situ Bojong Kel. Tamanjaya, Kec. Tamansari, Kota Tasikmalaya.
-                        </a>
                     </div>
 
                     <!-- Social Media -->
@@ -52,7 +42,7 @@
                             <a href="{{ route('landing.home') }}">
                                 <img src="{{ asset('assets/img/logo/logo-name.png') }}"
                                     alt="Smart Character Islamic School Logo"
-                                    style="max-width: 100%; height: auto; width: clamp(150px, 40%, 250px);">
+                                    style="max-width: 250%; height: auto; width: clamp(210px, 50%, 300px);">
                             </a>
                         </div>
                     </div>
@@ -165,10 +155,16 @@
 
                             <!-- Registration Button -->
                             <div class="header__btn">
-                                <a href="{{ route('auth.register') }}" class="header-btn"
+                                <a href="{{ route('auth.login') }}" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                                     onmouseover="this.style.backgroundColor='#FF9800';"
                                     onmouseout="this.style.backgroundColor='#E47804';">
+                                    Login Admin
+                                </a>
+                                <a href="{{ route('auth.login') }}" class="header-btn"
+                                    style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #1E88E5; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
+                                    onmouseover="this.style.backgroundColor='#42A5F5';"
+                                    onmouseout="this.style.backgroundColor='#1E88E5';">
                                     Pendaftaran
                                 </a>
                             </div>
