@@ -124,39 +124,49 @@
                 </div>
             </div>
 
-            <!-- Quota Section -->
+            <!-- Jumlah Pendaftar Section -->
             <div class="col-lg-6">
                 <div class="quota-section">
-                    <h5 class="quota-heading mb-4">Sisa Kuota Pendaftaran</h5>
-                    <div class="quota-item mb-3">
-                        <div class="quota-label">TK</div>
-                        <div class="progress custom-progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                <span class="progress-label">35%</span> 35%
+                    <h5 class="quota-heading mb-4">Jumlah Pendaftar</h5>
+                    <div class="row g-3">
+                        <!-- TK Card -->
+                        <div class="col-md-6">
+                            <div class="card stat-card shadow-sm text-center">
+                                <div class="card-body">
+                                    <h6 class="card-title text-uppercase text-primary">TK</h6>
+                                    <h3 class="card-text fw-bold text-dark">35</h3>
+                                    <p class="card-subtitle text-muted">Pendaftar</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="quota-item mb-3">
-                        <div class="quota-label">SD</div>
-                        <div class="progress custom-progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                                <span class="progress-label">70%</span> 70%
+                        <!-- SD Card -->
+                        <div class="col-md-6">
+                            <div class="card stat-card shadow-sm text-center">
+                                <div class="card-body">
+                                    <h6 class="card-title text-uppercase text-primary">SD</h6>
+                                    <h3 class="card-text fw-bold text-dark">70</h3>
+                                    <p class="card-subtitle text-muted">Pendaftar</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="quota-item mb-3">
-                        <div class="quota-label">SMP</div>
-                        <div class="progress custom-progress">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                                <span class="progress-label">40%</span> 40%
+                        <!-- SMP Card -->
+                        <div class="col-md-6">
+                            <div class="card stat-card shadow-sm text-center">
+                                <div class="card-body">
+                                    <h6 class="card-title text-uppercase text-primary">SMP</h6>
+                                    <h3 class="card-text fw-bold text-dark">40</h3>
+                                    <p class="card-subtitle text-muted">Pendaftar</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="quota-item mb-3">
-                        <div class="quota-label">SMA</div>
-                        <div class="progress custom-progress">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                <span class="progress-label">20%</span> 20%
+                        <!-- SMA Card -->
+                        <div class="col-md-6">
+                            <div class="card stat-card shadow-sm text-center">
+                                <div class="card-body">
+                                    <h6 class="card-title text-uppercase text-primary">SMA</h6>
+                                    <h3 class="card-text fw-bold text-dark">20</h3>
+                                    <p class="card-subtitle text-muted">Pendaftar</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -235,6 +245,53 @@
 <!-- PPDB Section End -->
 
 <style>
+    .quota-section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .quota-heading {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        position: relative;
+        display: inline-block;
+    }
+
+    .stat-card {
+        background-color: #f8f9fa;
+        border: none;
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card .card-body {
+        padding: 15px;
+    }
+
+    .stat-card .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .stat-card .card-text {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+
+    .stat-card .card-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
     .ppdb-section {
         background-color: #f8f9fa;
     }
