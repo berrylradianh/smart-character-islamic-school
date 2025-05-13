@@ -149,7 +149,7 @@
             @endif
 
             <!-- Form Tambah Statistik -->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Tabel Statistik -->
             <div class="row">
@@ -262,13 +262,13 @@
                                                     <button class="btn btn-warning btn-icon" data-toggle="modal" data-target="#editModal{{ $stat->id }}" title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <form action="{{ route('dashboard.stats.destroy', $stat->id) }}" method="POST" style="display: inline;">
+                                                    <!-- <form action="{{ route('dashboard.stats.destroy', $stat->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-icon" onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                    </form>
+                                                    </form> -->
                                                 </div>
                                             </td>
                                         </tr>
