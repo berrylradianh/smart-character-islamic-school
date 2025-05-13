@@ -55,6 +55,8 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('dashboard.update_status');
         Route::get('/export/{format}', [AdminController::class, 'export'])->name('dashboard.export');
         Route::post('/upload-image', [AdminController::class, 'uploadImage'])->name('dashboard.upload_image');
+        Route::get('/values', [AdminController::class, 'values'])->name('dashboard.values');
+        Route::put('/values/{id}', [AdminController::class, 'updateValue'])->name('dashboard.values.update');
     });
 
     // Routes accessible only to Superadmin

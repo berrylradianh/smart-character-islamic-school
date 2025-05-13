@@ -16,6 +16,7 @@ use App\Models\Role;
 use App\Models\SchoolLocation;
 use App\Models\Timeline;
 use App\Models\User;
+use App\Models\Value;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Http\Request;
@@ -1089,5 +1090,43 @@ class AdminController extends Controller
         $url = Storage::url($path);
 
         return response()->json(['url' => $url]);
+    }
+
+    public function values()
+    {
+        $values = Value::all();
+        $user = Auth::user();
+
+        $data = [
+            'title' => 'Manage Values',
+            'values' => $values,
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.values', $data);
+    }
+
+    public function updateValue(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+        ]);
+
+        $value = Value::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->hasFile('icon')) {
+            if ($value->icon) {
+                Storage::disk('public')->delete($value->icon);
+            }
+            $data['icon'] = $request->file('icon')->store('values/icons', 'public');
+        }
+
+        $value->update($data);
+
+        return redirect()->route('dashboard.values')->with('success', 'Value berhasil diperbarui.');
     }
 }

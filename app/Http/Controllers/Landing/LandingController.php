@@ -9,6 +9,7 @@ use App\Models\DashboardStat;
 use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\News;
+use App\Models\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,7 @@ class LandingController extends Controller
             'news' => News::orderBy('date', 'desc')->get(),
             'agendas' => Agenda::orderBy('date', 'desc')->get(),
             'stats' => DashboardStat::all(),
+            'values' => Value::all(),
             'introduction' => Introduction::first() ? Introduction::first()->content : '',
             'introduction_image' => $introduction->image,
         ];
