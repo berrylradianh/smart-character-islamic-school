@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{route('dashboard.hero')}}">Hero</a></li>
                         <li><a href="{{route('dashboard.news')}}">Berita</a></li>
                         <li><a href="{{route('dashboard.agenda')}}">Agenda</a></li>
+                        <li><a href="{{route('dashboard.introduction')}}">Perkenalan</a></li>
                     </ul>
                 </li>
                 @endif

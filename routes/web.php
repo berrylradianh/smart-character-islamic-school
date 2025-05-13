@@ -26,10 +26,7 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('profile.show');
     Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
-    // Route::get('/ppdb-information', [AdminController::class, 'ppdb_info'])->name('dashboard.ppdb_info');
-    // Route::get('/ppdb-timeline', [AdminController::class, 'ppdb_timeline'])->name('dashboard.ppdb_timeline');
     Route::post('/ppdb-pendaftaran/store', [AdminController::class, 'storeRegistration'])->name('dashboard.ppdb_pendaftaran.store');
-    // Route::get('/ppdb-faq', [AdminController::class, 'ppdb_faq'])->name('dashboard.ppdb_faq');
 
     // Routes accessible to User
     Route::middleware('role:User')->group(function () {
@@ -51,27 +48,13 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::get('/content-agenda', [AdminController::class, 'agenda'])->name('dashboard.agenda');
         Route::post('/content-agenda', [AdminController::class, 'storeAgenda'])->name('dashboard.agenda.store');
         Route::delete('/content-agenda/{id}', [AdminController::class, 'destroyAgenda'])->name('dashboard.agenda.destroy');
-        // Route::get('/requirement-information', [AdminController::class, 'requirement_information'])->name('dashboard.requirement_information');
-        // Route::post('/requirement-information', [AdminController::class, 'storeRequirementInformation'])->name('dashboard.requirement_information.store');
-        // Route::get('/requirement-information/{id}/edit', [AdminController::class, 'editRequirementInformation'])->name('dashboard.requirement_information.edit');
-        // Route::put('/requirement-information/{id}', [AdminController::class, 'updateRequirementInformation'])->name('dashboard.requirement_information.update');
-        // Route::delete('/requirement-information/{id}', [AdminController::class, 'destroyRequirementInformation'])->name('dashboard.requirement_information.destroy');
-        // Route::post('/levels', [AdminController::class, 'storeLevel'])->name('dashboard.levels.store');
-        // Route::delete('/levels/{id}', [AdminController::class, 'destroyLevel'])->name('dashboard.levels.destroy');
-        // Route::get('/requirement-timeline', [AdminController::class, 'requirement_timeline'])->name('dashboard.requirement_timeline');
-        // Route::post('/requirement-timeline', [AdminController::class, 'storeTimeline'])->name('dashboard.requirement_timeline.store');
-        // Route::post('/requirement-timeline/add', [AdminController::class, 'addTimeline'])->name('dashboard.requirement_timeline.add');
-        // Route::get('/requirement-timeline/{id}/edit', [AdminController::class, 'editTimeline'])->name('dashboard.requirement_timeline.edit');
-        // Route::put('/requirement-timeline/{id}', [AdminController::class, 'updateTimeline'])->name('dashboard.requirement_timeline.update');
-        // Route::delete('/requirement-timeline/{id}', [AdminController::class, 'destroyTimeline'])->name('dashboard.requirement_timeline.destroy');
-        // Route::get('/requirement-faq', [AdminController::class, 'requirementFaq'])->name('dashboard.requirement_faq');
-        // Route::post('/requirement-faq', [AdminController::class, 'storeFaq'])->name('dashboard.faq.store');
-        // Route::put('/requirement-faq/{id}', [AdminController::class, 'updateFaq'])->name('dashboard.faq.update');
-        // Route::delete('/requirement-faq/{id}', [AdminController::class, 'destroyFaq'])->name('dashboard.faq.destroy');
+        Route::get('/content-introduction', [AdminController::class, 'introduction'])->name('dashboard.introduction');
+        Route::post('/content-introduction', [AdminController::class, 'storeIntroduction'])->name('dashboard.introduction.store');
         Route::get('/list-pendaftar', [AdminController::class, 'listPendaftar'])->name('dashboard.list_pendaftar');
         Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('dashboard.show_pendaftar');
         Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('dashboard.update_status');
         Route::get('/export/{format}', [AdminController::class, 'export'])->name('dashboard.export');
+        Route::post('/upload-image', [AdminController::class, 'uploadImage'])->name('dashboard.upload_image');
     });
 
     // Routes accessible only to Superadmin

@@ -7,6 +7,7 @@ use App\Models\Agenda;
 use App\Models\DashboardStat;
 use App\Models\Faqs;
 use App\Models\Hero;
+use App\Models\Introduction;
 use App\Models\Level;
 use App\Models\News;
 use App\Models\Registration;
@@ -15,6 +16,8 @@ use App\Models\Role;
 use App\Models\SchoolLocation;
 use App\Models\Timeline;
 use App\Models\User;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -1017,5 +1020,74 @@ class AdminController extends Controller
         $role->delete();
 
         return redirect()->route('dashboard.roles.index')->with('success', 'Role berhasil dihapus.');
+    }
+
+
+    public function introduction()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Perkenalan',
+            'introduction' => Introduction::first() ?? new Introduction(['content' => '']),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.introduction', $data);
+    }
+
+    public function storeIntroduction(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'introduction' => 'required|string',
+            'image' => 'nullable|file|mimes:jpg,png|max:2048',
+        ]);
+
+        // Configure HTMLPurifier
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Allowed', 'p,b,i,u,strong,ul,ol,li,span[style]');
+        $config->set('CSS.AllowedProperties', ['color', 'font-size']);
+        $purifier = new HTMLPurifier($config);
+
+        $cleanContent = $purifier->purify($request->introduction);
+
+        $data = ['content' => $cleanContent];
+
+        // Handle image upload (same logic as storeRegistration)
+        if ($request->hasFile('image')) {
+            $introduction = Introduction::first();
+            // Delete old image if exists
+            if ($introduction && $introduction->image && Storage::disk('public')->exists($introduction->image)) {
+                Storage::disk('public')->delete($introduction->image);
+            }
+            // Save new image
+            $file = $request->file('image');
+            $path = $file->store('introductions', 'public');
+            $data['image'] = $path;
+        }
+
+        // Update or create introduction record
+        $introduction = Introduction::first();
+        if ($introduction) {
+            $introduction->update($data);
+        } else {
+            Introduction::create($data);
+        }
+
+        return redirect()->route('dashboard.introduction')->with('success', 'Introduction updated successfully.');
+    }
+
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->store('public/images/introduction');
+        $url = Storage::url($path);
+
+        return response()->json(['url' => $url]);
     }
 }

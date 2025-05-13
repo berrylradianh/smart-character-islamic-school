@@ -7,6 +7,7 @@ use App\Mail\PpdbInquiry;
 use App\Models\Agenda;
 use App\Models\DashboardStat;
 use App\Models\Hero;
+use App\Models\Introduction;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -16,12 +17,15 @@ class LandingController extends Controller
 {
     public function index()
     {
+        $introduction = Introduction::first() ?? new Introduction(['content' => '', 'image' => null]);
         $data = [
             'title' => 'Beranda',
             'heroes' => Hero::all(),
             'news' => News::orderBy('date', 'desc')->get(),
             'agendas' => Agenda::orderBy('date', 'desc')->get(),
             'stats' => DashboardStat::all(),
+            'introduction' => Introduction::first() ? Introduction::first()->content : '',
+            'introduction_image' => $introduction->image,
         ];
 
         return view('pages.landing.home.index', $data);

@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.dashboard.app')
 
 @section('content')
@@ -26,12 +30,45 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="mt-0 header-title">Edit Perkenalan</h4>
-                            <p class="sub-title">This Content will be shown on the Perkenalan Section of the Landing Page.</p>
+                            <p class="sub-title">This content will be shown in the Perkenalan section of the Landing Page.</p>
 
-                            <form method="POST" action="/save-introduction">
+                            @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                            @endif
+
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+                            <form method="POST" action="{{ route('dashboard.introduction.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <textarea name="introduction" id="introduction" class="form-control summernote" rows="10"></textarea>
+                                    <label for="introduction">Introduction Content</label>
+                                    <textarea name="introduction" id="introduction" class="form-control summernote" rows="10">{!! $introduction->content !!}</textarea>
+                                    @error('introduction')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Introduction Image</label>
+                                    <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
+                                    @if ($introduction->image)
+                                        <div class="mt-2">
+                                            <p>Current Image:</p>
+                                            <img src="{{ Storage::url($introduction->image) }}" alt="Current Introduction Image" style="max-width: 200px; border-radius: 15px;">
+                                        </div>
+                                    @endif
+                                    @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
                             </form>
@@ -61,10 +98,37 @@
             maxHeight: null,
             focus: true,
             toolbar: [
-                ['style', ['style']],
+                ['style', ['style', 'removeformat']],
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul', 'ol', 'paragraph']],
-            ]
+                ['color', ['color']],
+                ['fontsize', ['fontsize']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    for (let i = 0; i < files.length; i++) {
+                        let formData = new FormData();
+                        formData.append('file', files[i]);
+                        $.ajax({
+                            url: '/upload-image', // You need to create this route and controller method
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(url) {
+                                $('#introduction').summernote('insertImage', url);
+                            },
+                            error: function() {
+                                alert('Image upload failed.');
+                            }
+                        });
+                    }
+                }
+            }
         });
     });
 </script>
