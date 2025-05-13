@@ -51,13 +51,6 @@
                             <form method="POST" action="{{ route('dashboard.introduction.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="introduction">Introduction Content</label>
-                                    <textarea name="introduction" id="introduction" class="form-control summernote" rows="10">{!! $introduction->content !!}</textarea>
-                                    @error('introduction')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
                                     <label for="image">Introduction Image</label>
                                     <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
                                     @if ($introduction->image)
@@ -67,6 +60,13 @@
                                         </div>
                                     @endif
                                     @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="introduction">Introduction Content</label>
+                                    <textarea name="introduction" id="introduction" class="form-control summernote" rows="10">{!! $introduction->content !!}</textarea>
+                                    @error('introduction')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
