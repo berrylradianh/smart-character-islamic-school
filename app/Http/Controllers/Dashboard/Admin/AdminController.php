@@ -15,6 +15,7 @@ use App\Models\Registration;
 use App\Models\RegistrationInfo;
 use App\Models\Role;
 use App\Models\SchoolLocation;
+use App\Models\Testimonial;
 use App\Models\Timeline;
 use App\Models\User;
 use App\Models\Value;
@@ -1179,5 +1180,59 @@ class AdminController extends Controller
         $program->delete();
 
         return redirect()->back()->with('success', 'Program content removed successfully!');
+    }
+
+    public function testimonials()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Content Testimonials',
+            'testimonials' => Testimonial::orderBy('order')->orderBy('created_at', 'desc')->get(),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.testimonials', $data);
+    }
+
+    public function storeTestimonial(Request $request)
+    {
+        $request->validate([
+            'testimonials.*.name' => 'required|string|max:255',
+            'testimonials.*.position' => 'required|string|max:255',
+            'testimonials.*.text' => 'required|string',
+            'testimonials.*.rating' => 'required|integer|min:1|max:5',
+            'testimonials.*.order' => 'nullable|integer|min:0',
+            'testimonials.*.file' => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        foreach ($request->testimonials as $index => $testimonialData) {
+            $data = [
+                'name' => $testimonialData['name'],
+                'position' => $testimonialData['position'],
+                'text' => $testimonialData['text'],
+                'rating' => $testimonialData['rating'],
+                'order' => $testimonialData['order'] ?? 0,
+            ];
+
+            if ($request->hasFile("testimonials.{$index}.file")) {
+                $filePath = $request->file("testimonials.{$index}.file")->store('testimonial_images', 'public');
+                $data['image'] = $filePath;
+            }
+
+            Testimonial::create($data);
+        }
+
+        return redirect()->route('dashboard.testimonials')->with('success', 'Testimonial added successfully!');
+    }
+
+    public function destroyTestimonial($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        if ($testimonial->image) {
+            Storage::disk('public')->delete($testimonial->image);
+        }
+        $testimonial->delete();
+
+        return redirect()->back()->with('success', 'Testimonial removed successfully!');
     }
 }

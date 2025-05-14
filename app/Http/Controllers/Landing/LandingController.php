@@ -10,6 +10,7 @@ use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\News;
 use App\Models\Program;
+use App\Models\Testimonial;
 use App\Models\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +31,7 @@ class LandingController extends Controller
             'introduction' => $introduction->content,
             'introduction_image' => $introduction->image,
             'programs' => Program::orderBy('order')->orderBy('created_at', 'desc')->take(4)->get(),
+            'testimonials' => Testimonial::orderBy('order')->orderBy('created_at', 'desc')->get(),
         ];
 
         return view('pages.landing.home.index', $data);
