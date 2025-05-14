@@ -10,6 +10,7 @@ use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\Media;
 use App\Models\News;
+use App\Models\Profile;
 use App\Models\Program;
 use App\Models\Testimonial;
 use App\Models\Value;
@@ -41,8 +42,10 @@ class LandingController extends Controller
 
     public function profile()
     {
+        $profile = Profile::first() ?? new Profile(['title' => 'Smart Character Islamic School (SCIS)', 'content' => '', 'image' => null]);
         $data = [
             'title' => 'Profil',
+            'profile' => $profile,
         ];
 
         return view('pages.landing.profile.index', $data);

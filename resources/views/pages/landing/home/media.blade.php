@@ -2,8 +2,6 @@
     use Illuminate\Support\Facades\Storage;
 @endphp
 
-<!-- ... other sections ... -->
-
 <section class="app__area app__bg">
     <div class="container">
         <div class="app__inner theme-bg-3 p-relative fix">
@@ -127,5 +125,3 @@
         });
     });
 </script>
-
-<!-- ... other sections ... -->

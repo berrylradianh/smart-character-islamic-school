@@ -11,6 +11,7 @@ use App\Models\Introduction;
 use App\Models\Level;
 use App\Models\Media;
 use App\Models\News;
+use App\Models\Profile;
 use App\Models\Program;
 use App\Models\Registration;
 use App\Models\RegistrationInfo;
@@ -1283,5 +1284,53 @@ class AdminController extends Controller
         $media->delete();
 
         return redirect()->back()->with('success', 'Media removed successfully!');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $profile = Profile::first() ?? new Profile();
+        $data = [
+            'title' => 'Content Profil',
+            'profile' => $profile,
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.profile_content', $data);
+    }
+
+    public function storeProfile(Request $request)
+    {
+        $profile = Profile::first() ?? new Profile();
+        $user = Auth::user();
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|max:2048', // Max 2MB
+            'content' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+            'user' => $user,
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($profile->image) {
+                Storage::disk('public')->delete($profile->image);
+            }
+            $data['image'] = $request->file('image')->store('profile_images', 'public');
+        }
+
+        Profile::updateOrCreate(
+            ['id' => $profile->id ?? null],
+            $data
+        );
+
+        return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully!');
     }
 }
