@@ -9,6 +9,7 @@ use App\Models\Faqs;
 use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\Level;
+use App\Models\Media;
 use App\Models\News;
 use App\Models\Program;
 use App\Models\Registration;
@@ -1234,5 +1235,53 @@ class AdminController extends Controller
         $testimonial->delete();
 
         return redirect()->back()->with('success', 'Testimonial removed successfully!');
+    }
+
+    public function media()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Content Media',
+            'media' => Media::orderBy('order')->orderBy('created_at', 'desc')->get(),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.media', $data);
+    }
+
+    public function storeMedia(Request $request)
+    {
+        $request->validate([
+            'media.*.name' => 'required|string|max:255',
+            'media.*.file' => 'required|image|max:2048', // Max 2MB
+            'media.*.order' => 'nullable|integer|min:0',
+        ]);
+
+        foreach ($request->media as $index => $mediaData) {
+            $data = [
+                'name' => $mediaData['name'],
+                'order' => $mediaData['order'] ?? 0,
+            ];
+
+            if ($request->hasFile("media.{$index}.file")) {
+                $filePath = $request->file("media.{$index}.file")->store('media_images', 'public');
+                $data['image'] = $filePath;
+            }
+
+            Media::create($data);
+        }
+
+        return redirect()->route('dashboard.media')->with('success', 'Media added successfully!');
+    }
+
+    public function destroyMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        if ($media->image) {
+            Storage::disk('public')->delete($media->image);
+        }
+        $media->delete();
+
+        return redirect()->back()->with('success', 'Media removed successfully!');
     }
 }

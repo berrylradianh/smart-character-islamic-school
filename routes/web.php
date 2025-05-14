@@ -63,6 +63,9 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::get('/content-testimonials', [AdminController::class, 'testimonials'])->name('dashboard.testimonials');
         Route::post('/content-testimonials', [AdminController::class, 'storeTestimonial'])->name('dashboard.testimonials.store');
         Route::delete('/content-testimonials/{id}', [AdminController::class, 'destroyTestimonial'])->name('dashboard.testimonials.destroy');
+        Route::get('/content-media', [AdminController::class, 'media'])->name('dashboard.media');
+        Route::post('/content-media', [AdminController::class, 'storeMedia'])->name('dashboard.media.store');
+        Route::delete('/content-media/{id}', [AdminController::class, 'destroyMedia'])->name('dashboard.media.destroy');
     });
 
     // Routes accessible only to Superadmin

@@ -8,6 +8,7 @@ use App\Models\Agenda;
 use App\Models\DashboardStat;
 use App\Models\Hero;
 use App\Models\Introduction;
+use App\Models\Media;
 use App\Models\News;
 use App\Models\Program;
 use App\Models\Testimonial;
@@ -32,6 +33,7 @@ class LandingController extends Controller
             'introduction_image' => $introduction->image,
             'programs' => Program::orderBy('order')->orderBy('created_at', 'desc')->take(4)->get(),
             'testimonials' => Testimonial::orderBy('order')->orderBy('created_at', 'desc')->get(),
+            'media' => Media::orderBy('order')->orderBy('created_at', 'desc')->get(),
         ];
 
         return view('pages.landing.home.index', $data);
