@@ -162,7 +162,7 @@
                                             <td>{{ $value->description }}</td>
                                             <td>
                                                 @if ($value->icon)
-                                                <div class="icon-container" style="background-color: {{ $value->color ?? '#4A90E2' }};">
+                                                <div class="icon-container" @if($value->color) style="background-color: {{ $value->color }};" @else style="background-color: #4A90E2;" @endif>
                                                     <img src="{{ asset('storage/' . $value->icon) }}" alt="{{ $value->title }}" class="icon-image">
                                                 </div>
                                                 @else
@@ -172,7 +172,7 @@
                                             <td>
                                                 <div class="color-cell">
                                                     <span class="color-code">{{ $value->color ?? '#4A90E2' }}</span>
-                                                    <span class="color-preview" style="background-color: {{ $value->color ?? '#4A90E2' }};" title="{{ $value->color ?? '#4A90E2' }}"></span>
+                                                    <span class="color-preview" @if($value->color) style="background-color: {{ $value->color }};" @else style="background-color: #4A90E2;" @endif title="{{ $value->color ?? '#4A90E2' }}"></span>
                                                 </div>
                                             </td>
                                             <td>
@@ -211,14 +211,14 @@
                                                                 <div class="color-input-group">
                                                                     <input type="text" name="color" class="form-control color-code-input" value="{{ $value->color ?? '#4A90E2' }}" placeholder="#RRGGBB" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
                                                                     <input type="color" class="form-control colorpicker-input color-sync" data-sync-target="color" value="{{ $value->color ?? '#4A90E2' }}">
-                                                                    <span class="color-preview" style="background-color: {{ $value->color ?? '#4A90E2' }};"></span>
+                                                                    <span class="color-preview" @if($value->color) style="background-color: {{ $value->color }};" @else style="background-color: #4A90E2;" @endif></span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Ikon</label>
                                                                 <input type="file" name="icon" class="form-control-file">
                                                                 @if ($value->icon)
-                                                                <div class="icon-container mt-2" style="background-color: {{ $value->color ?? '#4A90E2' }};">
+                                                                <div class="icon-container mt-2" @if($value->color) style="background-color: {{ $value->color }};" @else style="background-color: #4A90E2;" @endif>
                                                                     <img src="{{ asset('storage/' . $value->icon) }}" alt="{{ $value->title }}" class="icon-image">
                                                                 </div>
                                                                 @endif

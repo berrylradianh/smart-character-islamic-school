@@ -12,7 +12,7 @@
                         @foreach ($values as $value)
                         <div class="col-md-4">
                             <div class="features__item d-flex flex-column align-items-center white-bg mb-30">
-                                <div class="features__icon" style="background-color: {{ $value->color ?? '#4A90E2' }}; width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <div class="features__icon" @if($value->color) style="background-color: {{ $value->color }}; width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;" @else style="background-color: #4A90E2; width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;" @endif>
                                     @if ($value->icon)
                                         <img src="{{ Storage::url($value->icon) }}" alt="{{ $value->title }}" style="width: 80px; height: 80px;">
                                     @else
