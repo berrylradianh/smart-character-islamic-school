@@ -57,6 +57,7 @@ class LandingController extends Controller
     {
         $data = [
             'title' => 'Program',
+            'programs' => Program::orderBy('order')->orderBy('created_at', 'desc')->get(),
         ];
 
         return view('pages.landing.program.index', $data);
