@@ -10,6 +10,7 @@ use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\Level;
 use App\Models\News;
+use App\Models\Program;
 use App\Models\Registration;
 use App\Models\RegistrationInfo;
 use App\Models\Role;
@@ -1128,5 +1129,55 @@ class AdminController extends Controller
         $value->update($data);
 
         return redirect()->route('dashboard.values')->with('success', 'Value berhasil diperbarui.');
+    }
+
+    public function programs()
+    {
+        $user = Auth::user();
+        $data = [
+            'title' => 'Content Program Unggulan',
+            'programs' => Program::orderBy('order')->orderBy('created_at', 'desc')->get(),
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.programs', $data);
+    }
+
+    public function storeProgram(Request $request)
+    {
+        $request->validate([
+            'programs.*.title' => 'required|string|max:255',
+            'programs.*.description' => 'required|string',
+            'programs.*.file' => 'nullable|image|max:2048', // Image is optional, max 2MB
+            'programs.*.order' => 'nullable|integer|min:0',
+        ]);
+
+        foreach ($request->programs as $index => $programData) {
+            $data = [
+                'title' => $programData['title'],
+                'description' => $programData['description'],
+                'order' => $programData['order'] ?? 0,
+            ];
+
+            if ($request->hasFile("programs.{$index}.file")) {
+                $filePath = $request->file("programs.{$index}.file")->store('program_images', 'public');
+                $data['image'] = $filePath;
+            }
+
+            Program::create($data);
+        }
+
+        return redirect()->route('dashboard.programs')->with('success', 'Program content added successfully!');
+    }
+
+    public function destroyProgram($id)
+    {
+        $program = Program::findOrFail($id);
+        if ($program->image) {
+            Storage::disk('public')->delete($program->image);
+        }
+        $program->delete();
+
+        return redirect()->back()->with('success', 'Program content removed successfully!');
     }
 }

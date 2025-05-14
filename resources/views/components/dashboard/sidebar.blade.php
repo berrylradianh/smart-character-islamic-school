@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{route('dashboard.agenda')}}">Agenda</a></li>
                         <li><a href="{{route('dashboard.introduction')}}">Perkenalan</a></li>
                         <li><a href="{{route('dashboard.values')}}">Prinsip</a></li>
+                        <li><a href="{{route('dashboard.programs')}}">Program Unggulan</a></li>
                     </ul>
                 </li>
                 @endif

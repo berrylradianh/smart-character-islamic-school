@@ -57,6 +57,9 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::post('/upload-image', [AdminController::class, 'uploadImage'])->name('dashboard.upload_image');
         Route::get('/values', [AdminController::class, 'values'])->name('dashboard.values');
         Route::put('/values/{id}', [AdminController::class, 'updateValue'])->name('dashboard.values.update');
+        Route::get('/content-programs', [AdminController::class, 'programs'])->name('dashboard.programs');
+        Route::post('/content-programs', [AdminController::class, 'storeProgram'])->name('dashboard.programs.store');
+        Route::delete('/content-programs/{id}', [AdminController::class, 'destroyProgram'])->name('dashboard.programs.destroy');
     });
 
     // Routes accessible only to Superadmin
