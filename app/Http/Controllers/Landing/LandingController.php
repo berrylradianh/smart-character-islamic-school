@@ -14,6 +14,7 @@ use App\Models\Profile;
 use App\Models\Program;
 use App\Models\Testimonial;
 use App\Models\Value;
+use App\Models\Vision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -53,8 +54,21 @@ class LandingController extends Controller
 
     public function vision()
     {
+        $vision = Vision::first() ?? new Vision([
+            'vision_text' => '"Menjadi Lembaga Kaderisasi umat yang inklusif, berkemajuan dan berwawasan global."',
+            'mission_items' => [
+                'SMART adalah : Specific, Measurable, Achievable, Relevant dan Timebound.',
+                'Berakhlak Mulia yaitu beradab dan berbudi pekerti mulia.',
+                'Disiplin Tinggi yaitu peka dan sadar dengan diri sendiri dan lingkungan sekitar.',
+                'Mandiri yaitu kuat dalam ekonomi, menguasai ilmu akuntansi dan keuangan.',
+                'Kompeten yaitu ahli dalam bidang tententu dan atau segala bidang.'
+            ],
+            'commitment_text' => 'SCIS berkomitmen untuk membentuk pendidikan yang berlandaskan pada ajaran islam.',
+            'poster_image' => null,
+        ]);
         $data = [
             'title' => 'Visi dan Misi',
+            'vision' => $vision,
         ];
 
         return view('pages.landing.vision.index', $data);

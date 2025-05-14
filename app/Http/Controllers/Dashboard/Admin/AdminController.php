@@ -21,6 +21,7 @@ use App\Models\Testimonial;
 use App\Models\Timeline;
 use App\Models\User;
 use App\Models\Value;
+use App\Models\Vision;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Http\Request;
@@ -1332,5 +1333,55 @@ class AdminController extends Controller
         );
 
         return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully!');
+    }
+
+    public function vision()
+    {
+        $user = Auth::user();
+        $vision = Vision::first() ?? new Vision();
+        $data = [
+            'title' => 'Content Visi dan Misi',
+            'vision' => $vision,
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.vision', $data);
+    }
+
+    public function storeVision(Request $request)
+    {
+        $user = Auth::user();
+        $vision = Vision::first() ?? new Vision();
+        $validator = Validator::make($request->all(), [
+            'vision_text' => 'required|string',
+            'mission_items' => 'required|string',
+            'commitment_text' => 'required|string',
+            'poster_image' => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = [
+            'vision_text' => $request->vision_text,
+            'mission_items' => array_filter(explode("\n", trim($request->mission_items))),
+            'commitment_text' => $request->commitment_text,
+            'user' => $user,
+        ];
+
+        if ($request->hasFile('poster_image')) {
+            if ($vision->poster_image) {
+                Storage::disk('public')->delete($vision->poster_image);
+            }
+            $data['poster_image'] = $request->file('poster_image')->store('vision_images', 'public');
+        }
+
+        Vision::updateOrCreate(
+            ['id' => $vision->id ?? null],
+            $data
+        );
+
+        return redirect()->route('dashboard.vision')->with('success', 'Vision and Mission updated successfully!');
     }
 }

@@ -68,6 +68,8 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::delete('/content-media/{id}', [AdminController::class, 'destroyMedia'])->name('dashboard.media.destroy');
         Route::get('/content-profile', [AdminController::class, 'profile'])->name('dashboard.profile');
         Route::post('/content-profile', [AdminController::class, 'storeProfile'])->name('dashboard.profile.store');
+        Route::get('/content-vision', [AdminController::class, 'vision'])->name('dashboard.vision');
+        Route::post('/content-vision', [AdminController::class, 'storeVision'])->name('dashboard.vision.store');
     });
 
     // Routes accessible only to Superadmin

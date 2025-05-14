@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MediaSeeder::class);
         $this->call(ProfileSeeder::class);
         $this->call(TestimonialSeeder::class);
+        $this->call(VisionSeeder::class);
     }
 }
