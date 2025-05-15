@@ -60,7 +60,7 @@ use App\Models\Level;
                             @endif
 
                             @if ($registration)
-                            <!-- Status Pendaftaran (unchanged) -->
+                            <!-- Status Pendaftaran -->
                             <div class="mt-4">
                                 <div class="card border-0 shadow-lg rounded-lg">
                                     <div class="card-body p-4">
@@ -123,6 +123,44 @@ use App\Models\Level;
                                                     <i class="fas fa-map-marker-alt fa-lg text-muted mr-3"></i>
                                                     <div>
                                                         <strong>Lokasi:</strong>
+                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                @if ($registration->gedung)
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-building fa-lg text-primary mr-3"></i>
+                                                    <div>
+                                                        <strong>Gedung:</strong>
+                                                        <p class="mb-0">{{ $registration->gedung->nama_gedung }}</p>
+                                                    </div>
+                                                </div>
+                                                @else
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-building fa-lg text-muted mr-3"></i>
+                                                    <div>
+                                                        <strong>Gedung:</strong>
+                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                @if ($registration->ruang)
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-door-open fa-lg text-primary mr-3"></i>
+                                                    <div>
+                                                        <strong>Ruang:</strong>
+                                                        <p class="mb-0">{{ $registration->ruang->nama_ruang }}</p>
+                                                    </div>
+                                                </div>
+                                                @else
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
+                                                    <div>
+                                                        <strong>Ruang:</strong>
                                                         <p class="mb-0 text-muted">Belum ditentukan</p>
                                                     </div>
                                                 </div>

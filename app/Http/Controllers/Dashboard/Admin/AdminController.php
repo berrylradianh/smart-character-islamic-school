@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agenda;
 use App\Models\DashboardStat;
 use App\Models\Faqs;
+use App\Models\Gedung;
 use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\Level;
@@ -17,6 +18,7 @@ use App\Models\Program;
 use App\Models\Registration;
 use App\Models\RegistrationInfo;
 use App\Models\Role;
+use App\Models\Ruang;
 use App\Models\SchoolLocation;
 use App\Models\Testimonial;
 use App\Models\Timeline;
@@ -604,7 +606,9 @@ class AdminController extends Controller
     public function ppdb_pendaftaran()
     {
         $user = Auth::user();
-        $registration = Registration::where('user_id', $user->id)->first();
+        $registration = Registration::with(['schoolLocation', 'gedung', 'ruang'])
+            ->where('user_id', $user->id)
+            ->first();
 
         $data = [
             'title' => 'PPDB Pendaftaran',
@@ -699,11 +703,16 @@ class AdminController extends Controller
     public function showPendaftar($id)
     {
         $user = Auth::user();
+        $registration = Registration::with(['user', 'schoolLocation', 'gedung', 'ruang'])->findOrFail($id);
+        $gedungs = $registration->school_location_id ? Gedung::where('school_location_id', $registration->school_location_id)->get() : collect([]);
+        $ruangs = $registration->gedung_id ? Ruang::where('gedung_id', $registration->gedung_id)->get() : collect([]);
         $data = [
             'title' => 'PPDB List Pendaftar',
-            'registration' => Registration::with('schoolLocation')->findOrFail($id),
+            'registration' => $registration,
             'locations' => SchoolLocation::all(),
             'user' => $user,
+            'gedungs' => $gedungs,
+            'ruangs' => $ruangs,
         ];
 
         return view('pages.dashboard.ppdb.detail', $data);
@@ -716,6 +725,8 @@ class AdminController extends Controller
                 'status' => 'required|in:waiting,decline,approve',
                 'jadwal_tes' => 'nullable|required_if:status,approve|date',
                 'school_location_id' => 'nullable|required_if:status,approve|exists:school_locations,id',
+                'gedung_id' => 'nullable|required_if:status,approve|exists:gedungs,id',
+                'ruang_id' => 'nullable|required_if:status,approve|exists:ruangs,id',
             ]);
 
             $registration = Registration::findOrFail($id);
@@ -724,9 +735,13 @@ class AdminController extends Controller
             if ($request->status === 'approve') {
                 $data['jadwal_tes'] = $request->jadwal_tes;
                 $data['school_location_id'] = $request->school_location_id;
+                $data['gedung_id'] = $request->gedung_id;
+                $data['ruang_id'] = $request->ruang_id;
             } else {
                 $data['jadwal_tes'] = null;
                 $data['school_location_id'] = null;
+                $data['gedung_id'] = null;
+                $data['ruang_id'] = null;
             }
 
             $registration->update($data);
@@ -1448,5 +1463,17 @@ class AdminController extends Controller
         );
 
         return redirect()->route('dashboard.ppdb')->with('success', 'PPDB content updated successfully!');
+    }
+
+    public function getGedungs($school_location_id)
+    {
+        $gedungs = Gedung::where('school_location_id', $school_location_id)->get(['id', 'nama_gedung']);
+        return response()->json($gedungs);
+    }
+
+    public function getRuangs($gedung_id)
+    {
+        $ruangs = Ruang::where('gedung_id', $gedung_id)->get(['id', 'nama_ruang']);
+        return response()->json($ruangs);
     }
 }

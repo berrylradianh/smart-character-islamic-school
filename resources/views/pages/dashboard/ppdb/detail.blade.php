@@ -107,6 +107,20 @@ use Illuminate\Support\Facades\Storage;
                                                                     <span>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ' - ' . $registration->schoolLocation->alamat : 'Belum Ditentukan' }}</span>
                                                                 </div>
                                                             </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-building fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Gedung:</strong>
+                                                                    <span>{{ $registration->gedung ? $registration->gedung->nama_gedung : 'Belum Ditentukan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-door-open fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Ruang:</strong>
+                                                                    <span>{{ $registration->ruang ? $registration->ruang->nama_ruang : 'Belum Ditentukan' }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -295,10 +309,28 @@ use Illuminate\Support\Facades\Storage;
                                                     </div>
                                                     <div class="col-md-6 form-group">
                                                         <label>Lokasi Tes</label>
-                                                        <select class="form-control" name="school_location_id" {{ $registration->status == 'approve' ? 'required' : '' }}>
+                                                        <select class="form-control" name="school_location_id" id="school_location_id" {{ $registration->status == 'approve' ? 'required' : '' }}>
                                                             <option value="">-- Pilih Lokasi --</option>
                                                             @foreach ($locations as $location)
                                                             <option value="{{ $location->id }}" {{ $registration->school_location_id == $location->id ? 'selected' : '' }}>{{ $location->nama_lokasi }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label>Gedung</label>
+                                                        <select class="form-control" name="gedung_id" id="gedung_id" {{ $registration->status == 'approve' ? 'required' : '' }} disabled>
+                                                            <option value="">-- Pilih Gedung --</option>
+                                                            @foreach ($gedungs as $gedung)
+                                                            <option value="{{ $gedung->id }}" {{ $registration->gedung_id == $gedung->id ? 'selected' : '' }}>{{ $gedung->nama_gedung }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label>Ruang</label>
+                                                        <select class="form-control" name="ruang_id" id="ruang_id" {{ $registration->status == 'approve' ? 'required' : '' }} disabled>
+                                                            <option value="">-- Pilih Ruang --</option>
+                                                            @foreach ($ruangs as $ruang)
+                                                            <option value="{{ $ruang->id }}" {{ $registration->ruang_id == $ruang->id ? 'selected' : '' }}>{{ $ruang->nama_ruang }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -340,6 +372,20 @@ use Illuminate\Support\Facades\Storage;
                                                     <div>
                                                         <strong>Lokasi Tes:</strong>
                                                         <span>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ' - ' . $registration->schoolLocation->alamat : 'Belum Ditentukan' }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                    <i class="fas fa-building fa-2x mr-3 text-primary"></i>
+                                                    <div>
+                                                        <strong>Gedung:</strong>
+                                                        <span>{{ $registration->gedung ? $registration->gedung->nama_gedung : 'Belum Ditentukan' }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                    <i class="fas fa-door-open fa-2x mr-3 text-primary"></i>
+                                                    <div>
+                                                        <strong>Ruang:</strong>
+                                                        <span>{{ $registration->ruang ? $registration->ruang->nama_ruang : 'Belum Ditentukan' }}</span>
                                                     </div>
                                                 </div>
                                                 <!-- Bagian Dokumen Wajib Dibawa -->
@@ -509,32 +555,137 @@ use Illuminate\Support\Facades\Storage;
 
 @section('scripts')
 <script>
-    $('#previewModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var src = button.data('src');
-        var type = button.data('type');
-        var modal = $(this);
-        var content = modal.find('#previewContent');
+    $(document).ready(function() {
+        // Preview Modal
+        $('#previewModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var src = button.data('src');
+            var type = button.data('type');
+            var modal = $(this);
+            var content = modal.find('#previewContent');
 
-        if (type === 'pdf') {
-            content.html('<embed src="' + src + '" type="application/pdf" width="100%" height="500px" />');
-        } else {
-            content.html('<img src="' + src + '" class="img-fluid" alt="Preview Dokumen" />');
+            if (type === 'pdf') {
+                content.html('<embed src="' + src + '" type="application/pdf" width="100%" height="500px" />');
+            } else {
+                content.html('<img src="' + src + '" class="img-fluid" alt="Preview Dokumen" />');
+            }
+        });
+
+        // Status Change Handler
+        $('#statusSelect').on('change', function() {
+            var status = $(this).val();
+            if (status === 'approve') {
+                $('#testDetails').show();
+                $('#testDetails input, #testDetails select').attr('required', 'required');
+                $('#school_location_id').prop('disabled', false);
+                $('#gedung_id').prop('disabled', true).empty().append('<option value="">-- Pilih Gedung --</option>');
+                $('#ruang_id').prop('disabled', true).empty().append('<option value="">-- Pilih Ruang --</option>');
+            } else {
+                $('#testDetails').hide();
+                $('#testDetails input, #testDetails select').removeAttr('required');
+                $('#school_location_id').prop('disabled', false);
+                $('#gedung_id').prop('disabled', true).empty().append('<option value="">-- Pilih Gedung --</option>');
+                $('#ruang_id').prop('disabled', true).empty().append('<option value="">-- Pilih Ruang --</option>');
+            }
+        });
+
+        // School Location Change Handler
+        $('#school_location_id').on('change', function() {
+            var schoolLocationId = $(this).val();
+            $('#gedung_id').empty().append('<option value="">-- Pilih Gedung --</option>').prop('disabled', true);
+            $('#ruang_id').empty().append('<option value="">-- Pilih Ruang --</option>').prop('disabled', true);
+
+            if (schoolLocationId) {
+                $.ajax({
+                    url: '{{ route("dashboard.get_gedungs", ":school_location_id") }}'.replace(':school_location_id', schoolLocationId),
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $.each(data, function(index, gedung) {
+                                $('#gedung_id').append('<option value="' + gedung.id + '">' + gedung.nama_gedung + '</option>');
+                            });
+                            $('#gedung_id').prop('disabled', false);
+                        } else {
+                            alert('Tidak ada gedung tersedia untuk lokasi ini.');
+                        }
+                    },
+                    error: function() {
+                        alert('Gagal memuat daftar gedung.');
+                    }
+                });
+            }
+        });
+
+        // Gedung Change Handler
+        $('#gedung_id').on('change', function() {
+            var gedungId = $(this).val();
+            $('#ruang_id').empty().append('<option value="">-- Pilih Ruang --</option>').prop('disabled', true);
+
+            if (gedungId) {
+                $.ajax({
+                    url: '{{ route("dashboard.get_ruangs", ":gedung_id") }}'.replace(':gedung_id', gedungId),
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            $.each(data, function(index, ruang) {
+                                $('#ruang_id').append('<option value="' + ruang.id + '">' + ruang.nama_ruang + '</option>');
+                            });
+                            $('#ruang_id').prop('disabled', false);
+                        } else {
+                            alert('Tidak ada ruang tersedia untuk gedung ini.');
+                        }
+                    },
+                    error: function() {
+                        alert('Gagal memuat daftar ruang.');
+                    }
+                });
+            }
+        });
+
+        // Handle pre-selected values on page load
+        var status = '{{ $registration->status }}';
+        var schoolLocationId = '{{ $registration->school_location_id }}';
+        var gedungId = '{{ $registration->gedung_id }}';
+        var ruangId = '{{ $registration->ruang_id }}';
+
+        if (status === 'approve' && schoolLocationId) {
+            // Populate gedung_id
+            $.ajax({
+                url: '{{ route("dashboard.get_gedungs", ":school_location_id") }}'.replace(':school_location_id', schoolLocationId),
+                type: 'GET'
+            }).then(function(data) {
+                if (data.length > 0) {
+                    $('#gedung_id').empty().append('<option value="">-- Pilih Gedung --</option>');
+                    $.each(data, function(index, gedung) {
+                        $('#gedung_id').append('<option value="' + gedung.id + '">' + gedung.nama_gedung + '</option>');
+                    });
+                    $('#gedung_id').prop('disabled', false);
+                    if (gedungId) {
+                        $('#gedung_id').val(gedungId);
+                        // Populate ruang_id
+                        return $.ajax({
+                            url: '{{ route("dashboard.get_ruangs", ":gedung_id") }}'.replace(':gedung_id', gedungId),
+                            type: 'GET'
+                        }).then(function(data) {
+                            if (data.length > 0) {
+                                $('#ruang_id').empty().append('<option value="">-- Pilih Ruang --</option>');
+                                $.each(data, function(index, ruang) {
+                                    $('#ruang_id').append('<option value="' + ruang.id + '">' + ruang.nama_ruang + '</option>');
+                                });
+                                $('#ruang_id').prop('disabled', false);
+                                if (ruangId) {
+                                    $('#ruang_id').val(ruangId);
+                                }
+                            }
+                        });
+                    }
+                }
+            }).fail(function() {
+                alert('Gagal memuat data untuk pre-selected values.');
+            });
         }
-    });
 
-    $('#statusSelect').on('change', function() {
-        var status = $(this).val();
-        if (status === 'approve') {
-            $('#testDetails').show();
-            $('#testDetails input, #testDetails select').attr('required', 'required');
-        } else {
-            $('#testDetails').hide();
-            $('#testDetails input, #testDetails select').removeAttr('required');
-        }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
+        // Jadwal Tes Handler
         const jadwalTesDisplay = document.getElementById('jadwal_tes_display');
         const jadwalTesInput = document.getElementById('jadwal_tes');
 

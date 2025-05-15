@@ -72,6 +72,8 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::post('/content-vision', [AdminController::class, 'storeVision'])->name('dashboard.vision.store');
         Route::get('/content-ppdb', [AdminController::class, 'ppdb'])->name('dashboard.ppdb');
         Route::post('/content-ppdb', [AdminController::class, 'storePpdb'])->name('dashboard.ppdb.store');
+        Route::get('/get-gedungs/{school_location_id}', [AdminController::class, 'getGedungs'])->name('dashboard.get_gedungs');
+        Route::get('/get-ruangs/{gedung_id}', [AdminController::class, 'getRuangs'])->name('dashboard.get_ruangs');
     });
 
     // Routes accessible only to Superadmin

@@ -27,5 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TestimonialSeeder::class);
         $this->call(VisionSeeder::class);
         $this->call(PpdbSeeder::class);
+        $this->call(GedungSeeder::class);
+        $this->call(RuangSeeder::class);
     }
 }

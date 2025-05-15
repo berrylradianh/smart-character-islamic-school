@@ -21,6 +21,8 @@ class Registration extends Model
         'status',
         'jadwal_tes',
         'school_location_id',
+        'gedung_id',
+        'ruang_id'
     ];
 
     /**
@@ -46,5 +48,15 @@ class Registration extends Model
     public function schoolLocation()
     {
         return $this->belongsTo(SchoolLocation::class);
+    }
+
+    public function gedung()
+    {
+        return $this->belongsTo(Gedung::class);
+    }
+
+    public function ruang()
+    {
+        return $this->belongsTo(Ruang::class);
     }
 }
