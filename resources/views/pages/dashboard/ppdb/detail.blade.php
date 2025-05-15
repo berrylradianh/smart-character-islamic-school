@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.dashboard.app')
 
 @section('content')
@@ -86,14 +90,14 @@
                                                                 <i class="fas fa-calendar-alt fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Tanggal Lahir:</strong>
-                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->format('d F Y') : '-' }}</span>
+                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->format('d/m/Y') : '-' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-clock fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Jadwal Tes:</strong>
-                                                                    <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan' }}</span>
+                                                                    <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d/m/Y H:i') : 'Belum Ditentukan' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
@@ -283,7 +287,11 @@
                                                 <div class="row">
                                                     <div class="col-md-6 form-group">
                                                         <label>Jadwal Tes</label>
-                                                        <input type="datetime-local" class="form-control" name="jadwal_tes" value="{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('Y-m-d\TH:i') : '' }}" {{ $registration->status == 'approve' ? 'required' : '' }}>
+                                                        <div style="position: relative;">
+                                                            <input type="text" id="jadwal_tes_display" class="form-control" value="{{ old('jadwal_tes', $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d/m/Y H:i') : '') }}" placeholder="dd/mm/yyyy HH:mm" {{ $registration->status == 'approve' ? 'required' : '' }}>
+                                                            <input type="datetime-local" name="jadwal_tes" id="jadwal_tes" class="form-control" value="{{ old('jadwal_tes', $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('Y-m-d\TH:i') : '') }}" style="position: absolute; opacity: 0; width: 100%; z-index: -1;" {{ $registration->status == 'approve' ? 'required' : '' }}>
+                                                        </div>
+                                                        <small class="form-text text-muted">Format: DD/MM/YYYY HH:MM</small>
                                                     </div>
                                                     <div class="col-md-6 form-group">
                                                         <label>Lokasi Tes</label>
@@ -324,7 +332,7 @@
                                                     <i class="fas fa-clock fa-2x mr-3 text-primary"></i>
                                                     <div>
                                                         <strong>Jadwal Tes:</strong>
-                                                        <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan' }}</span>
+                                                        <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d/m/Y H:i') : 'Belum Ditentukan' }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
@@ -524,6 +532,57 @@
             $('#testDetails').hide();
             $('#testDetails input, #testDetails select').removeAttr('required');
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const jadwalTesDisplay = document.getElementById('jadwal_tes_display');
+        const jadwalTesInput = document.getElementById('jadwal_tes');
+
+        // Trigger datetime picker when clicking the text input
+        jadwalTesDisplay.addEventListener('click', function() {
+            jadwalTesInput.showPicker();
+        });
+
+        // Update text input when datetime picker changes
+        jadwalTesInput.addEventListener('change', function() {
+            if (jadwalTesInput.value) {
+                const date = new Date(jadwalTesInput.value);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                jadwalTesDisplay.value = `${day}/${month}/${year} ${hours}:${minutes}`;
+            } else {
+                jadwalTesDisplay.value = '';
+            }
+        });
+
+        // Update datetime picker when text input changes
+        jadwalTesDisplay.addEventListener('input', function() {
+            const value = jadwalTesDisplay.value;
+            const regex = /^(\d{2})\/(\d{2})\/(\d{4})\s(\d{2}):(\d{2})$/;
+            if (regex.test(value)) {
+                const [, day, month, year, hours, minutes] = value.match(regex);
+                const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
+                if (!isNaN(date.getTime())) {
+                    jadwalTesInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                } else {
+                    jadwalTesInput.value = '';
+                }
+            } else {
+                jadwalTesInput.value = '';
+            }
+        });
+
+        // Prevent form submission if datetime format is invalid
+        jadwalTesDisplay.closest('form').addEventListener('submit', function(event) {
+            const value = jadwalTesDisplay.value;
+            if (value && !/^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/.test(value)) {
+                event.preventDefault();
+                alert('Jadwal Tes harus dalam format DD/MM/YYYY HH:MM.');
+            }
+        });
     });
 </script>
 @endsection
