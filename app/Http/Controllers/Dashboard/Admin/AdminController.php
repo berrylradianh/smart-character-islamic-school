@@ -11,6 +11,7 @@ use App\Models\Introduction;
 use App\Models\Level;
 use App\Models\Media;
 use App\Models\News;
+use App\Models\Ppdb;
 use App\Models\Profile;
 use App\Models\Program;
 use App\Models\Registration;
@@ -1383,5 +1384,69 @@ class AdminController extends Controller
         );
 
         return redirect()->route('dashboard.vision')->with('success', 'Vision and Mission updated successfully!');
+    }
+
+    public function ppdb()
+    {
+        $user = Auth::user();
+        $ppdb = Ppdb::first() ?? new Ppdb();
+        $data = [
+            'title' => 'Content PPDB',
+            'ppdb' => $ppdb,
+            'user' => $user,
+        ];
+
+        return view('pages.dashboard.ppdb', $data);
+    }
+
+    public function storePpdb(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'description' => 'required',
+            'program_unggulan' => 'required',
+            'jenjang_pendidikan' => 'required',
+            'jadwal_pendaftaran' => 'required',
+            'contact_info' => 'required',
+            'image' => 'nullable|image|max:2048', // Max 2MB
+            'registrant_counts.tk' => 'required|integer|min:0',
+            'registrant_counts.sd' => 'required|integer|min:0',
+            'registrant_counts.smp' => 'required|integer|min:0',
+            'registrant_counts.sma' => 'required|integer|min:0',
+            'rincian_biaya' => 'required',
+            'jadwal_ppdb' => 'required',
+            'dokumen_diperlukan' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $data = [
+            'description' => $request->description,
+            'program_unggulan' => array_filter(explode("\n", trim($request->program_unggulan))),
+            'jenjang_pendidikan' => $request->jenjang_pendidikan,
+            'jadwal_pendaftaran' => $request->jadwal_pendaftaran,
+            'contact_info' => $request->contact_info,
+            'registrant_counts' => $request->registrant_counts, // Store registrant counts as JSON
+            'rincian_biaya' => array_filter(explode("\n", trim($request->rincian_biaya))),
+            'jadwal_ppdb' => array_filter(explode("\n", trim($request->jadwal_ppdb))),
+            'dokumen_diperlukan' => array_filter(explode("\n", trim($request->dokumen_diperlukan))),
+        ];
+
+        $ppdb = Ppdb::first();
+
+        if ($request->hasFile('image')) {
+            if ($ppdb && $ppdb->image) {
+                Storage::disk('public')->delete($ppdb->image);
+            }
+            $data['image'] = $request->file('image')->store('ppdb_images', 'public');
+        }
+
+        Ppdb::updateOrCreate(
+            ['id' => $ppdb->id ?? null],
+            $data
+        );
+
+        return redirect()->route('dashboard.ppdb')->with('success', 'PPDB content updated successfully!');
     }
 }

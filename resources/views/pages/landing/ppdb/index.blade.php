@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Pendaftaran PPDB')
@@ -20,34 +24,31 @@
                     Smart Character Islamic School<br>Tahun Ajaran 2025-2026
                 </h3>
                 <p class="text-justify">
-                    <strong>Smart Character Islamic School (SCIS)</strong> membuka <strong>Penerimaan Peserta Didik Baru (PPDB)</strong> untuk Tahun Ajaran 2025–2026!
-                    Kami berkomitmen mencetak generasi Qur'ani yang cerdas, berkarakter, dan siap menghadapi tantangan zaman.
+                    {!! $ppdb->description !!}
                 </p>
 
                 <div class="mb-3">
                     <h5 class="text-primary">🌟 Program Unggulan:</h5>
                     <ul class="list-unstyled ps-3">
-                        <li>✅ Tahfizh Qur’an dan pembiasaan adab Islami</li>
-                        <li>✅ Pendidikan karakter berbasis Al-Qur’an dan Hadits</li>
-                        <li>✅ Bahasa Inggris dan Arab sejak dini</li>
-                        <li>✅ Pembelajaran berbasis proyek dan teknologi</li>
-                        <li>✅ Ekstrakurikuler Islami dan pengembangan minat bakat</li>
+                        @foreach ($ppdb->program_unggulan as $program)
+                        <li>✅ {{ $program }}</li>
+                        @endforeach
                     </ul>
                 </div>
 
                 <div class="mb-3">
                     <h5 class="text-primary">📌 Jenjang Pendidikan:</h5>
-                    <p>Taman Kanak-Kanak (TK), dan Sekolah Dasar (SD), Sekolah Menengah (SMP), dan Sekolah Menengah Atas (SMA)</p>
+                    <p>{{ $ppdb->jenjang_pendidikan }}</p>
                 </div>
 
                 <div class="mb-3">
                     <h5 class="text-primary">🗓️ Jadwal Pendaftaran:</h5>
-                    <p>1 November 2024 – 30 Juni 2025</p>
+                    <p>{{ $ppdb->jadwal_pendaftaran }}</p>
                 </div>
 
                 <div class="mb-3">
                     <h5 class="text-primary">📞 Informasi & Kontak:</h5>
-                    <p>WhatsApp: <a href="https://wa.me/62812XXXXXXX" target="_blank">0812-XXXX-XXXX</a></p>
+                    <p>{!! $ppdb->contact_info !!}</p>
                 </div>
 
                 <a href="{{route('auth.register')}}" class="header-btn"
@@ -60,10 +61,13 @@
 
             <!-- Right Side: Image -->
             <div class="col-lg-6 text-center">
+                @if ($ppdb->image)
+                <img src="{{ Storage::url($ppdb->image) }}" alt="PPDB SCIS" class="rounded" style="max-width: 85%;">
+                @else
                 <img src="{{ asset('assets/img/ppdb.png') }}" alt="PPDB SCIS" class="rounded" style="max-width: 85%;">
+                @endif
             </div>
         </div>
-
 
         <!-- Form and Quota Section -->
         <div class="row mt-5">
@@ -134,7 +138,7 @@
                             <div class="card stat-card shadow-sm text-center">
                                 <div class="card-body">
                                     <h6 class="card-title text-uppercase text-primary">TK</h6>
-                                    <h3 class="card-text fw-bold text-dark">35</h3>
+                                    <h3 class="card-text fw-bold text-dark">{{ $ppdb->registrant_counts['tk'] ?? 0 }}</h3>
                                     <p class="card-subtitle text-muted">Pendaftar</p>
                                 </div>
                             </div>
@@ -144,7 +148,7 @@
                             <div class="card stat-card shadow-sm text-center">
                                 <div class="card-body">
                                     <h6 class="card-title text-uppercase text-primary">SD</h6>
-                                    <h3 class="card-text fw-bold text-dark">70</h3>
+                                    <h3 class="card-text fw-bold text-dark">{{ $ppdb->registrant_counts['sd'] ?? 0 }}</h3>
                                     <p class="card-subtitle text-muted">Pendaftar</p>
                                 </div>
                             </div>
@@ -154,7 +158,7 @@
                             <div class="card stat-card shadow-sm text-center">
                                 <div class="card-body">
                                     <h6 class="card-title text-uppercase text-primary">SMP</h6>
-                                    <h3 class="card-text fw-bold text-dark">40</h3>
+                                    <h3 class="card-text fw-bold text-dark">{{ $ppdb->registrant_counts['smp'] ?? 0 }}</h3>
                                     <p class="card-subtitle text-muted">Pendaftar</p>
                                 </div>
                             </div>
@@ -164,7 +168,7 @@
                             <div class="card stat-card shadow-sm text-center">
                                 <div class="card-body">
                                     <h6 class="card-title text-uppercase text-primary">SMA</h6>
-                                    <h3 class="card-text fw-bold text-dark">20</h3>
+                                    <h3 class="card-text fw-bold text-dark">{{ $ppdb->registrant_counts['sma'] ?? 0 }}</h3>
                                     <p class="card-subtitle text-muted">Pendaftar</p>
                                 </div>
                             </div>
@@ -193,9 +197,9 @@
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#ppdbAccordion">
                             <div class="accordion-body">
                                 <ul>
-                                    <li>Biaya Pendaftaran: Rp 500.000</li>
-                                    <li>Uang Pangkal: Rp 5.000.000</li>
-                                    <li>SPP Bulanan: Rp 1.000.000</li>
+                                    @foreach ($ppdb->rincian_biaya as $biaya)
+                                    <li>{{ $biaya }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -211,9 +215,9 @@
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#ppdbAccordion">
                             <div class="accordion-body">
                                 <ul>
-                                    <li>Pendaftaran: 1 Januari 2025 - 30 Juni 2025</li>
-                                    <li>Tes Seleksi: 1 Juli 2025 - 5 Juli 2025</li>
-                                    <li>Pengumuman: 10 Juli 2025</li>
+                                    @foreach ($ppdb->jadwal_ppdb as $jadwal)
+                                    <li>{{ $jadwal }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -229,10 +233,9 @@
                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#ppdbAccordion">
                             <div class="accordion-body">
                                 <ul>
-                                    <li>Fotokopi Akta Kelahiran</li>
-                                    <li>Fotokopi Kartu Keluarga</li>
-                                    <li>Pas Foto 3x4 (2 lembar)</li>
-                                    <li>Surat Keterangan Sehat</li>
+                                    @foreach ($ppdb->dokumen_diperlukan as $dokumen)
+                                    <li>{{ $dokumen }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>

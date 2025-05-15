@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProfileSeeder::class);
         $this->call(TestimonialSeeder::class);
         $this->call(VisionSeeder::class);
+        $this->call(PpdbSeeder::class);
     }
 }

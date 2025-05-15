@@ -70,6 +70,8 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::post('/content-profile', [AdminController::class, 'storeProfile'])->name('dashboard.profile.store');
         Route::get('/content-vision', [AdminController::class, 'vision'])->name('dashboard.vision');
         Route::post('/content-vision', [AdminController::class, 'storeVision'])->name('dashboard.vision.store');
+        Route::get('/content-ppdb', [AdminController::class, 'ppdb'])->name('dashboard.ppdb');
+        Route::post('/content-ppdb', [AdminController::class, 'storePpdb'])->name('dashboard.ppdb.store');
     });
 
     // Routes accessible only to Superadmin

@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{route('dashboard.media')}}">Media</a></li>
                         <li><a href="{{route('dashboard.profile')}}">Profil</a></li>
                         <li><a href="{{route('dashboard.vision')}}">Visi dan Misi</a></li>
+                        <li><a href="{{route('dashboard.ppdb')}}">PPDB</a></li>
                     </ul>
                 </li>
                 @endif
