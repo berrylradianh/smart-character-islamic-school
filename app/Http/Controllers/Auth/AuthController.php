@@ -52,7 +52,6 @@ class AuthController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
                 'level_id' => 'required|exists:levels,id', // Validasi level_id
-                'terms' => 'accepted', // Validasi checkbox terms
             ]);
 
             if ($validator->fails()) {

@@ -319,28 +319,44 @@ use App\Models\Level;
                                                     <p><strong>Nama Orang Tua:</strong> <span id="preview_nama_orang_tua"></span></p>
                                                     <p><strong>No. HP Orang Tua:</strong> <span id="preview_no_hp_orang_tua"></span></p>
                                                     @endif
-                                                    <p><strong>Pas Foto:</strong> <a href="#" id="preview_pasfoto_path" target="_blank">Lihat Pas Foto</a></p>
+                                                    <p><strong>Pas Foto:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_pasfoto_path" disabled>Lihat Pas Foto</button>
+                                                    </p>
 
                                                     <hr>
                                                     <h6 class="font-weight-bold">Dokumen</h6>
-                                                    <p><strong>Kartu Keluarga:</strong> <a href="#" id="preview_kk_path" target="_blank">Lihat Kartu Keluarga</a></p>
-                                                    <p><strong>Akta Kelahiran:</strong> <a href="#" id="preview_akta_path" target="_blank">Lihat Akta Kelahiran</a></p>
+                                                    <p><strong>Kartu Keluarga:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_kk_path" disabled>Lihat Kartu Keluarga</button>
+                                                    </p>
+                                                    <p><strong>Akta Kelahiran:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_akta_path" disabled>Lihat Akta Kelahiran</button>
+                                                    </p>
                                                     @if (auth()->user()->level && in_array(auth()->user()->level->slug, ['smp', 'sma', 'kuliah']))
-                                                    <p><strong>Ijazah SD:</strong> <a href="#" id="preview_ijazah_sd_path" target="_blank">Lihat Ijazah SD</a></p>
+                                                    <p><strong>Ijazah SD:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_ijazah_sd_path" disabled>Lihat Ijazah SD</button>
+                                                    </p>
                                                     @endif
                                                     @if (auth()->user()->level && in_array(auth()->user()->level->slug, ['sma', 'kuliah']))
-                                                    <p><strong>Ijazah SMP:</strong> <a href="#" id="preview_ijazah_smp_path" target="_blank">Lihat Ijazah SMP</a></p>
+                                                    <p><strong>Ijazah SMP:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_ijazah_smp_path" disabled>Lihat Ijazah SMP</button>
+                                                    </p>
                                                     @endif
                                                     @if (auth()->user()->level && auth()->user()->level->slug === 'kuliah')
-                                                    <p><strong>Ijazah SMA:</strong> <a href="#" id="preview_ijazah_sma_path" target="_blank">Lihat Ijazah SMA</a></p>
+                                                    <p><strong>Ijazah SMA:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_ijazah_sma_path" disabled>Lihat Ijazah SMA</button>
+                                                    </p>
                                                     @endif
-                                                    <p><strong>Piagam (Opsional):</strong> <a href="#" id="preview_piagam_path" target="_blank">Belum diunggah</a></p>
+                                                    <p><strong>Piagam (Opsional):</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_piagam_path" disabled>Lihat Piagam</button>
+                                                    </p>
 
                                                     <hr>
                                                     <h6 class="font-weight-bold">Pembayaran</h6>
                                                     <p><strong>Jenjang:</strong> {{ auth()->user()->level ? strtoupper(auth()->user()->level->name) : 'Belum diatur' }}</p>
                                                     <p><strong>Biaya Pendaftaran:</strong> {{ optional(auth()->user()->level)->biaya ? 'Rp. ' . number_format(auth()->user()->level->biaya, 0, ',', '.') : 'Biaya belum diatur' }}</p>
-                                                    <p><strong>Bukti Pembayaran:</strong> <a href="#" id="preview_bukti_pembayaran" target="_blank">Lihat Bukti Pembayaran</a></p>
+                                                    <p><strong>Bukti Pembayaran:</strong>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_bukti_pembayaran" disabled>Lihat Bukti Pembayaran</button>
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="text-right mt-3">
@@ -366,150 +382,187 @@ use App\Models\Level;
 
 @section('scripts')
 <script>
-// File input label update
-document.querySelectorAll('.custom-file-input').forEach(input => {
-    input.addEventListener('change', function(event) {
-        const fileInput = event.target;
-        const label = fileInput.nextElementSibling;
-        if (fileInput.files.length > 0) {
-            label.textContent = fileInput.files[0].name;
-        } else {
-            label.textContent = 'Pilih file...';
-        }
+    // File input label update
+    document.querySelectorAll('.custom-file-input').forEach(input => {
+        input.addEventListener('change', function(event) {
+            const fileInput = event.target;
+            const label = fileInput.nextElementSibling;
+            if (fileInput.files.length > 0) {
+                label.textContent = fileInput.files[0].name;
+            } else {
+                label.textContent = 'Pilih file...';
+            }
+        });
     });
-});
 
-// Bootstrap form validation and step navigation
-(function() {
-    'use strict';
-    const form = document.getElementById('registrationForm');
-    const tabs = document.querySelectorAll('.nav-tabs .nav-link');
-    const nextButtons = document.querySelectorAll('.next-step');
-    const prevButtons = document.querySelectorAll('.prev-step');
-    let currentStep = 0;
-    let highestAccessibleStep = 0; // Tracks the highest step the user has validated
+    // Bootstrap form validation and step navigation
+    (function() {
+        'use strict';
+        const form = document.getElementById('registrationForm');
+        const tabs = document.querySelectorAll('.nav-tabs .nav-link');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        let currentStep = 0;
+        let highestAccessibleStep = 0; // Tracks the highest step the user has validated
 
-    // Validate current step
-    function validateStep(step) {
-        const currentPane = document.querySelector(`#step${step + 1}`);
-        const inputs = currentPane.querySelectorAll('input[required]');
-        let isValid = true;
+        // Validate current step
+        function validateStep(step) {
+            const currentPane = document.querySelector(`#step${step + 1}`);
+            const inputs = currentPane.querySelectorAll('input[required]');
+            let isValid = true;
 
-        inputs.forEach(input => {
-            if (!input.checkValidity()) {
-                input.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                input.classList.remove('is-invalid');
-            }
-        });
-
-        currentPane.classList.add('was-validated');
-        return isValid;
-    }
-
-    // Update tab accessibility
-    function updateTabAccessibility() {
-        tabs.forEach((tab, index) => {
-            if (index <= highestAccessibleStep) {
-                tab.classList.remove('disabled');
-                tab.style.pointerEvents = 'auto';
-                tab.style.opacity = '1';
-            } else {
-                tab.classList.add('disabled');
-                tab.style.pointerEvents = 'none';
-                tab.style.opacity = '0.5';
-            }
-        });
-    }
-
-    // Update preview in Step 4
-    function updatePreview() {
-        const formData = new FormData(form);
-        const fields = [
-            { name: 'nama_orang_tua', isFile: false },
-            { name: 'no_hp_orang_tua', isFile: false },
-            { name: 'pasfoto_path', isFile: true, label: 'Lihat Pas Foto' },
-            { name: 'kk_path', isFile: true, label: 'Lihat Kartu Keluarga' },
-            { name: 'akta_path', isFile: true, label: 'Lihat Akta Kelahiran' },
-            { name: 'ijazah_sd_path', isFile: true, label: 'Lihat Ijazah SD' },
-            { name: 'ijazah_smp_path', isFile: true, label: 'Lihat Ijazah SMP' },
-            { name: 'ijazah_sma_path', isFile: true, label: 'Lihat Ijazah SMA' },
-            { name: 'piagam_path', isFile: true, label: 'Lihat Piagam', optional: true },
-            { name: 'bukti_pembayaran', isFile: true, label: 'Lihat Bukti Pembayaran' }
-        ];
-
-        fields.forEach(field => {
-            const element = document.getElementById(`preview_${field.name}`);
-            if (element) {
-                if (field.isFile) {
-                    const file = formData.get(field.name);
-                    if (file && file.size > 0) {
-                        element.textContent = field.label;
-                        element.href = URL.createObjectURL(file);
-                        element.classList.remove('text-muted');
-                    } else {
-                        element.textContent = field.optional ? 'Belum diunggah' : 'Tidak ada file';
-                        element.removeAttribute('href');
-                        element.classList.add('text-muted');
-                    }
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
                 } else {
-                    element.textContent = formData.get(field.name) || 'Tidak diisi';
+                    input.classList.remove('is-invalid');
                 }
+            });
+
+            currentPane.classList.add('was-validated');
+            return isValid;
+        }
+
+        // Update tab accessibility
+        function updateTabAccessibility() {
+            tabs.forEach((tab, index) => {
+                if (index <= highestAccessibleStep) {
+                    tab.classList.remove('disabled');
+                    tab.style.pointerEvents = 'auto';
+                    tab.style.opacity = '1';
+                } else {
+                    tab.classList.add('disabled');
+                    tab.style.pointerEvents = 'none';
+                    tab.style.opacity = '0.5';
+                }
+            });
+        }
+
+        // Update preview in Step 4
+        function updatePreview() {
+            const formData = new FormData(form);
+            const fields = [{
+                    name: 'nama_orang_tua',
+                    isFile: false
+                },
+                {
+                    name: 'no_hp_orang_tua',
+                    isFile: false
+                },
+                {
+                    name: 'pasfoto_path',
+                    isFile: true,
+                    label: 'Lihat Pas Foto'
+                },
+                {
+                    name: 'kk_path',
+                    isFile: true,
+                    label: 'Lihat Kartu Keluarga'
+                },
+                {
+                    name: 'akta_path',
+                    isFile: true,
+                    label: 'Lihat Akta Kelahiran'
+                },
+                {
+                    name: 'ijazah_sd_path',
+                    isFile: true,
+                    label: 'Lihat Ijazah SD'
+                },
+                {
+                    name: 'ijazah_smp_path',
+                    isFile: true,
+                    label: 'Lihat Ijazah SMP'
+                },
+                {
+                    name: 'ijazah_sma_path',
+                    isFile: true,
+                    label: 'Lihat Ijazah SMA'
+                },
+                {
+                    name: 'piagam_path',
+                    isFile: true,
+                    label: 'Lihat Piagam',
+                    optional: true
+                },
+                {
+                    name: 'bukti_pembayaran',
+                    isFile: true,
+                    label: 'Lihat Bukti Pembayaran'
+                }
+            ];
+
+            fields.forEach(field => {
+                const element = document.getElementById(`preview_${field.name}`);
+                if (element && !field.isFile) {
+                    // Handle non-file fields
+                    element.textContent = formData.get(field.name) || 'Tidak diisi';
+                } else if (element && field.isFile) {
+                    // Handle file fields
+                    const file = formData.get(field.name);
+                    if (file && file.size > 0 && file.name) {
+                        element.textContent = field.label;
+                        element.disabled = false;
+                        element.onclick = () => window.open(URL.createObjectURL(file), '_blank');
+                    } else {
+                        element.textContent = field.label;
+                        element.disabled = true;
+                    }
+                }
+            });
+        }
+
+        // Initialize tab states
+        updateTabAccessibility();
+
+        // Next step
+        nextButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    highestAccessibleStep = Math.max(highestAccessibleStep, currentStep);
+                    tabs[currentStep].click();
+                    updateTabAccessibility();
+                    if (currentStep === 3) {
+                        updatePreview();
+                    }
+                }
+            });
+        });
+
+        // Previous step
+        prevButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentStep--;
+                tabs[currentStep].click();
+                updateTabAccessibility();
+            });
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
             }
         });
-    }
 
-    // Initialize tab states
-    updateTabAccessibility();
-
-    // Next step
-    nextButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (validateStep(currentStep)) {
-                currentStep++;
-                highestAccessibleStep = Math.max(highestAccessibleStep, currentStep);
-                tabs[currentStep].click();
+        // Handle tab clicks
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', (e) => {
+                if (index > highestAccessibleStep) {
+                    e.preventDefault();
+                    return false;
+                }
+                currentStep = index;
                 updateTabAccessibility();
                 if (currentStep === 3) {
                     updatePreview();
                 }
-            }
+            });
         });
-    });
-
-    // Previous step
-    prevButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            currentStep--;
-            tabs[currentStep].click();
-            updateTabAccessibility();
-        });
-    });
-
-    // Form submission
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-            form.classList.add('was-validated');
-        }
-    });
-
-    // Handle tab clicks
-    tabs.forEach((tab, index) => {
-        tab.addEventListener('click', (e) => {
-            if (index > highestAccessibleStep) {
-                e.preventDefault();
-                return false;
-            }
-            currentStep = index;
-            updateTabAccessibility();
-            if (currentStep === 3) {
-                updatePreview();
-            }
-        });
-    });
-})();
+    })();
 </script>
 @endsection
