@@ -70,8 +70,12 @@ use Illuminate\Support\Facades\Storage;
 
                                 @if (!$user->role || !in_array($user->role->name, ['Admin', 'Superadmin']))
                                 <div class="form-group">
-                                    <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir ? \Carbon\Carbon::parse($user->tanggal_lahir)->format('Y-m-d') : '') }}">
+                                    <label for="tanggal_lahir_display">Tanggal Lahir</label>
+                                    <div style="position: relative;">
+                                        <input type="text" id="tanggal_lahir_display" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir ? \Carbon\Carbon::parse($user->tanggal_lahir)->format('d/m/Y') : '') }}" placeholder="dd/mm/yyyy">
+                                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $user->tanggal_lahir ? \Carbon\Carbon::parse($user->tanggal_lahir)->format('Y-m-d') : '') }}" style="position: absolute; opacity: 0; width: 100%; z-index: -1;">
+                                    </div>
+                                    <small class="form-text text-muted">Format: DD/MM/YYYY</small>
                                 </div>
 
                                 <!-- Informasi Kontak -->
@@ -110,4 +114,56 @@ use Illuminate\Support\Facades\Storage;
         © SCIS, 2024. All Right Reserved
     </footer>
 </div>
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateDisplay = document.getElementById('tanggal_lahir_display');
+        const dateInput = document.getElementById('tanggal_lahir');
+
+        // Ensure date input is positioned correctly for the picker
+        dateDisplay.addEventListener('click', function() {
+            dateInput.showPicker();
+        });
+
+        // Update text input when date picker changes
+        dateInput.addEventListener('change', function() {
+            if (dateInput.value) {
+                const date = new Date(dateInput.value);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                dateDisplay.value = `${day}/${month}/${year}`;
+            } else {
+                dateDisplay.value = '';
+            }
+        });
+
+        // Update date picker when text input changes
+        dateDisplay.addEventListener('input', function() {
+            const value = dateDisplay.value;
+            const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+            if (regex.test(value)) {
+                const [, day, month, year] = value.match(regex);
+                const date = new Date(`${year}-${month}-${day}`);
+                if (!isNaN(date.getTime())) {
+                    dateInput.value = `${year}-${month}-${day}`;
+                } else {
+                    dateInput.value = '';
+                }
+            } else {
+                dateInput.value = '';
+            }
+        });
+
+        // Prevent form submission if date format is invalid
+        dateDisplay.closest('form').addEventListener('submit', function(event) {
+            const value = dateDisplay.value;
+            if (value && !/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+                event.preventDefault();
+                alert('Tanggal Lahir harus dalam format DD/MM/YYYY.');
+            }
+        });
+    });
+</script>
 @endsection
