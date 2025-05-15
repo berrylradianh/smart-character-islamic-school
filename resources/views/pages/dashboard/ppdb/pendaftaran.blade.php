@@ -177,7 +177,7 @@ use App\Models\Level;
                                             </div>
                                             <div class="form-group">
                                                 <label for="no_hp_orang_tua">No. HP Orang Tua</label>
-                                                <input type="text" class="form-control" id="no_hp_orang_tua" name="no_hp_orang_tua" value="{{ old('no_hp_orang_tua') }}" required>
+                                                <input type="number" class="form-control" id="no_hp_orang_tua" name="no_hp_orang_tua" value="{{ old('no_hp_orang_tua') }}" required>
                                                 <div class="invalid-feedback">
                                                     Harap masukkan nomor HP orang tua.
                                                 </div>

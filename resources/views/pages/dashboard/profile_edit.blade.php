@@ -77,7 +77,7 @@ use Illuminate\Support\Facades\Storage;
                                 <!-- Informasi Kontak -->
                                 <div class="form-group">
                                     <label for="no_hp">Nomor Telepon</label>
-                                    <input type="text" name="no_hp" id="no_hp" class="form-control" value="{{ old('no_hp', $user->no_hp) }}">
+                                    <input type="number" name="no_hp" id="no_hp" class="form-control" value="{{ old('no_hp', $user->no_hp) }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>
