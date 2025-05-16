@@ -619,7 +619,7 @@ class AdminController extends Controller
         return view('pages.dashboard.ppdb.pendaftaran', $data);
     }
 
-public function storeRegistration(Request $request)
+    public function storeRegistration(Request $request)
     {
         // Validasi input
         $validated = $request->validate([
