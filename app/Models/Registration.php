@@ -19,6 +19,7 @@ class Registration extends Model
         'bukti_pembayaran_path',
         'ijazah_path',
         'status',
+        'decline_reason',
         'jadwal_tes',
         'school_location_id',
         'gedung_id',

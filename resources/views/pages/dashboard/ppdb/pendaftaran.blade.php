@@ -96,6 +96,17 @@ use App\Models\Level;
                                             </div>
                                         </div>
 
+                                        @if ($registration->status == 'decline' && $registration->decline_reason)
+                                        <hr class="my-4">
+                                        <h6 class="font-weight-bold mb-3 text-dark">Alasan Penolakan</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-comment-alt fa-lg text-primary mr-3"></i>
+                                            <div>
+                                                <p class="mb-0">{{ $registration->decline_reason }}</p>
+                                            </div>
+                                        </div>
+                                        @endif
+
                                         @if ($registration->status == 'approve' && $registration->jadwal_tes)
                                         <hr class="my-4">
                                         <h6 class="font-weight-bold mb-3 text-dark">Detail Tes</h6>

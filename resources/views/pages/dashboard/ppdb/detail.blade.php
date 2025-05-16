@@ -297,6 +297,12 @@ use Illuminate\Support\Facades\Storage;
                                                 </select>
                                             </div>
 
+                                            <div class="form-group" id="declineReason" @if($registration->status != 'decline') style="display: none;" @endif>
+                                                <label for="decline_reason">Alasan Penolakan</label>
+                                                <textarea class="form-control" name="decline_reason" id="decline_reason" rows="4" {{ $registration->status == 'decline' ? 'required' : '' }}>{{ old('decline_reason', $registration->decline_reason) }}</textarea>
+                                                <small class="form-text text-muted">Masukkan alasan mengapa pendaftaran ditolak.</small>
+                                            </div>
+
                                             <div id="testDetails" @if($registration->status == 'approve') style="display: block;" @else style="display: none;" @endif>
                                                 <div class="row">
                                                     <div class="col-md-6 form-group">
@@ -359,6 +365,15 @@ use Illuminate\Support\Facades\Storage;
                                                         </span>
                                                     </div>
                                                 </div>
+                                                @if ($registration->status == 'decline' && $registration->decline_reason)
+                                                <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                    <i class="fas fa-comment-alt fa-2x mr-3 text-primary"></i>
+                                                    <div>
+                                                        <strong>Alasan Penolakan:</strong>
+                                                        <span>{{ $registration->decline_reason }}</span>
+                                                    </div>
+                                                </div>
+                                                @endif
                                                 @if ($registration->status == 'approve')
                                                 <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                     <i class="fas fa-clock fa-2x mr-3 text-primary"></i>
@@ -414,7 +429,7 @@ use Illuminate\Support\Facades\Storage;
                                                             @if ($registration->user->level && in_array($registration->user->level->slug, ['smp', 'sma']))
                                                             @if ($registration->user->level->slug == 'smp' && $registration->user->ijazah_sd_path)
                                                             <li class="document-item d-flex align-items-center py-2">
-                                                                <i class="fas fa-check-circle mr-2 text-success"></i>
+                                                                <i class="fas fa-check圈-circle mr-2 text-success"></i>
                                                                 Ijazah SD (Asli dan Fotokopi)
                                                             </li>
                                                             @elseif ($registration->user->level->slug == 'sma' && $registration->user->ijazah_smp_path)
@@ -576,13 +591,25 @@ use Illuminate\Support\Facades\Storage;
             var status = $(this).val();
             if (status === 'approve') {
                 $('#testDetails').show();
+                $('#declineReason').hide();
                 $('#testDetails input, #testDetails select').attr('required', 'required');
+                $('#decline_reason').removeAttr('required');
+                $('#school_location_id').prop('disabled', false);
+                $('#gedung_id').prop('disabled', true).empty().append('<option value="">-- Pilih Gedung --</option>');
+                $('#ruang_id').prop('disabled', true).empty().append('<option value="">-- Pilih Ruang --</option>');
+            } else if (status === 'decline') {
+                $('#testDetails').hide();
+                $('#declineReason').show();
+                $('#testDetails input, #testDetails select').removeAttr('required');
+                $('#decline_reason').attr('required', 'required');
                 $('#school_location_id').prop('disabled', false);
                 $('#gedung_id').prop('disabled', true).empty().append('<option value="">-- Pilih Gedung --</option>');
                 $('#ruang_id').prop('disabled', true).empty().append('<option value="">-- Pilih Ruang --</option>');
             } else {
                 $('#testDetails').hide();
+                $('#declineReason').hide();
                 $('#testDetails input, #testDetails select').removeAttr('required');
+                $('#decline_reason').removeAttr('required');
                 $('#school_location_id').prop('disabled', false);
                 $('#gedung_id').prop('disabled', true).empty().append('<option value="">-- Pilih Gedung --</option>');
                 $('#ruang_id').prop('disabled', true).empty().append('<option value="">-- Pilih Ruang --</option>');

@@ -619,19 +619,51 @@ class AdminController extends Controller
         return view('pages.dashboard.ppdb.pendaftaran', $data);
     }
 
-    public function storeRegistration(Request $request)
+public function storeRegistration(Request $request)
     {
         // Validasi input
         $validated = $request->validate([
-            'nama_orang_tua' => 'required_if:level_id,!=,kuliah|string|max:255',
-            'no_hp_orang_tua' => 'required_if:level_id,!=,kuliah|string|max:20',
+            'name' => 'required|string|max:255',
+            'nama_panggilan' => 'required|string|max:255',
+            'nomor_induk_asal' => 'required|string|max:255',
+            'nisn' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'agama' => 'required|string|max:255',
+            'anak_ke' => 'required|integer',
+            'status_anak' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+            'diterima_kelas' => 'required|string|max:255',
+            'diterima_tanggal' => 'required|date',
+            'ra_tk_asal' => 'nullable|string|max:255',
+            'alamat_ra_tk' => 'nullable|string',
+            'sd_mi_asal' => 'nullable|string|max:255',
+            'alamat_sd_mi' => 'nullable|string',
             'pasfoto_path' => 'required|file|mimes:jpg,png|max:2048',
-            'kk_path' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'akta_path' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_sd_path' => 'required_if:level_id,smp,sma,kuliah|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_smp_path' => 'required_if:level_id,sma,kuliah|file|mimes:pdf,jpg,png|max:2048',
-            'ijazah_sma_path' => 'required_if:level_id,kuliah|file|mimes:pdf,jpg,png|max:2048',
-            'piagam_path' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'nama_ayah' => 'required|string|max:255',
+            'nama_ibu' => 'required|string|max:255',
+            'alamat_ayah' => 'required|string',
+            'alamat_ibu' => 'required|string',
+            'telepon_ortu' => 'required|string|max:20',
+            'pekerjaan_ayah' => 'required|string|max:255',
+            'pekerjaan_ibu' => 'required|string|max:255',
+            'pendidikan_ayah' => 'required|string|max:255',
+            'pendidikan_ibu' => 'required|string|max:255',
+            'penghasilan_ayah' => 'required|numeric',
+            'penghasilan_ibu' => 'required|numeric',
+            'nama_ayah_wali' => 'nullable|string|max:255',
+            'nama_ibu_wali' => 'nullable|string|max:255',
+            'alamat_ayah_wali' => 'nullable|string',
+            'alamat_ibu_wali' => 'nullable|string',
+            'telepon_wali' => 'nullable|string|max:20',
+            'pekerjaan_ayah_wali' => 'nullable|string|max:255',
+            'pekerjaan_ibu_wali' => 'nullable|string|max:255',
+            'pendidikan_ayah_wali' => 'nullable|string|max:255',
+            'pendidikan_ibu_wali' => 'nullable|string|max:255',
+            'penghasilan_ayah_wali' => 'nullable|numeric',
+            'penghasilan_ibu_wali' => 'nullable|numeric',
             'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
@@ -639,34 +671,18 @@ class AdminController extends Controller
         $user = Auth::user();
 
         // Update data user
-        $user->nama_orang_tua = $validated['nama_orang_tua'] ?? null;
-        $user->no_hp_orang_tua = $validated['no_hp_orang_tua'] ?? null;
+        $user->fill($validated);
 
-        // Simpan file ke storage dan update path di tabel users
-        $userFields = [
-            'pasfoto_path' => 'pasfoto_path',
-            'kk_path' => 'kk_path',
-            'akta_path' => 'akta_path',
-            'ijazah_sd_path' => 'ijazah_sd_path',
-            'ijazah_smp_path' => 'ijazah_smp_path',
-            'ijazah_sma_path' => 'ijazah_sma_path',
-            'piagam_path' => 'piagam_path',
-        ];
-
-        foreach ($userFields as $inputName => $field) {
-            if ($request->hasFile($inputName)) {
-                // Hapus file lama jika ada
-                if ($user->$field && Storage::disk('public')->exists($user->$field)) {
-                    Storage::disk('public')->delete($user->$field);
-                }
-                // Simpan file baru
-                $file = $request->file($inputName);
-                $path = $file->store('registrations', 'public');
-                $user->$field = $path;
+        // Simpan file pasfoto
+        if ($request->hasFile('pasfoto_path')) {
+            if ($user->pasfoto_path && Storage::disk('public')->exists($user->pasfoto_path)) {
+                Storage::disk('public')->delete($user->pasfoto_path);
             }
+            $file = $request->file('pasfoto_path');
+            $path = $file->store('registrations', 'public');
+            $user->pasfoto_path = $path;
         }
 
-        // Simpan perubahan pada user
         $user->save();
 
         // Buat instance Registration
@@ -681,7 +697,6 @@ class AdminController extends Controller
             $registration->bukti_pembayaran_path = $path;
         }
 
-        // Simpan data registration
         $registration->save();
 
         return redirect()->route('dashboard.ppdb_pendaftaran')
@@ -721,14 +736,6 @@ class AdminController extends Controller
     public function updateStatus(Request $request, $id)
     {
         try {
-            $request->validate([
-                'status' => 'required|in:waiting,decline,approve',
-                'jadwal_tes' => 'nullable|required_if:status,approve|date',
-                'school_location_id' => 'nullable|required_if:status,approve|exists:school_locations,id',
-                'gedung_id' => 'nullable|required_if:status,approve|exists:gedungs,id',
-                'ruang_id' => 'nullable|required_if:status,approve|exists:ruangs,id',
-            ]);
-
             $registration = Registration::findOrFail($id);
             $data = ['status' => $request->status];
 
@@ -742,6 +749,7 @@ class AdminController extends Controller
                 $data['school_location_id'] = null;
                 $data['gedung_id'] = null;
                 $data['ruang_id'] = null;
+                $data['decline_reason'] = $request->status === 'decline' ? $request->decline_reason : null;
             }
 
             $registration->update($data);
