@@ -186,6 +186,12 @@ use App\Models\Level;
                                                 <i class="fas fa-envelope mr-2"></i> Hubungi Admin
                                             </a>
                                         </div>
+                                        @elseif ($registration->status == 'approve')
+                                        <div class="mt-4">
+                                            <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                                <i class="fas fa-download mr-2"></i> Download Kartu Peserta
+                                            </button>
+                                        </div>
                                         @endif
                                     </div>
                                 </div>
@@ -606,6 +612,7 @@ use App\Models\Level;
 </div>
 
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
     // File input label update
     document.querySelectorAll('.custom-file-input').forEach(input => {
@@ -703,6 +710,218 @@ use App\Models\Level;
                 });
             }
         });
+
+        // Function to load image as base64
+        function loadImageAsBase64(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous'; // Handle CORS if image is on a different domain
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/jpeg'));
+                };
+                img.onerror = () => reject(new Error('Failed to load image'));
+                img.src = url;
+            });
+        }
+
+        // Download Kartu Peserta
+        const downloadButton = document.getElementById('downloadKartuPeserta');
+        if (downloadButton) {
+            downloadButton.addEventListener('click', async function() {
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Define user and registration data
+                const userData = {
+                    name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
+                    nama_panggilan: "{{ auth()->user()->nama_panggilan ?? 'Tidak diisi' }}",
+                    nomor_induk_asal: "{{ auth()->user()->nomor_induk_asal ?? 'Tidak diisi' }}",
+                    nisn: "{{ auth()->user()->nisn ?? 'Tidak diisi' }}",
+                    tempat_lahir: "{{ auth()->user()->tempat_lahir ?? 'Tidak diisi' }}",
+                    tanggal_lahir: "{{ auth()->user()->tanggal_lahir ? \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d/m/Y') : 'Tidak diisi' }}",
+                    jenis_kelamin: "{{ auth()->user()->jenis_kelamin ?? 'Tidak diisi' }}",
+                    agama: "{{ auth()->user()->agama ?? 'Tidak diisi' }}",
+                    anak_ke: "{{ auth()->user()->anak_ke ?? 'Tidak diisi' }}",
+                    status_anak: "{{ auth()->user()->status_anak ?? 'Tidak diisi' }}",
+                    alamat: "{{ auth()->user()->alamat ?? 'Tidak diisi' }}",
+                    no_hp: "{{ auth()->user()->no_hp ?? 'Tidak diisi' }}",
+                    diterima_kelas: "{{ auth()->user()->diterima_kelas ?? 'Tidak diisi' }}",
+                    diterima_tanggal: "{{ auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('d/m/Y') : 'Tidak diisi' }}",
+                    ra_tk_asal: "{{ auth()->user()->ra_tk_asal ?? 'Tidak diisi' }}",
+                    alamat_ra_tk: "{{ auth()->user()->alamat_ra_tk ?? 'Tidak diisi' }}",
+                    sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
+                    alamat_sd_mi: "{{ auth()->user()->alamat_sd_mi ?? 'Tidak diisi' }}",
+                    pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
+                };
+
+                const registrationData = {
+                    jadwal_tes: "{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan' }}",
+                    lokasi: "{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}",
+                    gedung: "{{ $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
+                    ruang: "{{ $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}"
+                };
+
+                // Set fonts and styles
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("Kartu Peserta PPDB SCIS", 105, 20, {
+                    align: "center"
+                });
+                doc.setFontSize(12);
+                doc.text("Smart Character Islamic School", 105, 30, {
+                    align: "center"
+                });
+                doc.setLineWidth(0.5);
+                doc.line(20, 35, 190, 35); // Horizontal line
+
+                // Add photo if available
+                let y = 45;
+                if (userData.pasfoto_path) {
+                    try {
+                        const imgData = await loadImageAsBase64(userData.pasfoto_path);
+                        doc.addImage(imgData, 'JPEG', 150, 40, 30, 30); // Photo: 30x30mm at top-right
+                        y = 80; // Adjust starting y-position to account for photo
+                    } catch (error) {
+                        console.error('Failed to load photo:', error);
+                    }
+                }
+
+                // Student Details Section
+                doc.setFontSize(14);
+                doc.text("Data Siswa", 20, y);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                y += 10;
+                const studentDetails = [{
+                        label: "Nama Lengkap",
+                        value: userData.name
+                    },
+                    {
+                        label: "Nama Panggilan",
+                        value: userData.nama_panggilan
+                    },
+                    {
+                        label: "Nomor Induk Asal",
+                        value: userData.nomor_induk_asal
+                    },
+                    {
+                        label: "NISN",
+                        value: userData.nisn
+                    },
+                    {
+                        label: "Tempat, Tanggal Lahir",
+                        value: `${userData.tempat_lahir}, ${userData.tanggal_lahir}`
+                    },
+                    {
+                        label: "Jenis Kelamin",
+                        value: userData.jenis_kelamin
+                    },
+                    {
+                        label: "Agama",
+                        value: userData.agama
+                    },
+                    {
+                        label: "Anak ke",
+                        value: userData.anak_ke
+                    },
+                    {
+                        label: "Status Anak",
+                        value: userData.status_anak
+                    },
+                    {
+                        label: "Alamat",
+                        value: userData.alamat
+                    },
+                    {
+                        label: "No HP",
+                        value: userData.no_hp
+                    },
+                    {
+                        label: "Diterima Kelas",
+                        value: userData.diterima_kelas
+                    },
+                    {
+                        label: "Diterima Tanggal",
+                        value: userData.diterima_tanggal
+                    },
+                    {
+                        label: "RA/TK Asal",
+                        value: userData.ra_tk_asal
+                    },
+                    {
+                        label: "Alamat RA/TK",
+                        value: userData.alamat_ra_tk
+                    },
+                    {
+                        label: "SD/MI Asal",
+                        value: userData.sd_mi_asal
+                    },
+                    {
+                        label: "Alamat SD/MI",
+                        value: userData.alamat_sd_mi
+                    }
+                ];
+
+                studentDetails.forEach(detail => {
+                    doc.text(`${detail.label}:`, 20, y);
+                    const splitText = doc.splitTextToSize(detail.value, 100); // Reduced width to accommodate photo
+                    doc.text(splitText, 60, y);
+                    y += splitText.length * 6 + 2;
+                });
+
+                // Test Details Section
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text("Detail Tes", 20, y + 10);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                y += 20;
+                const testDetails = [{
+                        label: "Jadwal Tes",
+                        value: registrationData.jadwal_tes
+                    },
+                    {
+                        label: "Lokasi",
+                        value: registrationData.lokasi
+                    },
+                    {
+                        label: "Gedung",
+                        value: registrationData.gedung
+                    },
+                    {
+                        label: "Ruang",
+                        value: registrationData.ruang
+                    }
+                ];
+
+                testDetails.forEach(detail => {
+                    doc.text(`${detail.label}:`, 20, y);
+                    const splitText = doc.splitTextToSize(detail.value, 100);
+                    doc.text(splitText, 60, y);
+                    y += splitText.length * 6 + 2;
+                });
+
+                // Add extra spacing after Test Details to avoid crowding with footer
+                y += 15;
+
+                // Footer
+                doc.setFont("helvetica", "italic");
+                doc.setFontSize(8);
+                doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 105, 290, {
+                    align: "center"
+                });
+
+                // Save the PDF
+                doc.save(`Kartu_Peserta_${userData.name}.pdf`);
+            });
+        }
 
         // Bootstrap form validation and step navigation
         const form = document.getElementById('registrationForm');
