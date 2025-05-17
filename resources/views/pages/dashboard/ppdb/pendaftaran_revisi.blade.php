@@ -1,6 +1,7 @@
 @php
 use Illuminate\Support\Facades\Auth;
 use App\Models\Level;
+use Illuminate\Support\Facades\Storage;
 @endphp
 
 @extends('layouts.dashboard.app')
@@ -12,13 +13,13 @@ use App\Models\Level;
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Pendaftaran</h4>
+                        <h4 class="page-title">Revisi Pendaftaran</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item">SCIS</li>
                             <li class="breadcrumb-item">PPDB</li>
-                            <li class="breadcrumb-item active">Form Pendaftaran</li>
+                            <li class="breadcrumb-item active">Revisi Pendaftaran</li>
                         </ol>
                     </div>
                 </div>
@@ -28,7 +29,7 @@ use App\Models\Level;
                 <div class="col-12">
                     <div class="card m-b-30 shadow-sm">
                         <div class="card-body">
-                            <h5 class="mt-0 header-title">Form Pendaftaran</h5>
+                            <h5 class="mt-0 header-title">Form Revisi Pendaftaran</h5>
 
                             @if ($errors->any())
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -59,144 +60,6 @@ use App\Models\Level;
                             </div>
                             @endif
 
-                            @if ($registration)
-                            <!-- Status Pendaftaran -->
-                            <div class="mt-4">
-                                <div class="card border-0 shadow-lg rounded-lg">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex align-items-center mb-4">
-                                            <div class="mr-3">
-                                                @if ($registration->status == 'waiting')
-                                                <i class="fas fa-hourglass-half fa-3x text-warning animate__animated animate__pulse animate__infinite"></i>
-                                                @elseif ($registration->status == 'approve')
-                                                <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
-                                                @else
-                                                <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
-                                                @endif
-                                            </div>
-                                            <div>
-                                                <h5 class="mb-1 font-weight-bold text-dark">
-                                                    @if ($registration->status == 'waiting')
-                                                    Menunggu Verifikasi
-                                                    @elseif ($registration->status == 'approve')
-                                                    Diterima
-                                                    @else
-                                                    Ditolak
-                                                    @endif
-                                                </h5>
-                                                <p class="text-muted mb-0">
-                                                    @if ($registration->status == 'waiting')
-                                                    Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera.
-                                                    @elseif ($registration->status == 'approve')
-                                                    Selamat! Anda telah diterima. Silakan periksa detail tes di bawah ini.
-                                                    @else
-                                                    Maaf, pendaftaran Anda tidak memenuhi kriteria. Hubungi kami untuk informasi lebih lanjut.
-                                                    @endif
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        @if ($registration->status == 'decline' && $registration->decline_reason)
-                                        <hr class="my-4">
-                                        <h6 class="font-weight-bold mb-3 text-dark">Alasan Penolakan</h6>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <i class="fas fa-comment-alt fa-lg text-primary mr-3"></i>
-                                            <div>
-                                                <p class="mb-0">{{ $registration->decline_reason }}</p>
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                        @if ($registration->status == 'approve' && $registration->jadwal_tes)
-                                        <hr class="my-4">
-                                        <h6 class="font-weight-bold mb-3 text-dark">Detail Tes</h6>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-alt fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Jadwal Tes:</strong>
-                                                        <p class="mb-0">{{ \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->schoolLocation)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-map-marker-alt fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Lokasi:</strong>
-                                                        <p class="mb-0">{{ $registration->schoolLocation->nama_lokasi }}<br>{{ $registration->schoolLocation->alamat }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-map-marker-alt fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Lokasi:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->gedung)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-building fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Gedung:</strong>
-                                                        <p class="mb-0">{{ $registration->gedung->nama_gedung }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-building fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Gedung:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->ruang)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-door-open fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Ruang:</strong>
-                                                        <p class="mb-0">{{ $registration->ruang->nama_ruang }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Ruang:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                        @if ($registration->status == 'decline')
-                                        <div class="mt-4">
-                                            <a href="{{ route('dashboard.ppdb_pendaftaran.revisi') }}" class="btn btn-primary btn-sm rounded-pill px-4">
-                                                <i class="fas fa-edit mr-2"></i> Revisi Data
-                                            </a>
-                                        </div>
-                                        @elseif ($registration->status == 'approve')
-                                        <div class="mt-4">
-                                            <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
-                                                <i class="fas fa-download mr-2"></i> Download Kartu Peserta
-                                            </button>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            @else
                             <!-- Multi-Step Form -->
                             <div class="wizard">
                                 <ul class="nav nav-tabs" role="tablist">
@@ -217,8 +80,9 @@ use App\Models\Level;
                                     </li>
                                 </ul>
 
-                                <form enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.store') }}" method="POST" class="needs-validation" novalidate id="registrationForm">
+                                <form enctype="multipart/form-data" action="{{ route('dashboard.ppdb_pendaftaran.update', $registration->id) }}" method="POST" class="needs-validation" novalidate id="registrationForm">
                                     @csrf
+                                    @method('PUT')
                                     <input type="hidden" name="level_id" value="{{ auth()->user()->level_id }}">
 
                                     <div class="tab-content mt-4">
@@ -234,22 +98,22 @@ use App\Models\Level;
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="nama_panggilan">Nama Panggilan</label>
-                                                        <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" value="{{ old('nama_panggilan') }}" required>
+                                                        <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" value="{{ old('nama_panggilan', auth()->user()->nama_panggilan) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan nama panggilan.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="nomor_induk_asal">Nomor Induk Asal</label>
-                                                        <input type="number" class="form-control" id="nomor_induk_asal" name="nomor_induk_asal" value="{{ old('nomor_induk_asal') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="nomor_induk_asal" name="nomor_induk_asal" value="{{ old('nomor_induk_asal', auth()->user()->nomor_induk_asal) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan nomor induk asal (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="nisn">NISN</label>
-                                                        <input type="number" class="form-control" id="nisn" name="nisn" value="{{ old('nisn') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="nisn" name="nisn" value="{{ old('nisn', auth()->user()->nisn) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan NISN (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="tempat_lahir">Tempat Lahir</label>
-                                                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required>
+                                                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir', auth()->user()->tempat_lahir) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan tempat lahir.</div>
                                                     </div>
                                                     <div class="form-group">
@@ -265,8 +129,8 @@ use App\Models\Level;
                                                         <label for="jenis_kelamin">Jenis Kelamin</label>
                                                         <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
                                                             <option value="">Pilih...</option>
-                                                            <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                            <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                            <option value="Laki-laki" {{ old('jenis_kelamin', auth()->user()->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                            <option value="Perempuan" {{ old('jenis_kelamin', auth()->user()->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                                         </select>
                                                         <div class="invalid-feedback">Harap pilih jenis kelamin.</div>
                                                     </div>
@@ -274,12 +138,12 @@ use App\Models\Level;
                                                         <label for="agama">Agama</label>
                                                         <select class="form-control" id="agama" name="agama" required>
                                                             <option value="">Pilih...</option>
-                                                            <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                                            <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                                            <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                                            <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                                            <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                                            <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                                            <option value="Islam" {{ old('agama', auth()->user()->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                                            <option value="Kristen" {{ old('agama', auth()->user()->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                                            <option value="Katolik" {{ old('agama', auth()->user()->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                                            <option value="Hindu" {{ old('agama', auth()->user()->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                                            <option value="Buddha" {{ old('agama', auth()->user()->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                                            <option value="Konghucu" {{ old('agama', auth()->user()->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
                                                         </select>
                                                         <div class="invalid-feedback">Harap pilih agama.</div>
                                                     </div>
@@ -287,12 +151,12 @@ use App\Models\Level;
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="anak_ke">Anak ke</label>
-                                                        <input type="number" class="form-control" id="anak_ke" name="anak_ke" value="{{ old('anak_ke') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="anak_ke" name="anak_ke" value="{{ old('anak_ke', auth()->user()->anak_ke) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan anak ke (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="status_anak">Status Anak dalam Keluarga</label>
-                                                        <input type="text" class="form-control" id="status_anak" name="status_anak" value="{{ old('status_anak') }}" required>
+                                                        <input type="text" class="form-control" id="status_anak" name="status_anak" value="{{ old('status_anak', auth()->user()->status_anak) }}" required>
                                                         <small class="text-muted">Anak Kandung / Anak Angkat / Lainnya</small>
                                                         <div class="invalid-feedback">Harap masukkan status anak.</div>
                                                     </div>
@@ -308,44 +172,44 @@ use App\Models\Level;
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="diterima_kelas">Diterima di Madrasah Kelas</label>
-                                                        <input type="text" class="form-control" id="diterima_kelas" name="diterima_kelas" value="{{ old('diterima_kelas') }}" required>
+                                                        <input type="text" class="form-control" id="diterima_kelas" name="diterima_kelas" value="{{ old('diterima_kelas', auth()->user()->diterima_kelas) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan kelas diterima.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="diterima_tanggal_display">Diterima Tanggal</label>
                                                         <div style="position: relative;">
-                                                            <input type="text" id="diterima_tanggal_display" class="form-control" value="{{ old('diterima_tanggal') ? \Carbon\Carbon::parse(old('diterima_tanggal'))->format('d/m/Y') : '' }}" placeholder="dd/mm/yyyy" required>
-                                                            <input type="date" name="diterima_tanggal" id="diterima_tanggal" class="form-control" value="{{ old('diterima_tanggal') }}" style="position: absolute; opacity: 0; width: 100%; z-index: -1;" required>
+                                                            <input type="text" id="diterima_tanggal_display" class="form-control" value="{{ old('diterima_tanggal', auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('d/m/Y') : '') }}" placeholder="dd/mm/yyyy" required>
+                                                            <input type="date" name="diterima_tanggal" id="diterima_tanggal" class="form-control" value="{{ old('diterima_tanggal', auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('Y-m-d') : '') }}" style="position: absolute; opacity: 0; width: 100%; z-index: -1;" required>
                                                         </div>
                                                         <small class="form-text text-muted">Format: DD/MM/YYYY</small>
                                                         <div class="invalid-feedback">Harap masukkan tanggal diterima dalam format DD/MM/YYYY.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="ra_tk_asal">Nama RA/TK Asal</label>
-                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal') }}">
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
                                                         <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
-                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk', auth()->user()->alamat_ra_tk) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="sd_mi_asal">Nama SD/MI Asal</label>
-                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal') }}">
+                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal', auth()->user()->sd_mi_asal) }}">
                                                         <div class="invalid-feedback">Harap masukkan nama SD/MI asal.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_sd_mi">Alamat SD/MI Asal</label>
-                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi', auth()->user()->alamat_sd_mi) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pasfoto_path">Upload Pas Foto</label>
                                                         <div class="custom-file">
-                                                            <input type="file" class="custom-file-input" id="pasfoto_path" name="pasfoto_path" accept=".jpg,.png" required>
-                                                            <label class="custom-file-label" for="pasfoto_path">Pilih file...</label>
-                                                            <small class="text-muted">Maks. 2MB, format: JPG, PNG</small>
+                                                            <input type="file" class="custom-file-input" id="pasfoto_path" name="pasfoto_path" accept=".jpg,.png">
+                                                            <label class="custom-file-label" for="pasfoto_path">{{ auth()->user()->pasfoto_path ? basename(auth()->user()->pasfoto_path) : 'Pilih file...' }}</label>
+                                                            <small class="text-muted">Maks. 2MB, format: JPG, PNG. Biarkan kosong jika tidak ingin mengganti.</small>
                                                             <div class="invalid-feedback">Harap unggah pas foto yang valid.</div>
                                                         </div>
                                                     </div>
@@ -363,59 +227,59 @@ use App\Models\Level;
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nama_ayah">Nama Lengkap Ayah</label>
-                                                        <input type="text" class="form-control" id="nama_ayah" name="nama_ayah" value="{{ old('nama_ayah') }}" required>
+                                                        <input type="text" class="form-control" id="nama_ayah" name="nama_ayah" value="{{ old('nama_ayah', auth()->user()->nama_ayah) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan nama ayah.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_ayah">Alamat Ayah</label>
-                                                        <textarea class="form-control" id="alamat_ayah" name="alamat_ayah" required>{{ old('alamat_ayah') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_ayah" name="alamat_ayah" required>{{ old('alamat_ayah', auth()->user()->alamat_ayah) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat ayah.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
-                                                        <input type="text" class="form-control" id="pekerjaan_ayah" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah') }}" required>
+                                                        <input type="text" class="form-control" id="pekerjaan_ayah" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah', auth()->user()->pekerjaan_ayah) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan pekerjaan ayah.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pendidikan_ayah">Pendidikan Terakhir Ayah</label>
-                                                        <input type="text" class="form-control" id="pendidikan_ayah" name="pendidikan_ayah" value="{{ old('pendidikan_ayah') }}" required>
+                                                        <input type="text" class="form-control" id="pendidikan_ayah" name="pendidikan_ayah" value="{{ old('pendidikan_ayah', auth()->user()->pendidikan_ayah) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan pendidikan ayah.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="penghasilan_ayah">Penghasilan Per Bulan Ayah</label>
-                                                        <input type="number" class="form-control" id="penghasilan_ayah" name="penghasilan_ayah" value="{{ old('penghasilan_ayah') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="penghasilan_ayah" name="penghasilan_ayah" value="{{ old('penghasilan_ayah', auth()->user()->penghasilan_ayah) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan penghasilan ayah (hanya angka).</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nama_ibu">Nama Lengkap Ibu</label>
-                                                        <input type="text" class="form-control" id="nama_ibu" name="nama_ibu" value="{{ old('nama_ibu') }}" required>
+                                                        <input type="text" class="form-control" id="nama_ibu" name="nama_ibu" value="{{ old('nama_ibu', auth()->user()->nama_ibu) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan nama ibu.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_ibu">Alamat Ibu</label>
-                                                        <textarea class="form-control" id="alamat_ibu" name="alamat_ibu" required>{{ old('alamat_ibu') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_ibu" name="alamat_ibu" required>{{ old('alamat_ibu', auth()->user()->alamat_ibu) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat ibu.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
-                                                        <input type="text" class="form-control" id="pekerjaan_ibu" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu') }}" required>
+                                                        <input type="text" class="form-control" id="pekerjaan_ibu" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu', auth()->user()->pekerjaan_ibu) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan pekerjaan ibu.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pendidikan_ibu">Pendidikan Terakhir Ibu</label>
-                                                        <input type="text" class="form-control" id="pendidikan_ibu" name="pendidikan_ibu" value="{{ old('pendidikan_ibu') }}" required>
+                                                        <input type="text" class="form-control" id="pendidikan_ibu" name="pendidikan_ibu" value="{{ old('pendidikan_ibu', auth()->user()->pendidikan_ibu) }}" required>
                                                         <div class="invalid-feedback">Harap masukkan pendidikan ibu.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="penghasilan_ibu">Penghasilan Per Bulan Ibu</label>
-                                                        <input type="number" class="form-control" id="penghasilan_ibu" name="penghasilan_ibu" value="{{ old('penghasilan_ibu') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="penghasilan_ibu" name="penghasilan_ibu" value="{{ old('penghasilan_ibu', auth()->user()->penghasilan_ibu) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan penghasilan ibu (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="telepon_ortu">Telepon/HP Orang Tua</label>
-                                                        <input type="number" class="form-control" id="telepon_ortu" name="telepon_ortu" value="{{ old('telepon_ortu') }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="telepon_ortu" name="telepon_ortu" value="{{ old('telepon_ortu', auth()->user()->telepon_ortu) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan telepon orang tua (hanya angka).</div>
                                                     </div>
                                                 </div>
@@ -433,59 +297,59 @@ use App\Models\Level;
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nama_ayah_wali">Nama Ayah Wali</label>
-                                                        <input type="text" class="form-control" id="nama_ayah_wali" name="nama_ayah_wali" value="{{ old('nama_ayah_wali') }}">
+                                                        <input type="text" class="form-control" id="nama_ayah_wali" name="nama_ayah_wali" value="{{ old('nama_ayah_wali', auth()->user()->nama_ayah_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan nama ayah wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_ayah_wali">Alamat Ayah Wali</label>
-                                                        <textarea class="form-control" id="alamat_ayah_wali" name="alamat_ayah_wali">{{ old('alamat_ayah_wali') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_ayah_wali" name="alamat_ayah_wali">{{ old('alamat_ayah_wali', auth()->user()->alamat_ayah_wali) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat ayah wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pekerjaan_ayah_wali">Pekerjaan Ayah Wali</label>
-                                                        <input type="text" class="form-control" id="pekerjaan_ayah_wali" name="pekerjaan_ayah_wali" value="{{ old('pekerjaan_ayah_wali') }}">
+                                                        <input type="text" class="form-control" id="pekerjaan_ayah_wali" name="pekerjaan_ayah_wali" value="{{ old('pekerjaan_ayah_wali', auth()->user()->pekerjaan_ayah_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan pekerjaan ayah wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pendidikan_ayah_wali">Pendidikan Terakhir Ayah Wali</label>
-                                                        <input type="text" class="form-control" id="pendidikan_ayah_wali" name="pendidikan_ayah_wali" value="{{ old('pendidikan_ayah_wali') }}">
+                                                        <input type="text" class="form-control" id="pendidikan_ayah_wali" name="pendidikan_ayah_wali" value="{{ old('pendidikan_ayah_wali', auth()->user()->pendidikan_ayah_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan pendidikan ayah wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="penghasilan_ayah_wali">Penghasilan Per Bulan Ayah Wali</label>
-                                                        <input type="number" class="form-control" id="penghasilan_ayah_wali" name="penghasilan_ayah_wali" value="{{ old('penghasilan_ayah_wali') }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="penghasilan_ayah_wali" name="penghasilan_ayah_wali" value="{{ old('penghasilan_ayah_wali', auth()->user()->penghasilan_ayah_wali) }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan penghasilan ayah wali (hanya angka).</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nama_ibu_wali">Nama Ibu Wali</label>
-                                                        <input type="text" class="form-control" id="nama_ibu_wali" name="nama_ibu_wali" value="{{ old('nama_ibu_wali') }}">
+                                                        <input type="text" class="form-control" id="nama_ibu_wali" name="nama_ibu_wali" value="{{ old('nama_ibu_wali', auth()->user()->nama_ibu_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan nama ibu wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat_ibu_wali">Alamat Ibu Wali</label>
-                                                        <textarea class="form-control" id="alamat_ibu_wali" name="alamat_ibu_wali">{{ old('alamat_ibu_wali') }}</textarea>
+                                                        <textarea class="form-control" id="alamat_ibu_wali" name="alamat_ibu_wali">{{ old('alamat_ibu_wali', auth()->user()->alamat_ibu_wali) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat ibu wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pekerjaan_ibu_wali">Pekerjaan Ibu Wali</label>
-                                                        <input type="text" class="form-control" id="pekerjaan_ibu_wali" name="pekerjaan_ibu_wali" value="{{ old('pekerjaan_ibu_wali') }}">
+                                                        <input type="text" class="form-control" id="pekerjaan_ibu_wali" name="pekerjaan_ibu_wali" value="{{ old('pekerjaan_ibu_wali', auth()->user()->pekerjaan_ibu_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan pekerjaan ibu wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pendidikan_ibu_wali">Pendidikan Terakhir Ibu Wali</label>
-                                                        <input type="text" class="form-control" id="pendidikan_ibu_wali" name="pendidikan_ibu_wali" value="{{ old('pendidikan_ibu_wali') }}">
+                                                        <input type="text" class="form-control" id="pendidikan_ibu_wali" name="pendidikan_ibu_wali" value="{{ old('pendidikan_ibu_wali', auth()->user()->pendidikan_ibu_wali) }}">
                                                         <div class="invalid-feedback">Harap masukkan pendidikan ibu wali.</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="penghasilan_ibu_wali">Penghasilan Per Bulan Ibu Wali</label>
-                                                        <input type="number" class="form-control" id="penghasilan_ibu_wali" name="penghasilan_ibu_wali" value="{{ old('penghasilan_ibu_wali') }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="penghasilan_ibu_wali" name="penghasilan_ibu_wali" value="{{ old('penghasilan_ibu_wali', auth()->user()->penghasilan_ibu_wali) }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan penghasilan ibu wali (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="telepon_wali">Telepon/HP Wali</label>
-                                                        <input type="number" class="form-control" id="telepon_wali" name="telepon_wali" value="{{ old('telepon_wali') }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                                        <input type="number" class="form-control" id="telepon_wali" name="telepon_wali" value="{{ old('telepon_wali', auth()->user()->telepon_wali) }}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan telepon wali (hanya angka).</div>
                                                     </div>
                                                 </div>
@@ -510,12 +374,12 @@ use App\Models\Level;
                                             <div class="form-group">
                                                 <label for="bukti_pembayaran">Upload Bukti Pembayaran</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="bukti_pembayaran" name="bukti_pembayaran" accept=".pdf,.jpg,.png" required>
-                                                    <label class="custom-file-label" for="bukti_pembayaran">Pilih file...</label>
+                                                    <input type="file" class="custom-file-input" id="bukti_pembayaran" name="bukti_pembayaran" accept=".pdf,.jpg,.png">
+                                                    <label class="custom-file-label" for="bukti_pembayaran">{{ $registration->bukti_pembayaran_path ? basename($registration->bukti_pembayaran_path) : 'Pilih file...' }}</label>
                                                     <small class="text-muted">
                                                         Upload bukti pembayaran biaya pendaftaran
                                                         {{ optional(auth()->user()->level)->biaya ? 'Rp. ' . number_format(auth()->user()->level->biaya, 0, ',', '.') : 'Biaya belum diatur' }}
-                                                        (maks. 2MB, format: PDF, JPG, PNG)
+                                                        (maks. 2MB, format: PDF, JPG, PNG). Biarkan kosong jika tidak ingin mengganti.
                                                     </small>
                                                     <div class="invalid-feedback">Harap unggah bukti pembayaran yang valid.</div>
                                                 </div>
@@ -592,13 +456,12 @@ use App\Models\Level;
                                             </div>
                                             <div class="text-right mt-3">
                                                 <button type="button" class="btn btn-secondary prev-step mr-2"><i class="fas fa-arrow-left mr-2"></i> Kembali</button>
-                                                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-2"></i> Daftar Sekarang</button>
+                                                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i> Simpan Revisi</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -612,7 +475,6 @@ use App\Models\Level;
 </div>
 
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
     // File input label update
     document.querySelectorAll('.custom-file-input').forEach(input => {
@@ -622,7 +484,7 @@ use App\Models\Level;
             if (fileInput.files.length > 0) {
                 label.textContent = fileInput.files[0].name;
             } else {
-                label.textContent = 'Pilih file...';
+                label.textContent = '{{ auth()->user()->pasfoto_path ? basename(auth()->user()->pasfoto_path) : ($registration->bukti_pembayaran_path ? basename($registration->bukti_pembayaran_path) : "Pilih file...") }}';
             }
         });
     });
@@ -711,218 +573,6 @@ use App\Models\Level;
             }
         });
 
-        // Function to load image as base64
-        function loadImageAsBase64(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'Anonymous'; // Handle CORS if image is on a different domain
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    resolve(canvas.toDataURL('image/jpeg'));
-                };
-                img.onerror = () => reject(new Error('Failed to load image'));
-                img.src = url;
-            });
-        }
-
-        // Download Kartu Peserta
-        const downloadButton = document.getElementById('downloadKartuPeserta');
-        if (downloadButton) {
-            downloadButton.addEventListener('click', async function() {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const doc = new jsPDF();
-
-                // Define user and registration data
-                const userData = {
-                    name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
-                    nama_panggilan: "{{ auth()->user()->nama_panggilan ?? 'Tidak diisi' }}",
-                    nomor_induk_asal: "{{ auth()->user()->nomor_induk_asal ?? 'Tidak diisi' }}",
-                    nisn: "{{ auth()->user()->nisn ?? 'Tidak diisi' }}",
-                    tempat_lahir: "{{ auth()->user()->tempat_lahir ?? 'Tidak diisi' }}",
-                    tanggal_lahir: "{{ auth()->user()->tanggal_lahir ? \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d/m/Y') : 'Tidak diisi' }}",
-                    jenis_kelamin: "{{ auth()->user()->jenis_kelamin ?? 'Tidak diisi' }}",
-                    agama: "{{ auth()->user()->agama ?? 'Tidak diisi' }}",
-                    anak_ke: "{{ auth()->user()->anak_ke ?? 'Tidak diisi' }}",
-                    status_anak: "{{ auth()->user()->status_anak ?? 'Tidak diisi' }}",
-                    alamat: "{{ auth()->user()->alamat ?? 'Tidak diisi' }}",
-                    no_hp: "{{ auth()->user()->no_hp ?? 'Tidak diisi' }}",
-                    diterima_kelas: "{{ auth()->user()->diterima_kelas ?? 'Tidak diisi' }}",
-                    diterima_tanggal: "{{ auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('d/m/Y') : 'Tidak diisi' }}",
-                    ra_tk_asal: "{{ auth()->user()->ra_tk_asal ?? 'Tidak diisi' }}",
-                    alamat_ra_tk: "{{ auth()->user()->alamat_ra_tk ?? 'Tidak diisi' }}",
-                    sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
-                    alamat_sd_mi: "{{ auth()->user()->alamat_sd_mi ?? 'Tidak diisi' }}",
-                    pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
-                };
-
-                const registrationData = {
-                    jadwal_tes: "{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan' }}",
-                    lokasi: "{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}",
-                    gedung: "{{ $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
-                    ruang: "{{ $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}"
-                };
-
-                // Set fonts and styles
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(16);
-                doc.text("Kartu Peserta PPDB SCIS", 105, 20, {
-                    align: "center"
-                });
-                doc.setFontSize(12);
-                doc.text("Smart Character Islamic School", 105, 30, {
-                    align: "center"
-                });
-                doc.setLineWidth(0.5);
-                doc.line(20, 35, 190, 35); // Horizontal line
-
-                // Add photo if available
-                let y = 45;
-                if (userData.pasfoto_path) {
-                    try {
-                        const imgData = await loadImageAsBase64(userData.pasfoto_path);
-                        doc.addImage(imgData, 'JPEG', 150, 40, 30, 30); // Photo: 30x30mm at top-right
-                        y = 80; // Adjust starting y-position to account for photo
-                    } catch (error) {
-                        console.error('Failed to load photo:', error);
-                    }
-                }
-
-                // Student Details Section
-                doc.setFontSize(14);
-                doc.text("Data Siswa", 20, y);
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                y += 10;
-                const studentDetails = [{
-                        label: "Nama Lengkap",
-                        value: userData.name
-                    },
-                    {
-                        label: "Nama Panggilan",
-                        value: userData.nama_panggilan
-                    },
-                    {
-                        label: "Nomor Induk Asal",
-                        value: userData.nomor_induk_asal
-                    },
-                    {
-                        label: "NISN",
-                        value: userData.nisn
-                    },
-                    {
-                        label: "Tempat, Tanggal Lahir",
-                        value: `${userData.tempat_lahir}, ${userData.tanggal_lahir}`
-                    },
-                    {
-                        label: "Jenis Kelamin",
-                        value: userData.jenis_kelamin
-                    },
-                    {
-                        label: "Agama",
-                        value: userData.agama
-                    },
-                    {
-                        label: "Anak ke",
-                        value: userData.anak_ke
-                    },
-                    {
-                        label: "Status Anak",
-                        value: userData.status_anak
-                    },
-                    {
-                        label: "Alamat",
-                        value: userData.alamat
-                    },
-                    {
-                        label: "No HP",
-                        value: userData.no_hp
-                    },
-                    {
-                        label: "Diterima Kelas",
-                        value: userData.diterima_kelas
-                    },
-                    {
-                        label: "Diterima Tanggal",
-                        value: userData.diterima_tanggal
-                    },
-                    {
-                        label: "RA/TK Asal",
-                        value: userData.ra_tk_asal
-                    },
-                    {
-                        label: "Alamat RA/TK",
-                        value: userData.alamat_ra_tk
-                    },
-                    {
-                        label: "SD/MI Asal",
-                        value: userData.sd_mi_asal
-                    },
-                    {
-                        label: "Alamat SD/MI",
-                        value: userData.alamat_sd_mi
-                    }
-                ];
-
-                studentDetails.forEach(detail => {
-                    doc.text(`${detail.label}:`, 20, y);
-                    const splitText = doc.splitTextToSize(detail.value, 100); // Reduced width to accommodate photo
-                    doc.text(splitText, 60, y);
-                    y += splitText.length * 6 + 2;
-                });
-
-                // Test Details Section
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(14);
-                doc.text("Detail Tes", 20, y + 10);
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                y += 20;
-                const testDetails = [{
-                        label: "Jadwal Tes",
-                        value: registrationData.jadwal_tes
-                    },
-                    {
-                        label: "Lokasi",
-                        value: registrationData.lokasi
-                    },
-                    {
-                        label: "Gedung",
-                        value: registrationData.gedung
-                    },
-                    {
-                        label: "Ruang",
-                        value: registrationData.ruang
-                    }
-                ];
-
-                testDetails.forEach(detail => {
-                    doc.text(`${detail.label}:`, 20, y);
-                    const splitText = doc.splitTextToSize(detail.value, 100);
-                    doc.text(splitText, 60, y);
-                    y += splitText.length * 6 + 2;
-                });
-
-                // Add extra spacing after Test Details to avoid crowding with footer
-                y += 15;
-
-                // Footer
-                doc.setFont("helvetica", "italic");
-                doc.setFontSize(8);
-                doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 105, 290, {
-                    align: "center"
-                });
-
-                // Save the PDF
-                doc.save(`Kartu_Peserta_${userData.name}.pdf`);
-            });
-        }
-
         // Bootstrap form validation and step navigation
         const form = document.getElementById('registrationForm');
         const tabs = document.querySelectorAll('ul.nav-tabs .nav-link');
@@ -930,6 +580,12 @@ use App\Models\Level;
         const prevButtons = document.querySelectorAll('.prev-step');
         let currentStep = 0;
         let highestAccessibleStep = 0;
+
+        // File paths yang sudah ada dari database
+        const existingFiles = {
+            pasfoto_path: '{{ auth()->user()->pasfoto_path ? Storage::url(auth()->user()->pasfoto_path) : "" }}',
+            bukti_pembayaran: '{{ $registration->bukti_pembayaran_path ? Storage::url($registration->bukti_pembayaran_path) : "" }}'
+        };
 
         function validateStep(step) {
             const currentPane = document.querySelector(`#step${step + 1}`);
@@ -1185,10 +841,17 @@ use App\Models\Level;
                 } else if (element && field.isFile) {
                     const file = formData.get(field.name);
                     if (file && file.size > 0 && file.name) {
+                        // File baru diunggah
                         element.textContent = field.label;
                         element.disabled = false;
                         element.onclick = () => window.open(URL.createObjectURL(file), '_blank');
+                    } else if (existingFiles[field.name]) {
+                        // Gunakan file yang sudah ada di database
+                        element.textContent = field.label;
+                        element.disabled = false;
+                        element.onclick = () => window.open(existingFiles[field.name], '_blank');
                     } else {
+                        // Tidak ada file
                         element.textContent = field.label;
                         element.disabled = true;
                     }

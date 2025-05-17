@@ -703,6 +703,111 @@ class AdminController extends Controller
             ->with('success', 'Pendaftaran berhasil disimpan!');
     }
 
+    public function updateRegistration(Request $request, $id)
+    {
+        $registration = Registration::findOrFail($id);
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'nama_panggilan' => 'required|string|max:255',
+            'nomor_induk_asal' => 'required|string|max:255',
+            'nisn' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'agama' => 'required|string|max:255',
+            'anak_ke' => 'required|integer',
+            'status_anak' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+            'diterima_kelas' => 'required|string|max:255',
+            'diterima_tanggal' => 'required|date',
+            'ra_tk_asal' => 'nullable|string|max:255',
+            'alamat_ra_tk' => 'nullable|string',
+            'sd_mi_asal' => 'nullable|string|max:255',
+            'alamat_sd_mi' => 'nullable|string',
+            'pasfoto_path' => 'nullable|file|mimes:jpg,png|max:2048',
+            'nama_ayah' => 'required|string|max:255',
+            'nama_ibu' => 'required|string|max:255',
+            'alamat_ayah' => 'required|string',
+            'alamat_ibu' => 'required|string',
+            'telepon_ortu' => 'required|string|max:20',
+            'pekerjaan_ayah' => 'required|string|max:255',
+            'pekerjaan_ibu' => 'required|string|max:255',
+            'pendidikan_ayah' => 'required|string|max:255',
+            'pendidikan_ibu' => 'required|string|max:255',
+            'penghasilan_ayah' => 'required|numeric',
+            'penghasilan_ibu' => 'required|numeric',
+            'nama_ayah_wali' => 'nullable|string|max:255',
+            'nama_ibu_wali' => 'nullable|string|max:255',
+            'alamat_ayah_wali' => 'nullable|string',
+            'alamat_ibu_wali' => 'nullable|string',
+            'telepon_wali' => 'nullable|string|max:20',
+            'pekerjaan_ayah_wali' => 'nullable|string|max:255',
+            'pekerjaan_ibu_wali' => 'nullable|string|max:255',
+            'pendidikan_ayah_wali' => 'nullable|string|max:255',
+            'pendidikan_ibu_wali' => 'nullable|string|max:255',
+            'penghasilan_ayah_wali' => 'nullable|numeric',
+            'penghasilan_ibu_wali' => 'nullable|numeric',
+            'bukti_pembayaran' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        ]);
+
+        // Update data user
+        $user->fill($validated);
+
+        // Update file pasfoto jika ada
+        if ($request->hasFile('pasfoto_path')) {
+            if ($user->pasfoto_path && Storage::disk('public')->exists($user->pasfoto_path)) {
+                Storage::disk('public')->delete($user->pasfoto_path);
+            }
+            $file = $request->file('pasfoto_path');
+            $path = $file->store('registrations', 'public');
+            $user->pasfoto_path = $path;
+        }
+
+        $user->save();
+
+        // Update bukti pembayaran jika ada
+        if ($request->hasFile('bukti_pembayaran')) {
+            if ($registration->bukti_pembayaran_path && Storage::disk('public')->exists($registration->bukti_pembayaran_path)) {
+                Storage::disk('public')->delete($registration->bukti_pembayaran_path);
+            }
+            $file = $request->file('bukti_pembayaran');
+            $path = $file->store('registrations', 'public');
+            $registration->bukti_pembayaran_path = $path;
+        }
+
+        // Reset status ke waiting setelah revisi
+        $registration->status = 'waiting';
+        $registration->decline_reason = null; // Hapus alasan penolakan
+        $registration->save();
+
+        return redirect()->route('dashboard.ppdb_pendaftaran')
+            ->with('success', 'Revisi pendaftaran berhasil disimpan!');
+    }
+
+    public function ppdb_pendaftaran_revisi()
+    {
+        $user = Auth::user();
+        $registration = Registration::with(['schoolLocation', 'gedung', 'ruang'])
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$registration || $registration->status !== 'decline') {
+            return redirect()->route('dashboard.ppdb_pendaftaran')
+                ->with('error', 'Anda tidak dapat mengakses halaman revisi.');
+        }
+
+        $data = [
+            'title' => 'Revisi Pendaftaran',
+            'user' => $user,
+            'registration' => $registration,
+        ];
+
+        return view('pages.dashboard.ppdb.pendaftaran_revisi', $data);
+    }
+
     public function listPendaftar()
     {
         $user = Auth::user();

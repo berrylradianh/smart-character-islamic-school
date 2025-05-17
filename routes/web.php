@@ -31,6 +31,8 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
     // Routes accessible to User
     Route::middleware('role:User')->group(function () {
         Route::get('/ppdb-pendaftaran', [AdminController::class, 'ppdb_pendaftaran'])->name('dashboard.ppdb_pendaftaran');
+        Route::get('/ppdb-pendaftaran/revisi', [AdminController::class, 'ppdb_pendaftaran_revisi'])->name('dashboard.ppdb_pendaftaran.revisi');
+        Route::put('/ppdb/pendaftaran/{id}', [AdminController::class, 'updateRegistration'])->name('dashboard.ppdb_pendaftaran.update');
     });
 
     // Routes accessible to Admin and Superadmin
