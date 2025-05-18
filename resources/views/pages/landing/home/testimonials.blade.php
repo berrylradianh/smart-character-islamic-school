@@ -112,17 +112,13 @@ use Illuminate\Support\Facades\Storage;
         top: 50%;
         transform: translateY(-50%);
         width: calc(100% + 100px);
-        /* Extend beyond container to position arrows outside cards */
         left: -50px;
-        /* Center the nav container relative to carousel */
     }
 
     /* Style for navigation buttons */
     .testimonial__active .owl-nav button {
         background: rgba(0, 0, 0, 0.5) !important;
-        /* Semi-transparent background */
         color: #fff !important;
-        /* White text/icon */
         border: none !important;
         width: 40px;
         height: 40px;
@@ -132,46 +128,116 @@ use Illuminate\Support\Facades\Storage;
         font-size: 20px;
         transition: all 0.3s ease;
         z-index: 10;
-        /* Ensure arrows are above carousel items */
     }
 
     .testimonial__active .owl-nav button:hover {
         background: rgba(0, 0, 0, 0.8) !important;
-        /* Darker on hover */
     }
 
     /* Position left arrow to the left of the first card */
     .testimonial__active .owl-prev {
         margin-left: 10px;
-        /* Small offset from edge */
     }
 
     /* Position right arrow to the right of the third card */
     .testimonial__active .owl-next {
         margin-right: 10px;
-        /* Small offset from edge */
     }
 
     /* Ensure carousel container allows arrows to extend outside */
     .testimonial__slider {
         position: relative;
         padding: 0 50px;
-        /* Add padding to ensure arrows don't overlap content */
     }
 
     .testimonial__active {
         position: relative;
         overflow: visible !important;
-        /* Allow arrows to extend beyond container */
     }
 
-    /* Ensure the stage and stage-outer allow overflow */
     .testimonial__active .owl-stage-outer {
         overflow: visible !important;
     }
 
-    /* Hide arrows initially if needed, controlled by JS */
     .owl-nav button {
         opacity: 1;
+    }
+
+    /* Uniform card sizing */
+    .testimonial__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 500px;
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    /* Ensure image size is consistent */
+    .testimonial__avater img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+
+    /* Scrollable text content */
+    .testimonial__text {
+        height: 150px;
+        /* Fixed height for text area */
+        overflow-y: auto;
+        /* Enable vertical scrolling */
+        margin: 10px 0;
+        padding-right: 10px;
+        /* Space for scrollbar */
+    }
+
+    /* Optional: Style the scrollbar */
+    .testimonial__text::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .testimonial__text::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .testimonial__text::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .testimonial__text::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Ensure name and position are consistent */
+    .testimonial__avater-info {
+        margin-bottom: 10px;
+    }
+
+    .testimonial__avater-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .testimonial__avater-info span {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    /* Ensure rating is consistent */
+    .testimonial__rating ul {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .testimonial__rating li {
+        list-style: none;
+        margin: 0 5px;
     }
 </style>
