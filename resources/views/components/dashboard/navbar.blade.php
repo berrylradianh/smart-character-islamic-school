@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
     <nav class="navbar-custom">
         <ul class="navbar-right list-inline float-right mb-0">
             <li class="dropdown notification-list list-inline-item">
-                <div class="dropdown notification-list nav-pro-img" style="padding-top: 13px;">
+                <div class="dropdown notification-list nav-pro-img">
                     <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <img src="{{ $user->pasfoto_path ? Storage::url($user->pasfoto_path) : asset('dashboard/assets/images/users/user_default.jpg') }}" alt="user" class="rounded-circle">
                     </a>
