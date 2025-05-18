@@ -1178,15 +1178,7 @@ class AdminController extends Controller
             'image' => 'nullable|file|mimes:jpg,png|max:2048',
         ]);
 
-        // Configure HTMLPurifier
-        $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'p,b,i,u,strong,ul,ol,li,span[style]');
-        $config->set('CSS.AllowedProperties', ['color', 'font-size']);
-        $purifier = new HTMLPurifier($config);
-
-        $cleanContent = $purifier->purify($request->introduction);
-
-        $data = ['content' => $cleanContent];
+        $data = ['content' => $request->introduction];
 
         // Handle image upload (same logic as storeRegistration)
         if ($request->hasFile('image')) {
