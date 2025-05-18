@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-pro.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/spacing.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
 </head>
 
 <body>
@@ -73,6 +75,8 @@
     <script src="{{ asset('assets/js/imagesloaded-pkgd.js') }}"></script>
     <script src="{{ asset('assets/js/ajax-form.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <script>
         function showDropdown(element) {
             var submenu = element.querySelector('.submenu');
