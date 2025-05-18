@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
                         @foreach ($testimonials as $testimonial)
                         <div class="testimonial__item transition-3 text-center white-bg">
                             <div class="testimonial__avater">
-                                <img src="{{ $testimonial->image ? Storage::url($testimonial->image) : asset('assets/img/testimonial/placeholder.png') }}" alt="{{ $testimonial->name }}">
+                                <img src="{{ $testimonial->image ? Storage::url($testimonial->image) : asset('dashboard/assets/images/users/user_default.jpg') }}" alt="{{ $testimonial->name }}">
                             </div>
                             <div class="testimonial__text">
                                 <p>{{ $testimonial->text }}</p>
