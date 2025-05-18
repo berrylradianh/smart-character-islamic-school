@@ -762,10 +762,10 @@ use App\Models\Level;
                 };
 
                 const registrationData = {
-                    jadwal_tes: "{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan' }}",
-                    lokasi: "{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}",
-                    gedung: "{{ $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
-                    ruang: "{{ $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}"
+                    jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
+                    lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}",
+                    gedung: "{{ $registration && $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
+                    ruang: "{{ $registration && $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}"
                 };
 
                 // Set fonts and styles
