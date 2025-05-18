@@ -1,5 +1,5 @@
 @php
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 @endphp
 
 @extends('layouts.app')
@@ -13,23 +13,23 @@
         </div>
 
         @if ($programs->isEmpty())
-            <div class="text-center">
-                <p>No programs available at the moment. Please check back later!</p>
-            </div>
+        <div class="text-center">
+            <p>Belum ada program yang tersedia saat ini. Silahkan periksa lagi nanti!</p>
+        </div>
         @else
-            <div class="row">
-                @foreach ($programs as $program)
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100 border-0 shadow-sm">
-                            <img src="{{ $program->image ? Storage::url($program->image) : asset('assets/img/program/placeholder.png') }}" class="card-img-top" alt="{{ $program->title }}">
-                            <div class="card-body">
-                                <h5 class="card-title text-primary">{{ $program->title }}</h5>
-                                <p>{{ $program->description }}</p>
-                            </div>
-                        </div>
+        <div class="row">
+            @foreach ($programs as $program)
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{{ $program->image ? Storage::url($program->image) : asset('assets/img/program/placeholder.png') }}" class="card-img-top" alt="{{ $program->title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ $program->title }}</h5>
+                        <p>{{ $program->description }}</p>
                     </div>
-                @endforeach
+                </div>
             </div>
+            @endforeach
+        </div>
         @endif
     </div>
 </section>
