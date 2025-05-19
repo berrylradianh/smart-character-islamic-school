@@ -88,7 +88,7 @@ use App\Models\Level;
                                                     @if ($registration->status == 'waiting')
                                                     Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera.
                                                     @elseif ($registration->status == 'approve')
-                                                    Selamat! Anda telah diterima. Silakan periksa detail tes di bawah ini.
+                                                    Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini.
                                                     @else
                                                     Maaf, pendaftaran Anda tidak memenuhi kriteria. Hubungi kami untuk informasi lebih lanjut.
                                                     @endif
@@ -715,7 +715,7 @@ use App\Models\Level;
         function loadImageAsBase64(url) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
-                img.crossOrigin = 'Anonymous'; // Handle CORS if image is on a different domain
+                img.crossOrigin = 'Anonymous';
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     canvas.width = img.width;
@@ -733,190 +733,75 @@ use App\Models\Level;
         const downloadButton = document.getElementById('downloadKartuPeserta');
         if (downloadButton) {
             downloadButton.addEventListener('click', async function() {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const doc = new jsPDF();
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'mm',
+                    format: 'a5' // A5 size: 210mm x 148mm in landscape
+                });
 
                 // Define user and registration data
                 const userData = {
                     name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
-                    nama_panggilan: "{{ auth()->user()->nama_panggilan ?? 'Tidak diisi' }}",
-                    nomor_induk_asal: "{{ auth()->user()->nomor_induk_asal ?? 'Tidak diisi' }}",
-                    nisn: "{{ auth()->user()->nisn ?? 'Tidak diisi' }}",
-                    tempat_lahir: "{{ auth()->user()->tempat_lahir ?? 'Tidak diisi' }}",
-                    tanggal_lahir: "{{ auth()->user()->tanggal_lahir ? \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d/m/Y') : 'Tidak diisi' }}",
-                    jenis_kelamin: "{{ auth()->user()->jenis_kelamin ?? 'Tidak diisi' }}",
-                    agama: "{{ auth()->user()->agama ?? 'Tidak diisi' }}",
-                    anak_ke: "{{ auth()->user()->anak_ke ?? 'Tidak diisi' }}",
-                    status_anak: "{{ auth()->user()->status_anak ?? 'Tidak diisi' }}",
-                    alamat: "{{ auth()->user()->alamat ?? 'Tidak diisi' }}",
-                    no_hp: "{{ auth()->user()->no_hp ?? 'Tidak diisi' }}",
-                    diterima_kelas: "{{ auth()->user()->diterima_kelas ?? 'Tidak diisi' }}",
-                    diterima_tanggal: "{{ auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('d/m/Y') : 'Tidak diisi' }}",
-                    ra_tk_asal: "{{ auth()->user()->ra_tk_asal ?? 'Tidak diisi' }}",
-                    alamat_ra_tk: "{{ auth()->user()->alamat_ra_tk ?? 'Tidak diisi' }}",
                     sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
-                    alamat_sd_mi: "{{ auth()->user()->alamat_sd_mi ?? 'Tidak diisi' }}",
                     pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
                 };
 
                 const registrationData = {
+                    no_peserta: "{{ $registration ? ($registration->no_peserta ?? 'Belum ditentukan') : 'Belum ditentukan' }}",
                     jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
-                    lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}",
-                    gedung: "{{ $registration && $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
-                    ruang: "{{ $registration && $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}"
+                    gedung: "{{ $registration && $registration->schoolLocation ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
+                    ruang: "{{ $registration && $registration->schoolLocation ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}",
+                    lokasi: "{{ $registration && $registration->schoolLocation ?$registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
                 };
 
-                // Set fonts and styles
+                // Card Title
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(16);
-                doc.text("Kartu Peserta PPDB SCIS", 105, 20, {
-                    align: "center"
-                });
+                doc.text("Kartu Peserta PPDB", 105, 20, { align: "center" });
                 doc.setFontSize(12);
-                doc.text("Smart Character Islamic School", 105, 30, {
-                    align: "center"
-                });
-                doc.setLineWidth(0.5);
-                doc.line(20, 35, 190, 35); // Horizontal line
+                doc.text("Smart Character Islamic School", 105, 30, { align: "center" });
 
                 // Add photo if available
-                let y = 45;
                 if (userData.pasfoto_path) {
                     try {
                         const imgData = await loadImageAsBase64(userData.pasfoto_path);
-                        doc.addImage(imgData, 'JPEG', 150, 40, 30, 30); // Photo: 30x30mm at top-right
-                        y = 80; // Adjust starting y-position to account for photo
+                        doc.addImage(imgData, 'JPEG', 170, 40, 30, 30); // Photo: 30x30mm at right side
                     } catch (error) {
                         console.error('Failed to load photo:', error);
                     }
                 }
 
-                // Student Details Section
-                doc.setFontSize(14);
-                doc.text("Data Siswa", 20, y);
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                y += 10;
-                const studentDetails = [{
-                        label: "Nama Lengkap",
-                        value: userData.name
-                    },
-                    {
-                        label: "Nama Panggilan",
-                        value: userData.nama_panggilan
-                    },
-                    {
-                        label: "Nomor Induk Asal",
-                        value: userData.nomor_induk_asal
-                    },
-                    {
-                        label: "NISN",
-                        value: userData.nisn
-                    },
-                    {
-                        label: "Tempat, Tanggal Lahir",
-                        value: `${userData.tempat_lahir}, ${userData.tanggal_lahir}`
-                    },
-                    {
-                        label: "Jenis Kelamin",
-                        value: userData.jenis_kelamin
-                    },
-                    {
-                        label: "Agama",
-                        value: userData.agama
-                    },
-                    {
-                        label: "Anak ke",
-                        value: userData.anak_ke
-                    },
-                    {
-                        label: "Status Anak",
-                        value: userData.status_anak
-                    },
-                    {
-                        label: "Alamat",
-                        value: userData.alamat
-                    },
-                    {
-                        label: "No HP",
-                        value: userData.no_hp
-                    },
-                    {
-                        label: "Diterima Kelas",
-                        value: userData.diterima_kelas
-                    },
-                    {
-                        label: "Diterima Tanggal",
-                        value: userData.diterima_tanggal
-                    },
-                    {
-                        label: "RA/TK Asal",
-                        value: userData.ra_tk_asal
-                    },
-                    {
-                        label: "Alamat RA/TK",
-                        value: userData.alamat_ra_tk
-                    },
-                    {
-                        label: "SD/MI Asal",
-                        value: userData.sd_mi_asal
-                    },
-                    {
-                        label: "Alamat SD/MI",
-                        value: userData.alamat_sd_mi
-                    }
-                ];
-
-                studentDetails.forEach(detail => {
-                    doc.text(`${detail.label}:`, 20, y);
-                    const splitText = doc.splitTextToSize(detail.value, 100); // Reduced width to accommodate photo
-                    doc.text(splitText, 60, y);
-                    y += splitText.length * 6 + 2;
-                });
-
-                // Test Details Section
+                // Card Content
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(14);
-                doc.text("Detail Tes", 20, y + 10);
+                doc.text(userData.name.toUpperCase(), 10, 50); // Name on left
+
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(10);
-                y += 20;
-                const testDetails = [{
-                        label: "Jadwal Tes",
-                        value: registrationData.jadwal_tes
-                    },
-                    {
-                        label: "Lokasi",
-                        value: registrationData.lokasi
-                    },
-                    {
-                        label: "Gedung",
-                        value: registrationData.gedung
-                    },
-                    {
-                        label: "Ruang",
-                        value: registrationData.ruang
-                    }
+                const details = [
+                    { label: "No Peserta", value: registrationData.no_peserta },
+                    { label: "Asal Sekolah", value: userData.sd_mi_asal },
+                    { label: "Waktu Ujian", value: registrationData.jadwal_tes },
+                    { label: "Lokasi", value: registrationData.lokasi },
+                    { label: "Gedung", value: registrationData.gedung },
+                    { label: "Ruang", value: registrationData.ruang }
                 ];
 
-                testDetails.forEach(detail => {
-                    doc.text(`${detail.label}:`, 20, y);
-                    const splitText = doc.splitTextToSize(detail.value, 100);
-                    doc.text(splitText, 60, y);
-                    y += splitText.length * 6 + 2;
+                let y = 60;
+                details.forEach(detail => {
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${detail.label}:`, 10, y);
+                    doc.setFont("helvetica", "normal");
+                    const splitText = doc.splitTextToSize(detail.value, 140); // Wider text area for landscape
+                    doc.text(splitText, 50, y);
+                    y += splitText.length * 5 + 3;
                 });
-
-                // Add extra spacing after Test Details to avoid crowding with footer
-                y += 15;
 
                 // Footer
                 doc.setFont("helvetica", "italic");
                 doc.setFontSize(8);
-                doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 105, 290, {
-                    align: "center"
-                });
+                doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 105, 140, { align: "center" });
 
                 // Save the PDF
                 doc.save(`Kartu_Peserta_${userData.name}.pdf`);
@@ -995,176 +880,49 @@ use App\Models\Level;
 
         function updatePreview() {
             const formData = new FormData(form);
-            const fields = [{
-                    name: 'name',
-                    isFile: false
-                },
-                {
-                    name: 'nama_panggilan',
-                    isFile: false
-                },
-                {
-                    name: 'nomor_induk_asal',
-                    isFile: false
-                },
-                {
-                    name: 'nisn',
-                    isFile: false
-                },
-                {
-                    name: 'tempat_lahir',
-                    isFile: false
-                },
-                {
-                    name: 'tanggal_lahir',
-                    isFile: false
-                },
-                {
-                    name: 'jenis_kelamin',
-                    isFile: false
-                },
-                {
-                    name: 'agama',
-                    isFile: false
-                },
-                {
-                    name: 'anak_ke',
-                    isFile: false
-                },
-                {
-                    name: 'status_anak',
-                    isFile: false
-                },
-                {
-                    name: 'alamat',
-                    isFile: false
-                },
-                {
-                    name: 'no_hp',
-                    isFile: false
-                },
-                {
-                    name: 'diterima_kelas',
-                    isFile: false
-                },
-                {
-                    name: 'diterima_tanggal',
-                    isFile: false
-                },
-                {
-                    name: 'ra_tk_asal',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ra_tk',
-                    isFile: false
-                },
-                {
-                    name: 'sd_mi_asal',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_sd_mi',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_ortu',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pasfoto_path',
-                    isFile: true,
-                    label: 'Lihat Pas Foto'
-                },
-                {
-                    name: 'bukti_pembayaran',
-                    isFile: true,
-                    label: 'Lihat Bukti Pembayaran'
-                }
+            const fields = [
+                { name: 'name', isFile: false },
+                { name: 'nama_panggilan', isFile: false },
+                { name: 'nomor_induk_asal', isFile: false },
+                { name: 'nisn', isFile: false },
+                { name: 'tempat_lahir', isFile: false },
+                { name: 'tanggal_lahir', isFile: false },
+                { name: 'jenis_kelamin', isFile: false },
+                { name: 'agama', isFile: false },
+                { name: 'anak_ke', isFile: false },
+                { name: 'status_anak', isFile: false },
+                { name: 'alamat', isFile: false },
+                { name: 'no_hp', isFile: false },
+                { name: 'diterima_kelas', isFile: false },
+                { name: 'diterima_tanggal', isFile: false },
+                { name: 'ra_tk_asal', isFile: false },
+                { name: 'alamat_ra_tk', isFile: false },
+                { name: 'sd_mi_asal', isFile: false },
+                { name: 'alamat_sd_mi', isFile: false },
+                { name: 'nama_ayah', isFile: false },
+                { name: 'nama_ibu', isFile: false },
+                { name: 'alamat_ayah', isFile: false },
+                { name: 'alamat_ibu', isFile: false },
+                { name: 'telepon_ortu', isFile: false },
+                { name: 'pekerjaan_ayah', isFile: false },
+                { name: 'pekerjaan_ibu', isFile: false },
+                { name: 'pendidikan_ayah', isFile: false },
+                { name: 'pendidikan_ibu', isFile: false },
+                { name: 'penghasilan_ayah', isFile: false },
+                { name: 'penghasilan_ibu', isFile: false },
+                { name: 'nama_ayah_wali', isFile: false },
+                { name: 'nama_ibu_wali', isFile: false },
+                { name: 'alamat_ayah_wali', isFile: false },
+                { name: 'alamat_ibu_wali', isFile: false },
+                { name: 'telepon_wali', isFile: false },
+                { name: 'pekerjaan_ayah_wali', isFile: false },
+                { name: 'pekerjaan_ibu_wali', isFile: false },
+                { name: 'pendidikan_ayah_wali', isFile: false },
+                { name: 'pendidikan_ibu_wali', isFile: false },
+                { name: 'penghasilan_ayah_wali', isFile: false },
+                { name: 'penghasilan_ibu_wali', isFile: false },
+                { name: 'pasfoto_path', isFile: true, label: 'Lihat Pas Foto' },
+                { name: 'bukti_pembayaran', isFile: true, label: 'Lihat Bukti Pembayaran' }
             ];
 
             fields.forEach(field => {

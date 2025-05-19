@@ -690,6 +690,12 @@ class AdminController extends Controller
         $registration->user_id = $user->id;
         $registration->status = 'waiting';
 
+        do {
+            $noPeserta = str_pad(mt_rand(0, 999999999999), 12, '0', STR_PAD_LEFT);
+        } while (Registration::where('no_peserta', $noPeserta)->exists());
+
+        $registration->no_peserta = $noPeserta;
+
         // Simpan bukti pembayaran
         if ($request->hasFile('bukti_pembayaran')) {
             $file = $request->file('bukti_pembayaran');
