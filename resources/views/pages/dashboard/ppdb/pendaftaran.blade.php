@@ -68,7 +68,7 @@ use App\Models\Level;
                                             <div class="mr-3">
                                                 @if ($registration->status == 'waiting')
                                                 <i class="fas fa-hourglass-half fa-3x text-warning animate__animated animate__pulse animate__infinite"></i>
-                                                @elseif ($registration->status == 'approve')
+                                                @elseif ($registration->status == 'approve' || $registration->status == 'accepted')
                                                 <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
                                                 @else
                                                 <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
@@ -79,9 +79,13 @@ use App\Models\Level;
                                                     @if ($registration->status == 'waiting')
                                                     Menunggu Verifikasi
                                                     @elseif ($registration->status == 'approve')
+                                                    Pendaftaran Diterima
+                                                    @elseif ($registration->status == 'decline')
+                                                    Pendaftaran Ditolak
+                                                    @elseif ($registration->status == 'accepted')
                                                     Diterima
                                                     @else
-                                                    Ditolak
+                                                    Tidak Diterima
                                                     @endif
                                                 </h5>
                                                 <p class="text-muted mb-0">
@@ -89,8 +93,12 @@ use App\Models\Level;
                                                     Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera.
                                                     @elseif ($registration->status == 'approve')
                                                     Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini.
+                                                    @elseif ($registration->status == 'decline')
+                                                    Maaf, pendaftaran Anda tidak memenuhi kriteria. Silahkan segera revisi dan mengirimkan kembali ke tim kami.
+                                                    @elseif ($registration->status == 'accepted')
+                                                    Selamat, Anda telah diterima di Smart Character Islamic School.
                                                     @else
-                                                    Maaf, pendaftaran Anda tidak memenuhi kriteria. Hubungi kami untuk informasi lebih lanjut.
+                                                    Mohon maaf, Anda belum diterima di Smart Character Islamic School. Terima kasih atas partisipasinya.
                                                     @endif
                                                 </p>
                                             </div>

@@ -348,8 +348,25 @@ use Illuminate\Support\Facades\Storage;
                                                 <a href="{{ route('dashboard.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
                                             </div>
                                         </form>
+                                        @elseif ($registration->status == 'approve' && $registration->jadwal_tes && now()->gte(\Carbon\Carbon::parse($registration->jadwal_tes)))
+                                        <!-- Form Edit jika Status "Approve" dan Jadwal Tes sudah lewat -->
+                                        <form action="{{ route('dashboard.update_status', $registration->id) }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label>Status Pendaftaran</label>
+                                                <select class="form-control" name="status" id="statusSelect" required>
+                                                    <option value="accepted">Accepted</option>
+                                                    <option value="not_accepted">Not Accepted</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group mt-3">
+                                                <button type="submit" class="btn btn-primary">Simpan Status</button>
+                                                <a href="{{ route('dashboard.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
+                                            </div>
+                                        </form>
                                         @else
-                                        <!-- Tampilan Read-Only jika Status Sudah Diupdate -->
+                                        <!-- Tampilan Read-Only untuk Status Approve (sebelum jadwal tes lewat), Decline, Accepted, atau Not Accepted -->
                                         <div class="card shadow-sm" style="border-radius: 10px;">
                                             <div class="card-body p-4">
                                                 <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
@@ -357,15 +374,37 @@ use Illuminate\Support\Facades\Storage;
                                                     <div>
                                                         <strong>Status Pendaftaran:</strong>
                                                         <span>
-                                                            @if ($registration->status == 'approve')
+                                                            @if ($registration->status == 'waiting')
+                                                            <span class="badge badge-warning" style="font-size: 12px"><i class="fas fa-hourglass-half mr-1"></i> Waiting</span>
+                                                            @elseif ($registration->status == 'approve')
                                                             <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check mr-1"></i> Approve</span>
                                                             @elseif ($registration->status == 'decline')
                                                             <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> Decline</span>
+                                                            @elseif ($registration->status == 'accepted')
+                                                            <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check-circle mr-1"></i> Accepted</span>
+                                                            @elseif ($registration->status == 'not_accepted')
+                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times-circle mr-1"></i> Not Accepted</span>
                                                             @endif
                                                         </span>
                                                     </div>
                                                 </div>
-                                                @if ($registration->status == 'decline' && $registration->decline_reason)
+                                                @if ($registration->status == 'accepted')
+                                                <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                    <i class="fas fa-comment-alt fa-2x mr-3 text-primary"></i>
+                                                    <div>
+                                                        <strong>Pesan:</strong>
+                                                        <span>Selamat, Anda telah diterima di Smart Character Islamic School.</span>
+                                                    </div>
+                                                </div>
+                                                @elseif ($registration->status == 'not_accepted')
+                                                <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                    <i class="fas fa-comment-alt fa-2x mr-3 text-primary"></i>
+                                                    <div>
+                                                        <strong>Pesan:</strong>
+                                                        <span>Mohon maaf, Anda belum diterima di Smart Character Islamic School. Terima kasih atas partisipasinya.</span>
+                                                    </div>
+                                                </div>
+                                                @elseif ($registration->status == 'decline' && $registration->decline_reason)
                                                 <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                     <i class="fas fa-comment-alt fa-2x mr-3 text-primary"></i>
                                                     <div>
@@ -374,7 +413,7 @@ use Illuminate\Support\Facades\Storage;
                                                     </div>
                                                 </div>
                                                 @endif
-                                                @if ($registration->status == 'approve')
+                                                @if (in_array($registration->status, ['approve', 'accepted', 'not_accepted']))
                                                 <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                     <i class="fas fa-clock fa-2x mr-3 text-primary"></i>
                                                     <div>
@@ -404,6 +443,7 @@ use Illuminate\Support\Facades\Storage;
                                                     </div>
                                                 </div>
                                                 <!-- Bagian Dokumen Wajib Dibawa -->
+                                                @if ($registration->status == 'approve')
                                                 <div class="card shadow-sm mt-4" style="border-radius: 10px;">
                                                     <div class="card-header bg-primary text-white" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
                                                         <h6 class="mb-0"><i class="fas fa-file-alt mr-2"></i>Dokumen Wajib Dibawa Saat Tes</h6>
@@ -429,7 +469,7 @@ use Illuminate\Support\Facades\Storage;
                                                             @if ($registration->user->level && in_array($registration->user->level->slug, ['smp', 'sma']))
                                                             @if ($registration->user->level->slug == 'smp' && $registration->user->ijazah_sd_path)
                                                             <li class="document-item d-flex align-items-center py-2">
-                                                                <i class="fas fa-check圈-circle mr-2 text-success"></i>
+                                                                <i class="fas fa-check-circle mr-2 text-success"></i>
                                                                 Ijazah SD (Asli dan Fotokopi)
                                                             </li>
                                                             @elseif ($registration->user->level->slug == 'sma' && $registration->user->ijazah_smp_path)
@@ -442,6 +482,7 @@ use Illuminate\Support\Facades\Storage;
                                                         </ol>
                                                     </div>
                                                 </div>
+                                                @endif
                                                 @endif
                                                 <div class="mt-3">
                                                     <a href="{{ route('dashboard.list_pendaftar') }}" class="btn btn-secondary">Kembali</a>
@@ -717,50 +758,52 @@ use Illuminate\Support\Facades\Storage;
         const jadwalTesInput = document.getElementById('jadwal_tes');
 
         // Trigger datetime picker when clicking the text input
-        jadwalTesDisplay.addEventListener('click', function() {
-            jadwalTesInput.showPicker();
-        });
+        if (jadwalTesDisplay && jadwalTesInput) {
+            jadwalTesDisplay.addEventListener('click', function() {
+                jadwalTesInput.showPicker();
+            });
 
-        // Update text input when datetime picker changes
-        jadwalTesInput.addEventListener('change', function() {
-            if (jadwalTesInput.value) {
-                const date = new Date(jadwalTesInput.value);
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                const hours = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                jadwalTesDisplay.value = `${day}/${month}/${year} ${hours}:${minutes}`;
-            } else {
-                jadwalTesDisplay.value = '';
-            }
-        });
+            // Update text input when datetime picker changes
+            jadwalTesInput.addEventListener('change', function() {
+                if (jadwalTesInput.value) {
+                    const date = new Date(jadwalTesInput.value);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    jadwalTesDisplay.value = `${day}/${month}/${year} ${hours}:${minutes}`;
+                } else {
+                    jadwalTesDisplay.value = '';
+                }
+            });
 
-        // Update datetime picker when text input changes
-        jadwalTesDisplay.addEventListener('input', function() {
-            const value = jadwalTesDisplay.value;
-            const regex = /^(\d{2})\/(\d{2})\/(\d{4})\s(\d{2}):(\d{2})$/;
-            if (regex.test(value)) {
-                const [, day, month, year, hours, minutes] = value.match(regex);
-                const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
-                if (!isNaN(date.getTime())) {
-                    jadwalTesInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            // Update datetime picker when text input changes
+            jadwalTesDisplay.addEventListener('input', function() {
+                const value = jadwalTesDisplay.value;
+                const regex = /^(\d{2})\/(\d{2})\/(\d{4})\s(\d{2}):(\d{2})$/;
+                if (regex.test(value)) {
+                    const [, day, month, year, hours, minutes] = value.match(regex);
+                    const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
+                    if (!isNaN(date.getTime())) {
+                        jadwalTesInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                    } else {
+                        jadwalTesInput.value = '';
+                    }
                 } else {
                     jadwalTesInput.value = '';
                 }
-            } else {
-                jadwalTesInput.value = '';
-            }
-        });
+            });
 
-        // Prevent form submission if datetime format is invalid
-        jadwalTesDisplay.closest('form').addEventListener('submit', function(event) {
-            const value = jadwalTesDisplay.value;
-            if (value && !/^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/.test(value)) {
-                event.preventDefault();
-                alert('Jadwal Tes harus dalam format DD/MM/YYYY HH:MM.');
-            }
-        });
+            // Prevent form submission if datetime format is invalid
+            jadwalTesDisplay.closest('form').addEventListener('submit', function(event) {
+                const value = jadwalTesDisplay.value;
+                if (value && !/^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/.test(value)) {
+                    event.preventDefault();
+                    alert('Jadwal Tes harus dalam format DD/MM/YYYY HH:MM.');
+                }
+            });
+        }
     });
 </script>
 @endsection

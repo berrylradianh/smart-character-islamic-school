@@ -101,6 +101,10 @@
                                             <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times mr-1"></i> Decline</span>
                                             @elseif ($registration->status == 'approve')
                                             <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check mr-1"></i> Approve</span>
+                                            @elseif ($registration->status == 'accepted')
+                                            <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check-circle mr-1"></i> Diterima</span>
+                                            @elseif ($registration->status == 'not_accepted')
+                                            <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times-circle mr-1"></i> Tidak Diterima</span>
                                             @endif
                                         </td>
                                         <td>

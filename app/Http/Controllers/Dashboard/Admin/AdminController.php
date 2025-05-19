@@ -848,14 +848,46 @@ class AdminController extends Controller
     {
         try {
             $registration = Registration::findOrFail($id);
+
+            // Validasi input
+            $request->validate([
+                'status' => 'required|in:waiting,decline,approve,accepted,not_accepted',
+                'jadwal_tes' => 'required_if:status,approve|nullable|date',
+                'school_location_id' => 'required_if:status,approve|nullable|exists:school_locations,id',
+                'gedung_id' => 'required_if:status,approve|nullable|exists:gedungs,id',
+                'ruang_id' => 'required_if:status,approve|nullable|exists:ruangs,id',
+                'decline_reason' => 'required_if:status,decline|nullable|string',
+            ]);
+
+            // Jika status saat ini adalah 'approve' dan jadwal tes belum lewat
+            if ($registration->status === 'approve' && $registration->jadwal_tes && now()->lt(\Carbon\Carbon::parse($registration->jadwal_tes))) {
+                return redirect()->back()->withErrors(['status' => 'Status tidak dapat diubah sebelum jadwal tes lewat.'])->withInput();
+            }
+
             $data = ['status' => $request->status];
 
+            // Jika status baru adalah 'approve'
             if ($request->status === 'approve') {
                 $data['jadwal_tes'] = $request->jadwal_tes;
                 $data['school_location_id'] = $request->school_location_id;
                 $data['gedung_id'] = $request->gedung_id;
                 $data['ruang_id'] = $request->ruang_id;
-            } else {
+                $data['decline_reason'] = null;
+            }
+            // Jika status baru adalah 'accepted' atau 'not_accepted'
+            elseif (in_array($request->status, ['accepted', 'not_accepted'])) {
+                // Pastikan status saat ini adalah 'approve' dan jadwal tes sudah lewat
+                if ($registration->status !== 'approve' || !$registration->jadwal_tes || now()->lt(\Carbon\Carbon::parse($registration->jadwal_tes))) {
+                    return redirect()->back()->withErrors(['status' => 'Status hanya dapat diubah ke Accepted atau Not Accepted setelah status Approve dan jadwal tes lewat.'])->withInput();
+                }
+                $data['jadwal_tes'] = $registration->jadwal_tes;
+                $data['school_location_id'] = $registration->school_location_id;
+                $data['gedung_id'] = $registration->gedung_id;
+                $data['ruang_id'] = $registration->ruang_id;
+                $data['decline_reason'] = null;
+            }
+            // Jika status adalah 'decline' atau 'waiting'
+            else {
                 $data['jadwal_tes'] = null;
                 $data['school_location_id'] = null;
                 $data['gedung_id'] = null;
@@ -868,6 +900,8 @@ class AdminController extends Controller
             return redirect()->route('dashboard.list_pendaftar')->with('success', 'Status berhasil diperbarui.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat memperbarui status: ' . $e->getMessage()])->withInput();
         }
     }
 
