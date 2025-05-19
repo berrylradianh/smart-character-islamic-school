@@ -760,7 +760,9 @@ use App\Models\Level;
                 const registrationData = {
                     no_peserta: "{{ $registration ? ($registration->no_peserta ?? 'Belum ditentukan') : 'Belum ditentukan' }}",
                     jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
-                    lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi . ', ' . $registration->schoolLocation->alamat : 'Belum ditentukan' }}"
+                    gedung: "{{ $registration && $registration->schoolLocation ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
+                    ruang: "{{ $registration && $registration->schoolLocation ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}",
+                    lokasi: "{{ $registration && $registration->schoolLocation ?$registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
                 };
 
                 // Card Title
@@ -791,22 +793,13 @@ use App\Models\Level;
 
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(10);
-                const details = [{
-                        label: "No Peserta",
-                        value: registrationData.no_peserta
-                    },
-                    {
-                        label: "Asal Sekolah",
-                        value: userData.sd_mi_asal
-                    },
-                    {
-                        label: "Waktu Ujian",
-                        value: registrationData.jadwal_tes
-                    },
-                    {
-                        label: "Lokasi",
-                        value: registrationData.lokasi
-                    }
+                 const details = [
+                    { label: "No Peserta", value: registrationData.no_peserta },
+                    { label: "Asal Sekolah", value: userData.sd_mi_asal },
+                    { label: "Waktu Ujian", value: registrationData.jadwal_tes },
+                    { label: "Gedung", value: registrationData.gedung },
+                    { label: "Ruang", value: registrationData.ruang },
+                    { label: "Lokasi", value: registrationData.lokasi }
                 ];
 
                 let y = 45;
