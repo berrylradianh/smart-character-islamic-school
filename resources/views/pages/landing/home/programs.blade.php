@@ -17,7 +17,7 @@
                                 @foreach ($programs as $program)
                                 <li style="display: flex; align-items: flex-start; gap: 8px;">
                                     <i class="fa-solid fa-check" style="flex-shrink: 0; margin-top: 5px;"></i>
-                                    <span>{{ $program->title }} - {{ $program->description }}</span>
+                                    <span>{{ $program->title }}</span>
                                 </li>
                                 @endforeach
                             </ul>
