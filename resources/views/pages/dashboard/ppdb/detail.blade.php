@@ -57,10 +57,10 @@ use Illuminate\Support\Facades\Storage;
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
-                                                                <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
+                                                                <i class="fas fa-address-card fa-2x mr-3 text-primary"></i>
                                                                 <div>
-                                                                    <strong>Jenjang:</strong>
-                                                                    <span>{{ $registration->user->level ? strtoupper($registration->user->level->name) : 'Tidak Ditetapkan' }}</span>
+                                                                    <strong>No Peserta:</strong>
+                                                                    <span>{{ $registration->no_peserta ? strtoupper($registration->no_peserta) : 'Tidak Ditetapkan' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
@@ -71,17 +71,27 @@ use Illuminate\Support\Facades\Storage;
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Jenjang:</strong>
+                                                                    <span>{{ $registration->user->level ? strtoupper($registration->user->level->name) : 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-users fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Nama Orang Tua:</strong>
-                                                                    <span>{{ $registration->user->nama_orang_tua ?? 'Tidak Ditetapkan' }}</span>
+                                                                    <span>
+                                                                        Ayah: {{ $registration->user->nama_ayah ?? 'Tidak Ditetapkan' }} |
+                                                                        Ibu: {{ $registration->user->nama_ibu ?? 'Tidak Ditetapkan' }}
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-phone fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>No HP Orang Tua:</strong>
-                                                                    <span>{{ $registration->user->no_hp_orang_tua ?? 'Tidak Ditetapkan' }}</span>
+                                                                    <span>{{ $registration->user->telepon_ortu ?? 'Tidak Ditetapkan' }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -90,14 +100,14 @@ use Illuminate\Support\Facades\Storage;
                                                                 <i class="fas fa-calendar-alt fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Tanggal Lahir:</strong>
-                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->format('d/m/Y') : '-' }}</span>
+                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->translatedFormat('d F Y') : '-' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
                                                                 <i class="fas fa-clock fa-2x mr-3 text-primary"></i>
                                                                 <div>
                                                                     <strong>Jadwal Tes:</strong>
-                                                                    <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d/m/Y H:i') : 'Belum Ditentukan' }}</span>
+                                                                    <span>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->translatedFormat('d F Y H.i') : 'Belum Ditentukan' }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">

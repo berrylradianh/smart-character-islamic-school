@@ -74,9 +74,9 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th><i class="fas fa-hashtag mr-1"></i> No</th>
+                                        <th><i class="fas fa-users mr-1"></i> No Peserta</th>
                                         <th><i class="fas fa-graduation-cap mr-1"></i> Jenjang</th>
                                         <th><i class="fas fa-user mr-1"></i> Nama Anak</th>
-                                        <th><i class="fas fa-users mr-1"></i> Nama Orang Tua</th>
                                         <th><i class="fas fa-phone mr-1"></i> No HP</th>
                                         <th><i class="fas fa-clock mr-1"></i> Jadwal Tes</th>
                                         <th><i class="fas fa-map-marker-alt mr-1"></i> Lokasi Tes</th>
@@ -88,10 +88,10 @@
                                     @foreach ($registrations as $index => $registration)
                                     <tr class="table-row-hover">
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $registration->no_peserta ?? 'Tidak Ditetapkan' }}</td>
                                         <td>{{ $registration->user->level ? strtoupper($registration->user->level->slug) : 'Tidak Ditetapkan' }}</td>
                                         <td>{{ $registration->user->name }}</td>
-                                        <td>{{ $registration->user->nama_orang_tua ?? 'Tidak Ditetapkan' }}</td>
-                                        <td>{{ $registration->user->no_hp_orang_tua ?? 'Tidak Ditetapkan' }}</td>
+                                        <td>{{ $registration->user->no_hp ?? 'Tidak Ditetapkan' }}</td>
                                         <td>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan' }}</td>
                                         <td>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan' }}</td>
                                         <td>
