@@ -705,7 +705,7 @@ class AdminController extends Controller
 
         $registration->save();
 
-        return redirect()->route('dashboard.ppdb_pendaftaran')
+        return redirect()->route('dashboard.ppdb_pengumuman')
             ->with('success', 'Pendaftaran berhasil disimpan!');
     }
 
@@ -1620,5 +1620,21 @@ class AdminController extends Controller
     {
         $ruangs = Ruang::where('gedung_id', $gedung_id)->get(['id', 'nama_ruang']);
         return response()->json($ruangs);
+    }
+
+    public function ppdb_pengumuman()
+    {
+        $user = Auth::user();
+        $registration = Registration::with(['schoolLocation', 'gedung', 'ruang'])
+            ->where('user_id', $user->id)
+            ->first();
+
+        $data = [
+            'title' => 'Pengumuman Pendaftaran',
+            'user' => $user,
+            'registration' => $registration,
+        ];
+
+        return view('pages.dashboard.ppdb.pengumuman', $data);
     }
 }

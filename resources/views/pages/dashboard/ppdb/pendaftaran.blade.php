@@ -28,7 +28,7 @@ use App\Models\Level;
                 <div class="col-12">
                     <div class="card m-b-30 shadow-sm">
                         <div class="card-body">
-                            <h5 class="mt-0 header-title">Form Pendaftaran</h5>
+                            <h5 class="mt-0 header-title" style="padding-bottom: 10px;">Form Pendaftaran</h5>
 
                             @if ($errors->any())
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -60,149 +60,8 @@ use App\Models\Level;
                             @endif
 
                             @if ($registration)
-                            <!-- Status Pendaftaran -->
-                            <div class="mt-4">
-                                <div class="card border-0 shadow-lg rounded-lg">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex align-items-center mb-4">
-                                            <div class="mr-3">
-                                                @if ($registration->status == 'waiting')
-                                                <i class="fas fa-hourglass-half fa-3x text-warning animate__animated animate__pulse animate__infinite"></i>
-                                                @elseif ($registration->status == 'approve' || $registration->status == 'accepted')
-                                                <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
-                                                @else
-                                                <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
-                                                @endif
-                                            </div>
-                                            <div>
-                                                <h5 class="mb-1 font-weight-bold text-dark">
-                                                    @if ($registration->status == 'waiting')
-                                                    Menunggu Verifikasi
-                                                    @elseif ($registration->status == 'approve')
-                                                    Pendaftaran Diterima
-                                                    @elseif ($registration->status == 'decline')
-                                                    Pendaftaran Ditolak
-                                                    @elseif ($registration->status == 'accepted')
-                                                    Diterima
-                                                    @else
-                                                    Tidak Diterima
-                                                    @endif
-                                                </h5>
-                                                <p class="text-muted mb-0">
-                                                    @if ($registration->status == 'waiting')
-                                                    Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera.
-                                                    @elseif ($registration->status == 'approve')
-                                                    Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini.
-                                                    @elseif ($registration->status == 'decline')
-                                                    Maaf, pendaftaran Anda tidak memenuhi kriteria. Silahkan segera revisi dan mengirimkan kembali ke tim kami.
-                                                    @elseif ($registration->status == 'accepted')
-                                                    Selamat, Anda telah diterima di Smart Character Islamic School.
-                                                    @else
-                                                    Mohon maaf, Anda belum diterima di Smart Character Islamic School. Terima kasih atas partisipasinya.
-                                                    @endif
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        @if ($registration->status == 'decline' && $registration->decline_reason)
-                                        <hr class="my-4">
-                                        <h6 class="font-weight-bold mb-3 text-dark">Alasan Penolakan</h6>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <i class="fas fa-comment-alt fa-lg text-primary mr-3"></i>
-                                            <div>
-                                                <p class="mb-0">{{ $registration->decline_reason }}</p>
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                        @if ($registration->status == 'approve' && $registration->jadwal_tes)
-                                        <hr class="my-4">
-                                        <h6 class="font-weight-bold mb-3 text-dark">Detail Tes</h6>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-alt fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Jadwal Tes:</strong>
-                                                        <p class="mb-0">{{ \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->schoolLocation)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-map-marker-alt fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Lokasi:</strong>
-                                                        <p class="mb-0">{{ $registration->schoolLocation->nama_lokasi }}<br>{{ $registration->schoolLocation->alamat }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-map-marker-alt fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Lokasi:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->gedung)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-building fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Gedung:</strong>
-                                                        <p class="mb-0">{{ $registration->gedung->nama_gedung }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-building fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Gedung:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                @if ($registration->ruang)
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-door-open fa-lg text-primary mr-3"></i>
-                                                    <div>
-                                                        <strong>Ruang:</strong>
-                                                        <p class="mb-0">{{ $registration->ruang->nama_ruang }}</p>
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
-                                                    <div>
-                                                        <strong>Ruang:</strong>
-                                                        <p class="mb-0 text-muted">Belum ditentukan</p>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                        @if ($registration->status == 'decline')
-                                        <div class="mt-4">
-                                            <a href="{{ route('dashboard.ppdb_pendaftaran.revisi') }}" class="btn btn-primary btn-sm rounded-pill px-4">
-                                                <i class="fas fa-edit mr-2"></i> Revisi Data
-                                            </a>
-                                        </div>
-                                        @elseif ($registration->status == 'approve')
-                                        <div class="mt-4">
-                                            <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
-                                                <i class="fas fa-download mr-2"></i> Download Kartu Peserta
-                                            </button>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
+                            <div class="alert alert-info" role="alert">
+                                Anda sudah mendaftar. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
                             </div>
                             @else
                             <!-- Multi-Step Form -->
@@ -719,111 +578,6 @@ use App\Models\Level;
             }
         });
 
-        // Function to load image as base64
-        function loadImageAsBase64(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'Anonymous';
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    resolve(canvas.toDataURL('image/jpeg'));
-                };
-                img.onerror = () => reject(new Error('Failed to load image'));
-                img.src = url;
-            });
-        }
-
-        // Download Kartu Peserta
-        const downloadButton = document.getElementById('downloadKartuPeserta');
-        if (downloadButton) {
-            downloadButton.addEventListener('click', async function() {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a5' // A5 size: 148mm x 210mm
-                });
-
-                // Define user and registration data
-                const userData = {
-                    name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
-                    sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
-                    pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
-                };
-
-                const registrationData = {
-                    no_peserta: "{{ $registration ? ($registration->no_peserta ?? 'Belum ditentukan') : 'Belum ditentukan' }}",
-                    jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
-                    gedung: "{{ $registration && $registration->schoolLocation ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
-                    ruang: "{{ $registration && $registration->schoolLocation ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}",
-                    lokasi: "{{ $registration && $registration->schoolLocation ?$registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
-                };
-
-                // Card Title
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(14);
-                doc.text("Kartu Peserta PPDB", 74, 15, {
-                    align: "center"
-                });
-                doc.setFontSize(10);
-                doc.text("Smart Character Islamic School", 74, 22, {
-                    align: "center"
-                });
-
-                // Add photo if available
-                if (userData.pasfoto_path) {
-                    try {
-                        const imgData = await loadImageAsBase64(userData.pasfoto_path);
-                        doc.addImage(imgData, 'JPEG', 108, 30, 30, 30); // Photo: 30x30mm at top-right
-                    } catch (error) {
-                        console.error('Failed to load photo:', error);
-                    }
-                }
-
-                // Card Content (starting immediately below title, no gap)
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(12);
-                doc.text(userData.name.toUpperCase(), 10, 35); // Name at top, no extra gap
-
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                 const details = [
-                    { label: "No Peserta", value: registrationData.no_peserta },
-                    { label: "Asal Sekolah", value: userData.sd_mi_asal },
-                    { label: "Waktu Ujian", value: registrationData.jadwal_tes },
-                    { label: "Gedung", value: registrationData.gedung },
-                    { label: "Ruang", value: registrationData.ruang },
-                    { label: "Lokasi", value: registrationData.lokasi }
-                ];
-
-                let y = 45;
-                details.forEach(detail => {
-                    doc.setFont("helvetica", "bold");
-                    doc.text(`${detail.label}:`, 10, y);
-                    doc.setFont("helvetica", "normal");
-                    const splitText = doc.splitTextToSize(detail.value, 90);
-                    doc.text(splitText, 40, y);
-                    y += splitText.length * 5 + 3;
-                });
-
-                // Footer
-                doc.setFont("helvetica", "italic");
-                doc.setFontSize(8);
-                doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 74, 200, {
-                    align: "center"
-                });
-
-                // Save the PDF
-                doc.save(`Kartu_Peserta_${userData.name}.pdf`);
-            });
-        }
-
         // Bootstrap form validation and step navigation
         const form = document.getElementById('registrationForm');
         const tabs = document.querySelectorAll('ul.nav-tabs .nav-link');
@@ -969,11 +723,11 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'nama_ayah',
-                    isFile: false
+                    name: 'pasfoto_path',
+                    isFile: true
                 },
                 {
-                    name: 'nama_ibu',
+                    name: 'nama_ayah',
                     isFile: false
                 },
                 {
@@ -981,19 +735,7 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'alamat_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_ortu',
-                    isFile: false
-                },
-                {
                     name: 'pekerjaan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu',
                     isFile: false
                 },
                 {
@@ -1001,11 +743,23 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'pendidikan_ibu',
+                    name: 'penghasilan_ayah',
                     isFile: false
                 },
                 {
-                    name: 'penghasilan_ayah',
+                    name: 'nama_ibu',
+                    isFile: false
+                },
+                {
+                    name: 'alamat_ibu',
+                    isFile: false
+                },
+                {
+                    name: 'pekerjaan_ibu',
+                    isFile: false
+                },
+                {
+                    name: 'pendidikan_ibu',
                     isFile: false
                 },
                 {
@@ -1013,11 +767,11 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'nama_ayah_wali',
+                    name: 'telepon_ortu',
                     isFile: false
                 },
                 {
-                    name: 'nama_ibu_wali',
+                    name: 'nama_ayah_wali',
                     isFile: false
                 },
                 {
@@ -1025,19 +779,7 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'alamat_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_wali',
-                    isFile: false
-                },
-                {
                     name: 'pekerjaan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu_wali',
                     isFile: false
                 },
                 {
@@ -1045,11 +787,23 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'pendidikan_ibu_wali',
+                    name: 'penghasilan_ayah_wali',
                     isFile: false
                 },
                 {
-                    name: 'penghasilan_ayah_wali',
+                    name: 'nama_ibu_wali',
+                    isFile: false
+                },
+                {
+                    name: 'alamat_ibu_wali',
+                    isFile: false
+                },
+                {
+                    name: 'pekerjaan_ibu_wali',
+                    isFile: false
+                },
+                {
+                    name: 'pendidikan_ibu_wali',
                     isFile: false
                 },
                 {
@@ -1057,117 +811,135 @@ use App\Models\Level;
                     isFile: false
                 },
                 {
-                    name: 'pasfoto_path',
-                    isFile: true,
-                    label: 'Lihat Pas Foto'
+                    name: 'telepon_wali',
+                    isFile: false
                 },
                 {
                     name: 'bukti_pembayaran',
-                    isFile: true,
-                    label: 'Lihat Bukti Pembayaran'
+                    isFile: true
                 }
             ];
 
             fields.forEach(field => {
-                const element = document.getElementById(`preview_${field.name}`);
-                if (element && !field.isFile) {
-                    let value = formData.get(field.name) || 'Tidak diisi';
-                    // Format date fields for preview
-                    if (field.name === 'tanggal_lahir' || field.name === 'diterima_tanggal') {
-                        if (value && value.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                            const date = new Date(value);
-                            const day = String(date.getDate()).padStart(2, '0');
-                            const month = String(date.getMonth() + 1).padStart(2, '0');
-                            const year = date.getFullYear();
-                            value = `${day}/${month}/${year}`;
+                const previewElement = document.getElementById(`preview_${field.name}`);
+                if (previewElement) {
+                    if (field.isFile) {
+                        const fileInput = document.getElementById(field.name);
+                        if (fileInput && fileInput.files.length > 0) {
+                            previewElement.disabled = false;
+                            previewElement.dataset.fileName = fileInput.files[0].name;
+                        } else {
+                            previewElement.disabled = true;
+                            previewElement.dataset.fileName = '';
                         }
-                    }
-                    element.textContent = value;
-                } else if (element && field.isFile) {
-                    const file = formData.get(field.name);
-                    if (file && file.size > 0 && file.name) {
-                        element.textContent = field.label;
-                        element.disabled = false;
-                        element.onclick = () => window.open(URL.createObjectURL(file), '_blank');
                     } else {
-                        element.textContent = field.label;
-                        element.disabled = true;
+                        let value = formData.get(field.name) || '-';
+                        if (field.name === 'tanggal_lahir' || field.name === 'diterima_tanggal') {
+                            if (value) {
+                                const date = new Date(value);
+                                const day = String(date.getDate()).padStart(2, '0');
+                                const month = String(date.getMonth() + 1).padStart(2, '0');
+                                const year = date.getFullYear();
+                                value = `${day}/${month}/${year}`;
+                            }
+                        }
+                        previewElement.textContent = value;
                     }
                 }
             });
         }
 
-        updateTabAccessibility();
+        // File preview handling
+        document.querySelectorAll('.view-file').forEach(button => {
+            button.addEventListener('click', function() {
+                const fileInputId = this.id.replace('preview_', '');
+                const fileInput = document.getElementById(fileInputId);
+                if (fileInput && fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const url = URL.createObjectURL(file);
+                    window.open(url, '_blank');
+                }
+            });
+        });
 
+        // Step navigation
         nextButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                console.log(`Next button clicked on step ${currentStep}`);
+            button.addEventListener('click', function() {
                 if (validateStep(currentStep)) {
-                    console.log(`Moving to step ${currentStep + 1}`);
                     currentStep++;
-                    highestAccessibleStep = Math.max(highestAccessibleStep, currentStep);
-                    tabs[currentStep].click();
-                    updateTabAccessibility();
-                    if (currentStep === 4) {
-                        updatePreview();
+                    if (currentStep > highestAccessibleStep) {
+                        highestAccessibleStep = currentStep;
                     }
+                    updateTabAccessibility();
+                    tabs[currentStep].click();
+                    updatePreview();
+                } else {
+                    console.log('Validation failed for step:', currentStep + 1);
                 }
             });
         });
 
         prevButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                console.log(`Previous button clicked on step ${currentStep}`);
-                currentStep--;
-                tabs[currentStep].click();
-                updateTabAccessibility();
-            });
-        });
-
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-            }
-            // Validate date formats
-            dateFields.forEach(field => {
-                const dateDisplay = document.getElementById(field.displayId);
-                if (dateDisplay && dateDisplay.hasAttribute('required')) {
-                    const value = dateDisplay.value;
-                    if (value && !/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        dateDisplay.classList.add('is-invalid');
-                    }
-                }
-            });
-            // Validate number fields
-            numberFields.forEach(fieldId => {
-                const input = document.getElementById(fieldId);
-                if (input && input.hasAttribute('required')) {
-                    const value = input.value;
-                    if (value && !/^\d+$/.test(value)) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        input.classList.add('is-invalid');
-                    }
-                }
-            });
-        });
-
-        tabs.forEach((tab, index) => {
-            tab.addEventListener('click', (e) => {
-                if (index > highestAccessibleStep) {
-                    e.preventDefault();
-                    return false;
-                }
-                console.log(`Tab ${index + 1} clicked`);
-                currentStep = index;
-                updateTabAccessibility();
-                if (currentStep === 4) {
+            button.addEventListener('click', function() {
+                if (currentStep > 0) {
+                    currentStep--;
+                    tabs[currentStep].click();
                     updatePreview();
                 }
+            });
+        });
+
+        // Tab click handling
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', function(event) {
+                if (index <= highestAccessibleStep) {
+                    currentStep = index;
+                    updatePreview();
+                } else {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(event) {
+            if (!validateStep(currentStep)) {
+                event.preventDefault();
+                console.log('Final validation failed');
+            } else {
+                console.log('Form is valid, submitting...');
+            }
+        });
+
+        // File size validation
+        const fileInputs = ['pasfoto_path', 'bukti_pembayaran'];
+        fileInputs.forEach(fieldId => {
+            const input = document.getElementById(fieldId);
+            if (input) {
+                input.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        const fileSize = this.files[0].size / 1024 / 1024; // Size in MB
+                        if (fileSize > 2) {
+                            this.classList.add('is-invalid');
+                            const feedback = this.parentElement.querySelector('.invalid-feedback');
+                            feedback.textContent = 'Ukuran file tidak boleh melebihi 2MB.';
+                            this.value = '';
+                            this.nextElementSibling.textContent = 'Pilih file...';
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Initialize preview on page load
+        updatePreview();
+
+        // Prevent disabled tab clicks
+        document.querySelectorAll('.nav-link.disabled').forEach(tab => {
+            tab.addEventListener('click', function(event) {
+                event.preventDefault();
             });
         });
     });
