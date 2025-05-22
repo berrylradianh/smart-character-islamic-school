@@ -246,7 +246,9 @@ use App\Models\Level;
     const downloadButton = document.getElementById('downloadKartuPeserta');
     if (downloadButton) {
         downloadButton.addEventListener('click', async function() {
-            const { jsPDF } = window.jspdf;
+            const {
+                jsPDF
+            } = window.jspdf;
             const doc = new jsPDF({
                 orientation: 'portrait',
                 unit: 'mm',
@@ -268,18 +270,42 @@ use App\Models\Level;
                 lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
             };
 
-            // Card Title
+            try {
+                const logoUrl = '/assets/img/logo/logo-white.png'; // Hardcoded path relative to public directory
+                const logoData = await loadImageAsBase64(logoUrl);
+                doc.addImage(logoData, 'PNG', 10, 12, 20, 20); // Logo: 30x30mm at top-left
+            } catch (error) {
+                console.error('Failed to load logo:', error);
+            }
+
+            // Headings (centered)
             doc.setFont("helvetica", "bold");
             doc.setFontSize(14);
-            doc.text("Kartu Peserta PPDB", 74, 15, { align: "center" });
+            doc.text("Kartu Peserta PPDB", 74, 15, {
+                align: "center"
+            }); // Centered on A5 (148mm width)
             doc.setFontSize(10);
-            doc.text("Smart Character Islamic School", 74, 22, { align: "center" });
+            doc.text("Smart Character Islamic School", 74, 22, {
+                align: "center"
+            });
+
+            // Address (centered, smaller font, wrapped)
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(8);
+            const address = "Sindangreret RT. 02 RW. 04, Blok Situ Bojong, Tamanjaya, Kec. Tamansari, Kota Tasikmalaya, Jawa Barat 46196";
+            const addressLines = doc.splitTextToSize(address, 90); // Wrap within 128mm (148mm - 10mm margins)
+            doc.text(addressLines, 74, 28, {
+                align: "center"
+            }); // Start at y=28
+            // Horizontal line to separate letterhead
+            doc.setLineWidth(0.5);
+            doc.line(10, 35, 138, 35); // Line from x=10 to x=138 (148mm - 10mm margins) at y=35
 
             // Add photo if available
             if (userData.pasfoto_path) {
                 try {
                     const imgData = await loadImageAsBase64(userData.pasfoto_path);
-                    doc.addImage(imgData, 'JPEG', 108, 30, 30, 30); // Photo: 30x30mm at top-right
+                    doc.addImage(imgData, 'JPEG', 108, 45, 30, 30); // Photo: 30x30mm, adjusted y=45
                 } catch (error) {
                     console.error('Failed to load photo:', error);
                 }
@@ -288,20 +314,37 @@ use App\Models\Level;
             // Card Content
             doc.setFont("helvetica", "bold");
             doc.setFontSize(12);
-            doc.text(userData.name.toUpperCase(), 10, 35);
+            doc.text(userData.name.toUpperCase(), 10, 45);
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(10);
-            const details = [
-                { label: "No Peserta", value: registrationData.no_peserta },
-                { label: "Asal Sekolah", value: userData.sd_mi_asal },
-                { label: "Waktu Ujian", value: registrationData.jadwal_tes },
-                { label: "Gedung", value: registrationData.gedung },
-                { label: "Ruang", value: registrationData.ruang },
-                { label: "Lokasi", value: registrationData.lokasi }
+            const details = [{
+                    label: "No Peserta",
+                    value: registrationData.no_peserta
+                },
+                {
+                    label: "Asal Sekolah",
+                    value: userData.sd_mi_asal
+                },
+                {
+                    label: "Waktu Ujian",
+                    value: registrationData.jadwal_tes
+                },
+                {
+                    label: "Gedung",
+                    value: registrationData.gedung
+                },
+                {
+                    label: "Ruang",
+                    value: registrationData.ruang
+                },
+                {
+                    label: "Lokasi",
+                    value: registrationData.lokasi
+                }
             ];
 
-            let y = 45;
+            let y = 55;
             details.forEach(detail => {
                 doc.setFont("helvetica", "bold");
                 doc.text(`${detail.label}:`, 10, y);
@@ -314,7 +357,9 @@ use App\Models\Level;
             // Footer
             doc.setFont("helvetica", "italic");
             doc.setFontSize(8);
-            doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 74, 200, { align: "center" });
+            doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 74, 200, {
+                align: "center"
+            });
 
             // Save the PDF
             doc.save(`Kartu_Peserta_${userData.name}.pdf`);
