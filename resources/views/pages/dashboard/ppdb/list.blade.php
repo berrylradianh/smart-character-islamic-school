@@ -48,9 +48,9 @@
                                     <label for="statusFilter">Filter Status:</label>
                                     <select id="statusFilter" class="form-control">
                                         <option value="">Semua Status</option>
-                                        <option value="waiting">Waiting</option>
-                                        <option value="decline">Decline</option>
-                                        <option value="approve">Approve</option>
+                                        <option value="waiting">Proses</option>
+                                        <option value="decline">Tidak Lolos</option>
+                                        <option value="approve">Lolos</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 d-flex align-items-end">
@@ -96,11 +96,11 @@
                                         <td>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan' }}</td>
                                         <td>
                                             @if ($registration->status == 'waiting')
-                                            <span class="badge badge-warning" style="font-size: 15px"><i class="fas fa-hourglass-start mr-1"></i> Waiting</span>
+                                            <span class="badge badge-warning" style="font-size: 15px"><i class="fas fa-hourglass-start mr-1"></i> Proses</span>
                                             @elseif ($registration->status == 'decline')
-                                            <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times mr-1"></i> Decline</span>
+                                            <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times mr-1"></i> TIdak Lolos</span>
                                             @elseif ($registration->status == 'approve')
-                                            <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check mr-1"></i> Approve</span>
+                                            <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check mr-1"></i> Lolos</span>
                                             @elseif ($registration->status == 'accepted')
                                             <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check-circle mr-1"></i> Diterima</span>
                                             @elseif ($registration->status == 'not_accepted')

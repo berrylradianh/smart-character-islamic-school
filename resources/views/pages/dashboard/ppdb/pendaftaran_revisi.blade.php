@@ -171,20 +171,6 @@ use Illuminate\Support\Facades\Storage;
                                                         <div class="invalid-feedback">Harap masukkan nomor HP siswa (hanya angka).</div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="diterima_kelas">Diterima di Madrasah Kelas</label>
-                                                        <input type="text" class="form-control" id="diterima_kelas" name="diterima_kelas" value="{{ old('diterima_kelas', auth()->user()->diterima_kelas) }}" required>
-                                                        <div class="invalid-feedback">Harap masukkan kelas diterima.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="diterima_tanggal_display">Diterima Tanggal</label>
-                                                        <div style="position: relative;">
-                                                            <input type="text" id="diterima_tanggal_display" class="form-control" value="{{ old('diterima_tanggal', auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('d/m/Y') : '') }}" placeholder="dd/mm/yyyy" required>
-                                                            <input type="date" name="diterima_tanggal" id="diterima_tanggal" class="form-control" value="{{ old('diterima_tanggal', auth()->user()->diterima_tanggal ? \Carbon\Carbon::parse(auth()->user()->diterima_tanggal)->format('Y-m-d') : '') }}" style="position: absolute; opacity: 0; width: 100%; z-index: -1;" required>
-                                                        </div>
-                                                        <small class="form-text text-muted">Format: DD/MM/YYYY</small>
-                                                        <div class="invalid-feedback">Harap masukkan tanggal diterima dalam format DD/MM/YYYY.</div>
-                                                    </div>
-                                                    <div class="form-group">
                                                         <label for="ra_tk_asal">Nama RA/TK Asal</label>
                                                         <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
                                                         <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>

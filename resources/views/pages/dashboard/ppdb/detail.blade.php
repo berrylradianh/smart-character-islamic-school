@@ -301,9 +301,9 @@ use Illuminate\Support\Facades\Storage;
                                             <div class="form-group">
                                                 <label>Status Pendaftaran</label>
                                                 <select class="form-control" name="status" id="statusSelect" required>
-                                                    <option value="waiting" {{ $registration->status == 'waiting' ? 'selected' : '' }}>Waiting</option>
-                                                    <option value="decline" {{ $registration->status == 'decline' ? 'selected' : '' }}>Decline</option>
-                                                    <option value="approve" {{ $registration->status == 'approve' ? 'selected' : '' }}>Approve</option>
+                                                    <option value="waiting" {{ $registration->status == 'waiting' ? 'selected' : '' }}>Proses</option>
+                                                    <option value="decline" {{ $registration->status == 'decline' ? 'selected' : '' }}>Tidak Lolos</option>
+                                                    <option value="approve" {{ $registration->status == 'approve' ? 'selected' : '' }}>Lolos</option>
                                                 </select>
                                             </div>
 
@@ -385,15 +385,15 @@ use Illuminate\Support\Facades\Storage;
                                                         <strong>Status Pendaftaran:</strong>
                                                         <span>
                                                             @if ($registration->status == 'waiting')
-                                                            <span class="badge badge-warning" style="font-size: 12px"><i class="fas fa-hourglass-half mr-1"></i> Waiting</span>
+                                                            <span class="badge badge-warning" style="font-size: 12px"><i class="fas fa-hourglass-half mr-1"></i> Proses</span>
                                                             @elseif ($registration->status == 'approve')
-                                                            <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check mr-1"></i> Approve</span>
+                                                            <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check mr-1"></i> Lolos</span>
                                                             @elseif ($registration->status == 'decline')
-                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> Decline</span>
+                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times mr-1"></i> Tidak Lolos</span>
                                                             @elseif ($registration->status == 'accepted')
-                                                            <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check-circle mr-1"></i> Accepted</span>
+                                                            <span class="badge badge-success" style="font-size: 12px"><i class="fas fa-check-circle mr-1"></i> Diterima</span>
                                                             @elseif ($registration->status == 'not_accepted')
-                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times-circle mr-1"></i> Not Accepted</span>
+                                                            <span class="badge badge-danger" style="font-size: 12px"><i class="fas fa-times-circle mr-1"></i> Tidak Diterima</span>
                                                             @endif
                                                         </span>
                                                     </div>
