@@ -51,6 +51,8 @@
                                         <option value="waiting">Proses</option>
                                         <option value="decline">Tidak Lolos</option>
                                         <option value="approve">Lolos</option>
+                                        <option value="accepted">Diterima</option>
+                                        <option value="not_accepted">Tidak Diterima</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 d-flex align-items-end">
@@ -94,17 +96,19 @@
                                         <td>{{ $registration->user->no_hp ?? 'Tidak Ditetapkan' }}</td>
                                         <td>{{ $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan' }}</td>
                                         <td>{{ $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan' }}</td>
-                                        <td>
+                                        <td data-status="{{ $registration->status }}">
                                             @if ($registration->status == 'waiting')
                                             <span class="badge badge-warning" style="font-size: 15px"><i class="fas fa-hourglass-start mr-1"></i> Proses</span>
                                             @elseif ($registration->status == 'decline')
-                                            <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times mr-1"></i> TIdak Lolos</span>
+                                            <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times mr-1"></i> Tidak Lolos</span>
                                             @elseif ($registration->status == 'approve')
                                             <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check mr-1"></i> Lolos</span>
                                             @elseif ($registration->status == 'accepted')
                                             <span class="badge badge-success" style="font-size: 15px"><i class="fas fa-check-circle mr-1"></i> Diterima</span>
                                             @elseif ($registration->status == 'not_accepted')
                                             <span class="badge badge-danger" style="font-size: 15px"><i class="fas fa-times-circle mr-1"></i> Tidak Diterima</span>
+                                            @else
+                                            <span class="badge badge-secondary" style="font-size: 15px">Tidak Diketahui</span>
                                             @endif
                                         </td>
                                         <td>
@@ -189,12 +193,19 @@
 
         $('#jenjangFilter').on('change', function() {
             var jenjangValue = $(this).val().toLowerCase();
-            table.column(1).search(jenjangValue).draw();
+            table.column(2).search(jenjangValue).draw();
         });
 
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                var statusFilter = $('#statusFilter').val();
+                var status = table.row(dataIndex).node().cells[7].getAttribute('data-status');
+                return statusFilter === '' || status === statusFilter;
+            }
+        );
+
         $('#statusFilter').on('change', function() {
-            var statusValue = $(this).val();
-            table.column(7).search(statusValue).draw();
+            table.draw();
         });
 
         $('#resetFilter').on('click', function() {
