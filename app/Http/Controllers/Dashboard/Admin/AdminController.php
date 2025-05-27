@@ -610,6 +610,7 @@ class AdminController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
+
         $data = [
             'title' => 'PPDB Pendaftaran',
             'user' => $user,
@@ -663,6 +664,8 @@ class AdminController extends Controller
             'penghasilan_ayah_wali' => 'nullable|numeric',
             'penghasilan_ibu_wali' => 'nullable|numeric',
             'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,png|max:2048',
+            'asal_smp_mts' => 'nullable|string|max:255',
+            'asal_sma_smk' => 'nullable|string|max:255',
         ]);
 
         // Ambil user yang sedang login
@@ -753,6 +756,8 @@ class AdminController extends Controller
             'penghasilan_ayah_wali' => 'nullable|numeric',
             'penghasilan_ibu_wali' => 'nullable|numeric',
             'bukti_pembayaran' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'smp_mts_asal' => 'nullable|string|max:255',
+            'sma_smk_asal' => 'nullable|string|max:255',
         ]);
 
         // Update data user

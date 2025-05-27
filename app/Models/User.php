@@ -60,7 +60,9 @@ class User extends Authenticatable
         'pendidikan_ayah_wali',
         'pendidikan_ibu_wali',
         'penghasilan_ayah_wali',
-        'penghasilan_ibu_wali'
+        'penghasilan_ibu_wali',
+        'asal_smp_mts',
+        'asal_sma_smk'
     ];
 
     /**

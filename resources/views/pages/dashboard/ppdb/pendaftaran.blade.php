@@ -173,6 +173,22 @@ use App\Models\Level;
                                                         <input type="number" class="form-control" id="no_hp" name="no_hp" value="{{ old('no_hp', auth()->user()->no_hp) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan nomor HP siswa (hanya angka).</div>
                                                     </div>
+                                                    @if (auth()->user()->level->id == 1)
+                                                    <!-- TK: Tidak menampilkan apa pun -->
+                                                    @elseif (auth()->user()->level->id == 2)
+                                                    <!-- SD: Menampilkan RA/TK asal dan alamat RA/TK -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk') }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    @elseif (auth()->user()->level->id == 3)
+                                                    <!-- SMP: Menampilkan RA/TK asal, alamat RA/TK, SD/MI asal, alamat SD/MI -->
                                                     <div class="form-group">
                                                         <label for="ra_tk_asal">Nama RA/TK Asal</label>
                                                         <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal') }}">
@@ -193,6 +209,66 @@ use App\Models\Level;
                                                         <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi') }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
                                                     </div>
+                                                    @elseif (auth()->user()->level->id == 4)
+                                                    <!-- SMA: Menampilkan RA/TK asal, alamat RA/TK, SD/MI asal, alamat SD/MI, SMP/MTS asal -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk') }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sd_mi_asal">Nama SD/MI Asal</label>
+                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_sd_mi">Alamat SD/MI Asal</label>
+                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi') }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_smp_mts">Nama SMP/MTS Asal</label>
+                                                        <input type="text" class="form-control" id="asal_smp_mts" name="asal_smp_mts" value="{{ old('asal_smp_mts') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMP/MTS asal.</div>
+                                                    </div>
+                                                    @elseif (auth()->user()->level->id == 5)
+                                                    <!-- Kuliah: Menampilkan semua input termasuk SMK asal -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk') }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sd_mi_asal">Nama SD/MI Asal</label>
+                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_sd_mi">Alamat SD/MI Asal</label>
+                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi') }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_smp_mts">Nama SMP/MTS Asal</label>
+                                                        <input type="text" class="form-control" id="asal_smp_mts" name="asal_smp_mts" value="{{ old('asal_smp_mts') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMP/MTS asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_sma_smk">Nama SMA/SMK Asal</label>
+                                                        <input type="text" class="form-control" id="asal_sma_smk" name="asal_sma_smk" value="{{ old('asal_sma_smk') }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMA/SMK asal.</div>
+                                                    </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label for="pasfoto_path">Upload Pas Foto</label>
                                                         <div class="custom-file">
@@ -396,12 +472,12 @@ use App\Models\Level;
                                                     <p><strong>Status Anak:</strong> <span id="preview_status_anak"></span></p>
                                                     <p><strong>Alamat Siswa:</strong> <span id="preview_alamat"></span></p>
                                                     <p><strong>No HP Siswa:</strong> <span id="preview_no_hp"></span></p>
-                                                    <p><strong>Diterima Kelas:</strong> <span id="preview_diterima_kelas"></span></p>
-                                                    <p><strong>Diterima Tanggal:</strong> <span id="preview_diterima_tanggal"></span></p>
                                                     <p><strong>RA/TK Asal:</strong> <span id="preview_ra_tk_asal"></span></p>
                                                     <p><strong>Alamat RA/TK:</strong> <span id="preview_alamat_ra_tk"></span></p>
                                                     <p><strong>SD/MI Asal:</strong> <span id="preview_sd_mi_asal"></span></p>
                                                     <p><strong>Alamat SD/MI:</strong> <span id="preview_alamat_sd_mi"></span></p>
+                                                    <p><strong>SMP/MTS Asal:</strong> <span id="preview_asal_smp_mts"></span></p>
+                                                    <p><strong>SMK Asal:</strong> <span id="preview_asal_sma_smk"></span></p>
                                                     <p><strong>Pas Foto:</strong>
                                                         <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_pasfoto_path" disabled>Lihat Pas Foto</button>
                                                     </p>
@@ -702,6 +778,14 @@ use App\Models\Level;
                 },
                 {
                     name: 'sd_mi_asal',
+                    isFile: false
+                },
+                {
+                    name: 'asal_smp_mts',
+                    isFile: false
+                },
+                {
+                    name: 'asal_sma_smk',
                     isFile: false
                 },
                 {
