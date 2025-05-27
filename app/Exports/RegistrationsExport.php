@@ -5,8 +5,10 @@ namespace App\Exports;
 use App\Models\Registration;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RegistrationsExport implements FromCollection, WithHeadings
+class RegistrationsExport implements FromCollection, WithHeadings, WithStyles
 {
     public function collection()
     {
@@ -19,6 +21,8 @@ class RegistrationsExport implements FromCollection, WithHeadings
                 'not_accepted' => 'Tidak Diterima',
             ];
 
+            $status = isset($statusMap[$registration->status]) ? $statusMap[$registration->status] : 'Proses';
+
             return [
                 'No' => $registration->id,
                 'Jenjang' => strtoupper($registration->user->level->name),
@@ -28,7 +32,7 @@ class RegistrationsExport implements FromCollection, WithHeadings
                 'No HP Orang Tua/Wali' => $registration->user->telepon_ortu ?? $registration->user->telepon_wali ?? 'Tidak Tersedia',
                 'Jadwal Tes' => $registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d F Y H:i') : 'Belum Ditentukan',
                 'Lokasi Tes' => $registration->schoolLocation ? $registration->schoolLocation->nama_lokasi : 'Belum Ditentukan',
-                'Status' => $statusMap[$registration->status] ?? ucfirst($registration->status),
+                'Status' => $status,
             ];
         });
     }
@@ -45,6 +49,15 @@ class RegistrationsExport implements FromCollection, WithHeadings
             'Jadwal Tes',
             'Lokasi Tes',
             'Status',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->setAutoFilter('I1:I1');
+
+        return [
+            1 => ['font' => ['bold' => true]],
         ];
     }
 }
