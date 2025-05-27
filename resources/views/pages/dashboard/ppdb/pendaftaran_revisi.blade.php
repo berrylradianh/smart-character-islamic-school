@@ -170,6 +170,22 @@ use Illuminate\Support\Facades\Storage;
                                                         <input type="number" class="form-control" id="no_hp" name="no_hp" value="{{ old('no_hp', auth()->user()->no_hp) }}" required pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                         <div class="invalid-feedback">Harap masukkan nomor HP siswa (hanya angka).</div>
                                                     </div>
+                                                    @if (auth()->user()->level->id == 1)
+                                                    <!-- TK: Tidak menampilkan apa pun -->
+                                                    @elseif (auth()->user()->level->id == 2)
+                                                    <!-- SD: Menampilkan RA/TK asal dan alamat RA/TK -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk', auth()->user()->alamat_ra_tk) }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    @elseif (auth()->user()->level->id == 3)
+                                                    <!-- SMP: Menampilkan RA/TK asal, alamat RA/TK, SD/MI asal, alamat SD/MI -->
                                                     <div class="form-group">
                                                         <label for="ra_tk_asal">Nama RA/TK Asal</label>
                                                         <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
@@ -190,6 +206,66 @@ use Illuminate\Support\Facades\Storage;
                                                         <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi', auth()->user()->alamat_sd_mi) }}</textarea>
                                                         <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
                                                     </div>
+                                                    @elseif (auth()->user()->level->id == 4)
+                                                    <!-- SMA: Menampilkan RA/TK asal, alamat RA/TK, SD/MI asal, alamat SD/MI, SMP/MTS asal -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk', auth()->user()->alamat_ra_tk) }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sd_mi_asal">Nama SD/MI Asal</label>
+                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal', auth()->user()->sd_mi_asal) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_sd_mi">Alamat SD/MI Asal</label>
+                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi', auth()->user()->alamat_sd_mi) }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_smp_mts">Nama SMP/MTS Asal</label>
+                                                        <input type="text" class="form-control" id="asal_smp_mts" name="asal_smp_mts" value="{{ old('asal_smp_mts', auth()->user()->asal_smp_mts) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMP/MTS asal.</div>
+                                                    </div>
+                                                    @elseif (auth()->user()->level->id == 5)
+                                                    <!-- Kuliah: Menampilkan semua input termasuk SMK asal -->
+                                                    <div class="form-group">
+                                                        <label for="ra_tk_asal">Nama RA/TK Asal</label>
+                                                        <input type="text" class="form-control" id="ra_tk_asal" name="ra_tk_asal" value="{{ old('ra_tk_asal', auth()->user()->ra_tk_asal) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_ra_tk">Alamat RA/TK Asal</label>
+                                                        <textarea class="form-control" id="alamat_ra_tk" name="alamat_ra_tk">{{ old('alamat_ra_tk', auth()->user()->alamat_ra_tk) }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat RA/TK asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sd_mi_asal">Nama SD/MI Asal</label>
+                                                        <input type="text" class="form-control" id="sd_mi_asal" name="sd_mi_asal" value="{{ old('sd_mi_asal', auth()->user()->sd_mi_asal) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alamat_sd_mi">Alamat SD/MI Asal</label>
+                                                        <textarea class="form-control" id="alamat_sd_mi" name="alamat_sd_mi">{{ old('alamat_sd_mi', auth()->user()->alamat_sd_mi) }}</textarea>
+                                                        <div class="invalid-feedback">Harap masukkan alamat SD/MI asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_smp_mts">Nama SMP/MTS Asal</label>
+                                                        <input type="text" class="form-control" id="asal_smp_mts" name="asal_smp_mts" value="{{ old('asal_smp_mts', auth()->user()->asal_smp_mts) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMP/MTS asal.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="asal_sma_smk">Nama SMA/SMK Asal</label>
+                                                        <input type="text" class="form-control" id="asal_sma_smk" name="asal_sma_smk" value="{{ old('asal_sma_smk', auth()->user()->asal_sma_smk) }}">
+                                                        <div class="invalid-feedback">Harap masukkan nama SMA/SMK asal.</div>
+                                                    </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label for="pasfoto_path">Upload Pas Foto</label>
                                                         <div class="custom-file">

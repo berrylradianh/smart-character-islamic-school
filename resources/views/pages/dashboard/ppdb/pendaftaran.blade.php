@@ -60,9 +60,149 @@ use App\Models\Level;
                             @endif
 
                             @if ($registration)
+                            @if ($registration->status == 'approve')
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Diterima Seleksi Administrasi</h5>
+                                            <p class="text-muted mb-0">
+                                                Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <h6 class="font-weight-bold mb-3 text-dark">Detail Tes</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calendar-alt fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Jadwal Tes:</strong>
+                                                    <p class="mb-0">{{ \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->schoolLocation)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-map-marker-alt fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Lokasi:</strong>
+                                                    <p class="mb-0">{{ $registration->schoolLocation->nama_lokasi }}<br>{{ $registration->schoolLocation->alamat }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-map-marker-alt fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Lokasi:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->gedung)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-building fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Gedung:</strong>
+                                                    <p class="mb-0">{{ $registration->gedung->nama_gedung }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-building fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Gedung:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->ruang)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-door-open fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Ruang:</strong>
+                                                    <p class="mb-0">{{ $registration->ruang->nama_ruang }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Ruang:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                            <i class="fas fa-download mr-2"></i> Download Kartu Peserta
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            @elseif ($registration->status == 'waiting')
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-hourglass-half fa-3x text-warning animate__animated animate__pulse animate__infinite"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Menunggu Verifikasi</h5>
+                                            <p class="text-muted mb-0">
+                                                Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @elseif ($registration->status == 'decline')
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Pendaftaran Ditolak</h5>
+                                            <p class="text-muted mb-0">
+                                                Maaf, pendaftaran Anda tidak memenuhi kriteria. Silakan revisi dan mengirimkan kembali ke tim kami.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    @if ($registration->decline_reason)
+                                    <hr class="my-4">
+                                    <h6 class="font-weight-bold mb-3 text-dark">Alasan Penolakan</h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-comment-alt fa-lg text-primary mr-3"></i>
+                                        <div>
+                                            <p class="mb-0">{{ $registration->decline_reason }}</p>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="mt-4">
+                                        <a href="{{ route('dashboard.ppdb_pendaftaran.revisi') }}" class="btn btn-primary btn-sm rounded-pill px-4">
+                                            <i class="fas fa-edit mr-2"></i> Revisi Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
                             <div class="alert alert-info" role="alert">
                                 Anda sudah mendaftar. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
                             </div>
+                            @endif
                             @else
                             <!-- Multi-Step Form -->
                             <div class="wizard">
@@ -543,475 +683,138 @@ use App\Models\Level;
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-    // File input label update
-    document.querySelectorAll('.custom-file-input').forEach(input => {
-        input.addEventListener('change', function(event) {
-            const fileInput = event.target;
-            const label = fileInput.nextElementSibling;
-            if (fileInput.files.length > 0) {
-                label.textContent = fileInput.files[0].name;
-            } else {
-                label.textContent = 'Pilih file...';
-            }
+    // Function to load image as base64
+    function loadImageAsBase64(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                resolve(canvas.toDataURL('image/jpeg'));
+            };
+            img.onerror = () => reject(new Error('Failed to load image'));
+            img.src = url;
         });
-    });
+    }
 
-    // Date picker handling
-    document.addEventListener('DOMContentLoaded', function() {
-        const dateFields = [{
-                displayId: 'tanggal_lahir_display',
-                inputId: 'tanggal_lahir'
-            },
-            {
-                displayId: 'diterima_tanggal_display',
-                inputId: 'diterima_tanggal'
+    // Download Kartu Peserta
+    const downloadButton = document.getElementById('downloadKartuPeserta');
+    if (downloadButton) {
+        downloadButton.addEventListener('click', async function() {
+            const {
+                jsPDF
+            } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a5'
+            });
+
+            const userData = {
+                name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
+                sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
+                pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
+            };
+
+            const registrationData = {
+                no_peserta: "{{ $registration ? ($registration->no_peserta ?? 'Belum ditentukan') : 'Belum ditentukan' }}",
+                jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
+                gedung: "{{ $registration && $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
+                ruang: "{{ $registration && $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}",
+                lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
+            };
+
+            try {
+                const logoUrl = '/assets/img/logo/logo-white.png';
+                const logoData = await loadImageAsBase64(logoUrl);
+                doc.addImage(logoData, 'PNG', 10, 12, 20, 20);
+            } catch (error) {
+                console.error('Failed to load logo:', error);
             }
-        ];
 
-        dateFields.forEach(field => {
-            const dateDisplay = document.getElementById(field.displayId);
-            const dateInput = document.getElementById(field.inputId);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Kartu Peserta PPDB", 74, 15, {
+                align: "center"
+            });
+            doc.setFontSize(10);
+            doc.text("Smart Character Islamic School", 74, 22, {
+                align: "center"
+            });
 
-            if (dateDisplay && dateInput) {
-                // Trigger date picker on display input click
-                dateDisplay.addEventListener('click', function() {
-                    dateInput.showPicker();
-                });
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(8);
+            const address = "Sindangreret RT. 02 RW. 04, Blok Situ Bojong, Tamanjaya, Kec. Tamansari, Kota Tasikmalaya, Jawa Barat 46196";
+            const addressLines = doc.splitTextToSize(address, 90);
+            doc.text(addressLines, 74, 28, {
+                align: "center"
+            });
+            doc.setLineWidth(0.5);
+            doc.line(10, 35, 138, 35);
 
-                // Update text input when date picker changes
-                dateInput.addEventListener('change', function() {
-                    if (dateInput.value) {
-                        const date = new Date(dateInput.value);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const year = date.getFullYear();
-                        dateDisplay.value = `${day}/${month}/${year}`;
-                    } else {
-                        dateDisplay.value = '';
-                    }
-                });
-
-                // Update date picker when text input changes
-                dateDisplay.addEventListener('input', function() {
-                    const value = dateDisplay.value;
-                    const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-                    if (regex.test(value)) {
-                        const [, day, month, year] = value.match(regex);
-                        const date = new Date(`${year}-${month}-${day}`);
-                        if (!isNaN(date.getTime())) {
-                            dateInput.value = `${year}-${month}-${day}`;
-                        } else {
-                            dateInput.value = '';
-                        }
-                    } else {
-                        dateInput.value = '';
-                    }
-                });
+            if (userData.pasfoto_path) {
+                try {
+                    const imgData = await loadImageAsBase64(userData.pasfoto_path);
+                    doc.addImage(imgData, 'JPEG', 108, 45, 30, 30);
+                } catch (error) {
+                    console.error('Failed to load photo:', error);
+                }
             }
-        });
 
-        // Number-only input handling
-        const numberFields = [
-            'nomor_induk_asal',
-            'nisn',
-            'anak_ke',
-            'no_hp',
-            'penghasilan_ayah',
-            'penghasilan_ibu',
-            'telepon_ortu',
-            'penghasilan_ayah_wali',
-            'penghasilan_ibu_wali',
-            'telepon_wali'
-        ];
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.text(userData.name.toUpperCase(), 10, 45);
 
-        numberFields.forEach(fieldId => {
-            const input = document.getElementById(fieldId);
-            if (input) {
-                input.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                });
-                // Prevent pasting non-numeric content
-                input.addEventListener('paste', function(event) {
-                    const paste = (event.clipboardData || window.clipboardData).getData('text');
-                    if (!/^\d*$/.test(paste)) {
-                        event.preventDefault();
-                    }
-                });
-            }
-        });
-
-        // Bootstrap form validation and step navigation
-        const form = document.getElementById('registrationForm');
-        const tabs = document.querySelectorAll('ul.nav-tabs .nav-link');
-        const nextButtons = document.querySelectorAll('.next-step');
-        const prevButtons = document.querySelectorAll('.prev-step');
-        let currentStep = 0;
-        let highestAccessibleStep = 0;
-
-        function validateStep(step) {
-            const currentPane = document.querySelector(`#step${step + 1}`);
-            const inputs = currentPane.querySelectorAll('input[required], select[required], textarea[required]');
-            let isValid = true;
-
-            inputs.forEach(input => {
-                if (!input.checkValidity()) {
-                    console.log(`Input ${input.id} is invalid: ${input.validationMessage}`);
-                    input.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    input.classList.remove('is-invalid');
-                }
-            });
-
-            // Additional validation for date fields
-            dateFields.forEach(field => {
-                const dateDisplay = document.getElementById(field.displayId);
-                if (dateDisplay && dateDisplay.hasAttribute('required')) {
-                    const value = dateDisplay.value;
-                    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
-                        dateDisplay.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        dateDisplay.classList.remove('is-invalid');
-                    }
-                }
-            });
-
-            // Additional validation for number fields
-            numberFields.forEach(fieldId => {
-                const input = document.getElementById(fieldId);
-                if (input && input.hasAttribute('required') && currentPane.contains(input)) {
-                    const value = input.value;
-                    if (value && !/^\d+$/.test(value)) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('is-invalid');
-                    }
-                }
-            });
-
-            currentPane.classList.add('was-validated');
-            console.log(`Step ${step + 1} is ${isValid ? 'valid' : 'invalid'}`);
-            return isValid;
-        }
-
-        function updateTabAccessibility() {
-            tabs.forEach((tab, index) => {
-                if (index <= highestAccessibleStep) {
-                    tab.classList.remove('disabled');
-                    tab.style.pointerEvents = 'auto';
-                    tab.style.opacity = '1';
-                } else {
-                    tab.classList.add('disabled');
-                    tab.style.pointerEvents = 'none';
-                    tab.style.opacity = '0.5';
-                }
-            });
-        }
-
-        function updatePreview() {
-            const formData = new FormData(form);
-            const fields = [{
-                    name: 'name',
-                    isFile: false
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            const details = [{
+                    label: "No Peserta",
+                    value: registrationData.no_peserta
                 },
                 {
-                    name: 'nama_panggilan',
-                    isFile: false
+                    label: "Asal Sekolah",
+                    value: userData.sd_mi_asal
                 },
                 {
-                    name: 'nomor_induk_asal',
-                    isFile: false
+                    label: "Waktu Ujian",
+                    value: registrationData.jadwal_tes
                 },
                 {
-                    name: 'nisn',
-                    isFile: false
+                    label: "Gedung",
+                    value: registrationData.gedung
                 },
                 {
-                    name: 'tempat_lahir',
-                    isFile: false
+                    label: "Ruang",
+                    value: registrationData.ruang
                 },
                 {
-                    name: 'tanggal_lahir',
-                    isFile: false
-                },
-                {
-                    name: 'jenis_kelamin',
-                    isFile: false
-                },
-                {
-                    name: 'agama',
-                    isFile: false
-                },
-                {
-                    name: 'anak_ke',
-                    isFile: false
-                },
-                {
-                    name: 'status_anak',
-                    isFile: false
-                },
-                {
-                    name: 'alamat',
-                    isFile: false
-                },
-                {
-                    name: 'no_hp',
-                    isFile: false
-                },
-                {
-                    name: 'diterima_kelas',
-                    isFile: false
-                },
-                {
-                    name: 'diterima_tanggal',
-                    isFile: false
-                },
-                {
-                    name: 'ra_tk_asal',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ra_tk',
-                    isFile: false
-                },
-                {
-                    name: 'sd_mi_asal',
-                    isFile: false
-                },
-                {
-                    name: 'asal_smp_mts',
-                    isFile: false
-                },
-                {
-                    name: 'asal_sma_smk',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_sd_mi',
-                    isFile: false
-                },
-                {
-                    name: 'pasfoto_path',
-                    isFile: true
-                },
-                {
-                    name: 'nama_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ayah',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ibu',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_ortu',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ayah_wali',
-                    isFile: false
-                },
-                {
-                    name: 'nama_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'alamat_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pekerjaan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'pendidikan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'penghasilan_ibu_wali',
-                    isFile: false
-                },
-                {
-                    name: 'telepon_wali',
-                    isFile: false
-                },
-                {
-                    name: 'bukti_pembayaran',
-                    isFile: true
+                    label: "Lokasi",
+                    value: registrationData.lokasi
                 }
             ];
 
-            fields.forEach(field => {
-                const previewElement = document.getElementById(`preview_${field.name}`);
-                if (previewElement) {
-                    if (field.isFile) {
-                        const fileInput = document.getElementById(field.name);
-                        if (fileInput && fileInput.files.length > 0) {
-                            previewElement.disabled = false;
-                            previewElement.dataset.fileName = fileInput.files[0].name;
-                        } else {
-                            previewElement.disabled = true;
-                            previewElement.dataset.fileName = '';
-                        }
-                    } else {
-                        let value = formData.get(field.name) || '-';
-                        if (field.name === 'tanggal_lahir' || field.name === 'diterima_tanggal') {
-                            if (value) {
-                                const date = new Date(value);
-                                const day = String(date.getDate()).padStart(2, '0');
-                                const month = String(date.getMonth() + 1).padStart(2, '0');
-                                const year = date.getFullYear();
-                                value = `${day}/${month}/${year}`;
-                            }
-                        }
-                        previewElement.textContent = value;
-                    }
-                }
+            let y = 55;
+            details.forEach(detail => {
+                doc.setFont("helvetica", "bold");
+                doc.text(`${detail.label}:`, 10, y);
+                doc.setFont("helvetica", "normal");
+                const splitText = doc.splitTextToSize(detail.value, 90);
+                doc.text(splitText, 40, y);
+                y += splitText.length * 5 + 3;
             });
-        }
 
-        // File preview handling
-        document.querySelectorAll('.view-file').forEach(button => {
-            button.addEventListener('click', function() {
-                const fileInputId = this.id.replace('preview_', '');
-                const fileInput = document.getElementById(fileInputId);
-                if (fileInput && fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    const url = URL.createObjectURL(file);
-                    window.open(url, '_blank');
-                }
+            doc.setFont("helvetica", "italic");
+            doc.setFontSize(8);
+            doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 74, 200, {
+                align: "center"
             });
-        });
 
-        // Step navigation
-        nextButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                if (validateStep(currentStep)) {
-                    currentStep++;
-                    if (currentStep > highestAccessibleStep) {
-                        highestAccessibleStep = currentStep;
-                    }
-                    updateTabAccessibility();
-                    tabs[currentStep].click();
-                    updatePreview();
-                } else {
-                    console.log('Validation failed for step:', currentStep + 1);
-                }
-            });
+            doc.save(`Kartu_Peserta_${userData.name}.pdf`);
         });
-
-        prevButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                if (currentStep > 0) {
-                    currentStep--;
-                    tabs[currentStep].click();
-                    updatePreview();
-                }
-            });
-        });
-
-        // Tab click handling
-        tabs.forEach((tab, index) => {
-            tab.addEventListener('click', function(event) {
-                if (index <= highestAccessibleStep) {
-                    currentStep = index;
-                    updatePreview();
-                } else {
-                    event.preventDefault();
-                }
-            });
-        });
-
-        // Form submission
-        form.addEventListener('submit', function(event) {
-            if (!validateStep(currentStep)) {
-                event.preventDefault();
-                console.log('Final validation failed');
-            } else {
-                console.log('Form is valid, submitting...');
-            }
-        });
-
-        // File size validation
-        const fileInputs = ['pasfoto_path', 'bukti_pembayaran'];
-        fileInputs.forEach(fieldId => {
-            const input = document.getElementById(fieldId);
-            if (input) {
-                input.addEventListener('change', function() {
-                    if (this.files.length > 0) {
-                        const fileSize = this.files[0].size / 1024 / 1024; // Size in MB
-                        if (fileSize > 2) {
-                            this.classList.add('is-invalid');
-                            const feedback = this.parentElement.querySelector('.invalid-feedback');
-                            feedback.textContent = 'Ukuran file tidak boleh melebihi 2MB.';
-                            this.value = '';
-                            this.nextElementSibling.textContent = 'Pilih file...';
-                        } else {
-                            this.classList.remove('is-invalid');
-                        }
-                    }
-                });
-            }
-        });
-
-        // Initialize preview on page load
-        updatePreview();
-
-        // Prevent disabled tab clicks
-        document.querySelectorAll('.nav-link.disabled').forEach(tab => {
-            tab.addEventListener('click', function(event) {
-                event.preventDefault();
-            });
-        });
-    });
+    }
 </script>
 @endsection
