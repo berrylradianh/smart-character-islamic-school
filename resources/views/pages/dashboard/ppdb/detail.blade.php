@@ -36,6 +36,9 @@ use Illuminate\Support\Facades\Storage;
                                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Informasi</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" id="info-tab" data-toggle="tab" href="#detail_ujian" role="tab" aria-controls="detail_ujian" aria-selected="false">Detail Ujian</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Dokumen</a>
                                 </li>
                                 <li class="nav-item">
@@ -52,6 +55,278 @@ use Illuminate\Support\Facades\Storage;
                                             <div class="card shadow-sm" style="border-radius: 10px;">
                                                 <div class="card-header bg-primary text-white" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
                                                     <h5 class="mb-0">Biodata Pendaftar</h5>
+                                                </div>
+                                                <div class="card-body p-4">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-user fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Nama:</strong>
+                                                                    <span>{{ $registration->user->name }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-user-check fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>No Induk Asal:</strong>
+                                                                    <span>{{ $registration->user->nomor_induk_asal ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-user-cog fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>NISN:</strong>
+                                                                    <span>{{ $registration->user->nisn ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-mail-bulk fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Email:</strong>
+                                                                    <span>{{ $registration->user->email }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-calendar-alt fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Tanggal Lahir:</strong>
+                                                                    <span>{{ $registration->user->tanggal_lahir ? \Carbon\Carbon::parse($registration->user->tanggal_lahir)->translatedFormat('d F Y') : '-' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-transgender fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Jenis Kelamin:</strong>
+                                                                    <span>{{ $registration->user->jenis_kelamin ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-phone fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>No HP:</strong>
+                                                                    <span>{{ $registration->user->no_hp ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Jenjang:</strong>
+                                                                    <span>{{ $registration->user->level ? strtoupper($registration->user->level->name) : 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-address-book fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Alamat :</strong>
+                                                                    <span>{{ $registration->user->alamat ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-user-plus fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Agama :</strong>
+                                                                    <span>{{ $registration->user->agama ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-child fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Anak Ke :</strong>
+                                                                    <span>{{ $registration->user->anak_ke ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-user-clock fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Status Anak :</strong>
+                                                                    <span>{{ $registration->user->status_anak ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-school fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>RA/TK Asal :</strong>
+                                                                    <span>{{ $registration->user->ra_tk_asal ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-address-card fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Alamat RA/TK :</strong>
+                                                                    <span>{{ $registration->user->alamat_ra_tk ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-school fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>SD/MI Asal :</strong>
+                                                                    <span>{{ $registration->user->sd_mi_asal ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-address-card fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Alamat SD/MI :</strong>
+                                                                    <span>{{ $registration->user->alamat_sd_mi ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-school fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>SMP/MTS Asal :</strong>
+                                                                    <span>{{ $registration->user->smp_mts_asal ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-school fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>SMA/SMK Asal :</strong>
+                                                                    <span>{{ $registration->user->sma_smk_asal ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-users fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Nama Ayah:</strong>
+                                                                    <span> {{ $registration->user->nama_ayah ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-tasks fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pekerjaan Ayah:</strong>
+                                                                    <span> {{ $registration->user->pekerjaan_ayah ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-money-bill fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Penghasilan Ayah:</strong>
+                                                                    <span> {{ $registration->user->penghasilan_ayah ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-users fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Nama Ibu:</strong>
+                                                                    <span> {{ $registration->user->nama_ibu ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-tasks fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pekerjaan Ibu:</strong>
+                                                                    <span> {{ $registration->user->pekerjaan_ibu ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-money-bill fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Penghasilan Ibu:</strong>
+                                                                    <span> {{ $registration->user->penghasilan_ibu ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-phone fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>No HP Orang Tua:</strong>
+                                                                    <span> {{ $registration->user->telepon_ortu ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-users fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Nama Ayah Wali:</strong>
+                                                                    <span> {{ $registration->user->nama_ayah_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-users fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Nama Ibu Wali:</strong>
+                                                                    <span> {{ $registration->user->nama_ibu_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-address-card fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Alamat Ayah Wali:</strong>
+                                                                    <span> {{ $registration->user->alamat_ayah_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-address-card fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Alamat Ibu Wali:</strong>
+                                                                    <span> {{ $registration->user->alamat_ibu_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-tasks fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pekerjaan Ayah Wali:</strong>
+                                                                    <span> {{ $registration->user->pekerjaan_ayah_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-tasks fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pekerjaan Ibu Wali:</strong>
+                                                                    <span> {{ $registration->user->pekerjaan_ibu_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pendidikan Ayah Wali:</strong>
+                                                                    <span> {{ $registration->user->pendidikan_ayah_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-graduation-cap fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Pendidikan Ibu Wali:</strong>
+                                                                    <span> {{ $registration->user->pendidikan_ibu_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-money-bill fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Penghasilan Ayah Wali:</strong>
+                                                                    <span> {{ $registration->user->penghasilan_ayah_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-money-bill fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>Penghasilan Ibu Wali:</strong>
+                                                                    <span> {{ $registration->user->penghasilan_ibu_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="info-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                                                                <i class="fas fa-phone fa-2x mr-3 text-primary"></i>
+                                                                <div>
+                                                                    <strong>No HP Wali:</strong>
+                                                                    <span> {{ $registration->user->telepon_wali ?? 'Tidak Ditetapkan' }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tab Detail Ujian -->
+                                <div class="tab-pane fade" id="detail_ujian" role="tabpanel" aria-labelledby="detail-ujian-tab">
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <div class="card shadow-sm" style="border-radius: 10px;">
+                                                <div class="card-header bg-primary text-white" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                                                    <h5 class="mb-0">Detail Ujian</h5>
                                                 </div>
                                                 <div class="card-body p-4">
                                                     <div class="row">
