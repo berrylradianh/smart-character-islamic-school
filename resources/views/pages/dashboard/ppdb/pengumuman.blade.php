@@ -61,16 +61,52 @@ use App\Models\Level;
 
                             @if ($registration)
                             @if ($registration->status == 'approve')
-                            <div class="alert alert-info" role="alert">
-                                Selesaikan tes terlebih dahulu untuk melihat hasil pengumuman. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Diterima Seleksi Administrasi</h5>
+                                            <p class="text-muted mb-0">
+                                                Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @elseif ($registration->status == 'waiting')
-                            <div class="alert alert-info" role="alert">
-                                Pendaftaran Anda sedang ditinjau oleh tim kami. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-hourglass-half fa-3x text-warning animate__animated animate__pulse animate__infinite"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Menunggu Verifikasi</h5>
+                                            <p class="text-muted mb-0">
+                                                Pendaftaran Anda sedang ditinjau oleh tim kami. Anda akan menerima pembaruan segera. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @elseif ($registration->status == 'decline')
-                            <div class="alert alert-info" role="alert">
-                                Pendaftaran Anda telah ditolak. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Pendaftaran Ditolak</h5>
+                                            <p class="text-muted mb-0">
+                                                Maaf, pendaftaran Anda tidak memenuhi kriteria. Silakan revisi dan mengirimkan kembali ke tim kami. Silahkan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @elseif ($registration->status == 'accepted')
                             <div class="card border-0 shadow-lg rounded-lg">

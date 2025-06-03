@@ -198,6 +198,38 @@ use App\Models\Level;
                                     </div>
                                 </div>
                             </div>
+                            @elseif ($registration->status == 'accepted')
+                            <div class="card border-0 shadow-lg rounded-lg">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Diterima</h5>
+                                            <p class="text-muted mb-0">
+                                                Silakan cek pengumuman Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @elseif ($registration->status == 'not_accepted')
+                            <div class="card border-0 shadow-lg rounded-lg">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <div class="mr-3">
+                                            <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Tidak Diterima</h5>
+                                            <p class="text-muted mb-0">
+                                                Silahkan cek pengumuman Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @else
                             <div class="alert alert-info" role="alert">
                                 Anda sudah mendaftar. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
