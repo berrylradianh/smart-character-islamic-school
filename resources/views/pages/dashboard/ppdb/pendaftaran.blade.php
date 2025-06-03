@@ -681,140 +681,348 @@ use App\Models\Level;
 </div>
 
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-    // Function to load image as base64
-    function loadImageAsBase64(url) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.crossOrigin = 'Anonymous';
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                resolve(canvas.toDataURL('image/jpeg'));
-            };
-            img.onerror = () => reject(new Error('Failed to load image'));
-            img.src = url;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Store file Data URLs for preview in a global scope
+        window.pasFotoDataUrl = '';
+        window.buktiPembayaranDataUrl = '';
+
+        // Update file input label and preview for pasfoto_path
+        const pasFotoInput = document.getElementById('pasfoto_path');
+        if (pasFotoInput) {
+            pasFotoInput.addEventListener('change', function() {
+                const file = this.files[0];
+                const label = this.nextElementSibling;
+                const previewButton = document.getElementById('preview_pasfoto_path');
+
+                if (file) {
+                    // Validate file type and size
+                    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                        alert('Harap unggah file dalam format JPG atau PNG.');
+                        this.value = '';
+                        label.textContent = 'Pilih file...';
+                        label.classList.remove('selected');
+                        window.pasFotoDataUrl = '';
+                        previewButton.disabled = true;
+                        previewButton.onclick = null;
+                        this.classList.add('is-invalid');
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        alert('Ukuran file maksimum adalah 2MB.');
+                        this.value = '';
+                        label.textContent = 'Pilih file...';
+                        label.classList.remove('selected');
+                        window.pasFotoDataUrl = '';
+                        previewButton.disabled = true;
+                        previewButton.onclick = null;
+                        this.classList.add('is-invalid');
+                        return;
+                    }
+
+                    label.textContent = file.name;
+                    label.classList.add('selected');
+                    this.classList.remove('is-invalid');
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        window.pasFotoDataUrl = e.target.result;
+                        console.log('Pas Foto Data URL:', window.pasFotoDataUrl.substring(0, 50) + '...'); // Debug
+                        previewButton.disabled = false;
+                        previewButton.onclick = function(e) {
+                            e.preventDefault();
+                            if (window.pasFotoDataUrl) {
+                                const win = window.open();
+                                if (win) {
+                                    win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
+                                    win.document.close();
+                                } else {
+                                    alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                                }
+                            } else {
+                                console.error('Pas Foto Data URL is empty');
+                                alert('Tidak ada file pas foto untuk dipreview.');
+                            }
+                        };
+                    };
+                    reader.onerror = function(e) {
+                        console.error('Error reading pas foto:', e);
+                        alert('Gagal membaca file pas foto. Silakan coba file lain.');
+                        this.classList.add('is-invalid');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    window.pasFotoDataUrl = '';
+                    label.textContent = 'Pilih file...';
+                    label.classList.remove('selected');
+                    previewButton.disabled = true;
+                    previewButton.onclick = null;
+                    this.classList.add('is-invalid');
+                }
+            });
+        }
+
+        // Update file input label and preview for bukti_pembayaran
+        const buktiPembayaranInput = document.getElementById('bukti_pembayaran');
+        if (buktiPembayaranInput) {
+            buktiPembayaranInput.addEventListener('change', function() {
+                const file = this.files[0];
+                const label = this.nextElementSibling;
+                const previewButton = document.getElementById('preview_bukti_pembayaran');
+
+                if (file) {
+                    // Validate file type and size
+                    if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
+                        alert('Harap unggah file dalam format JPG, PNG, atau PDF.');
+                        this.value = '';
+                        label.textContent = 'Pilih file...';
+                        label.classList.remove('selected');
+                        window.buktiPembayaranDataUrl = '';
+                        previewButton.disabled = true;
+                        previewButton.onclick = null;
+                        this.classList.add('is-invalid');
+                        return;
+                    }
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        alert('Ukuran file maksimum adalah 2MB.');
+                        this.value = '';
+                        label.textContent = 'Pilih file...';
+                        label.classList.remove('selected');
+                        window.buktiPembayaranDataUrl = '';
+                        previewButton.disabled = true;
+                        previewButton.onclick = null;
+                        this.classList.add('is-invalid');
+                        return;
+                    }
+
+                    label.textContent = file.name;
+                    label.classList.add('selected');
+                    this.classList.remove('is-invalid');
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        window.buktiPembayaranDataUrl = e.target.result;
+                        console.log('Bukti Pembayaran Data URL:', window.buktiPembayaranDataUrl.substring(0, 50) + '...'); // Debug
+                        previewButton.disabled = false;
+                        previewButton.onclick = function(e) {
+                            e.preventDefault();
+                            if (window.buktiPembayaranDataUrl) {
+                                const win = window.open();
+                                if (win) {
+                                    if (file.type === 'application/pdf') {
+                                        win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
+                                    } else {
+                                        win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
+                                    }
+                                    win.document.close();
+                                } else {
+                                    alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                                }
+                            } else {
+                                console.error('Bukti Pembayaran Data URL is empty');
+                                alert('Tidak ada file bukti pembayaran untuk dipreview.');
+                            }
+                        };
+                    };
+                    reader.onerror = function(e) {
+                        console.error('Error reading bukti pembayaran:', e);
+                        alert('Gagal membaca file bukti pembayaran. Silakan coba file lain.');
+                        this.classList.add('is-invalid');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    window.buktiPembayaranDataUrl = '';
+                    label.textContent = 'Pilih file...';
+                    label.classList.remove('selected');
+                    previewButton.disabled = true;
+                    previewButton.onclick = null;
+                    this.classList.add('is-invalid');
+                }
+            });
+        }
+
+        // Wizard navigation
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        const tabs = document.querySelectorAll('.nav-link');
+        const form = document.getElementById('registrationForm');
+
+        function validateTab(tabId) {
+            const tab = document.getElementById(tabId);
+            const inputs = tab.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.type === 'file') {
+                    if (input.id === 'pasfoto_path' && !window.pasFotoDataUrl) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else if (input.id === 'bukti_pembayaran' && !window.buktiPembayaranDataUrl) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                } else {
+                    if (!input.value.trim()) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const currentTab = document.querySelector('.tab-pane.active');
+                const currentTabId = currentTab.id;
+                const nextTabId = 'step' + (parseInt(currentTabId.replace('step', '')) + 1);
+
+                if (validateTab(currentTabId)) {
+                    const nextTabLink = document.querySelector(`a[href="#${nextTabId}"]`);
+                    if (nextTabLink) {
+                        tabs.forEach(tab => tab.classList.remove('active'));
+                        nextTabLink.classList.add('active');
+                        nextTabLink.classList.remove('disabled');
+
+                        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                        document.getElementById(nextTabId).classList.add('active');
+
+                        if (nextTabId === 'step5') {
+                            updatePreview();
+                        }
+                    }
+                }
+            });
         });
-    }
 
-    // Download Kartu Peserta
-    const downloadButton = document.getElementById('downloadKartuPeserta');
-    if (downloadButton) {
-        downloadButton.addEventListener('click', async function() {
-            const {
-                jsPDF
-            } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a5'
-            });
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const currentTab = document.querySelector('.tab-pane.active');
+                const currentTabId = currentTab.id;
+                const prevTabId = 'step' + (parseInt(currentTabId.replace('step', '')) - 1);
 
-            const userData = {
-                name: "{{ auth()->user()->name ?? 'Tidak diisi' }}",
-                sd_mi_asal: "{{ auth()->user()->sd_mi_asal ?? 'Tidak diisi' }}",
-                pasfoto_path: "{{ auth()->user()->pasfoto_path ? asset('storage/' . auth()->user()->pasfoto_path) : '' }}"
-            };
+                const prevTabLink = document.querySelector(`a[href="#${prevTabId}"]`);
+                if (prevTabLink) {
+                    tabs.forEach(tab => tab.classList.remove('active'));
+                    prevTabLink.classList.add('active');
 
-            const registrationData = {
-                no_peserta: "{{ $registration ? ($registration->no_peserta ?? 'Belum ditentukan') : 'Belum ditentukan' }}",
-                jadwal_tes: "{{ $registration ? ($registration->jadwal_tes ? \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') : 'Belum ditentukan') : 'Belum ditentukan' }}",
-                gedung: "{{ $registration && $registration->gedung ? $registration->gedung->nama_gedung : 'Belum ditentukan' }}",
-                ruang: "{{ $registration && $registration->ruang ? $registration->ruang->nama_ruang : 'Belum ditentukan' }}",
-                lokasi: "{{ $registration && $registration->schoolLocation ? $registration->schoolLocation->alamat . ', ' . $registration->schoolLocation->nama_lokasi : 'Belum ditentukan' }}"
-            };
-
-            try {
-                const logoUrl = '/assets/img/logo/logo-white.png';
-                const logoData = await loadImageAsBase64(logoUrl);
-                doc.addImage(logoData, 'PNG', 10, 12, 20, 20);
-            } catch (error) {
-                console.error('Failed to load logo:', error);
-            }
-
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.text("Kartu Peserta PPDB", 74, 15, {
-                align: "center"
-            });
-            doc.setFontSize(10);
-            doc.text("Smart Character Islamic School", 74, 22, {
-                align: "center"
-            });
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(8);
-            const address = "Sindangreret RT. 02 RW. 04, Blok Situ Bojong, Tamanjaya, Kec. Tamansari, Kota Tasikmalaya, Jawa Barat 46196";
-            const addressLines = doc.splitTextToSize(address, 90);
-            doc.text(addressLines, 74, 28, {
-                align: "center"
-            });
-            doc.setLineWidth(0.5);
-            doc.line(10, 35, 138, 35);
-
-            if (userData.pasfoto_path) {
-                try {
-                    const imgData = await loadImageAsBase64(userData.pasfoto_path);
-                    doc.addImage(imgData, 'JPEG', 108, 45, 30, 30);
-                } catch (error) {
-                    console.error('Failed to load photo:', error);
+                    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                    document.getElementById(prevTabId).classList.add('active');
                 }
-            }
+            });
+        });
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(12);
-            doc.text(userData.name.toUpperCase(), 10, 45);
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(10);
-            const details = [{
-                    label: "No Peserta",
-                    value: registrationData.no_peserta
-                },
-                {
-                    label: "Asal Sekolah",
-                    value: userData.sd_mi_asal
-                },
-                {
-                    label: "Waktu Ujian",
-                    value: registrationData.jadwal_tes
-                },
-                {
-                    label: "Gedung",
-                    value: registrationData.gedung
-                },
-                {
-                    label: "Ruang",
-                    value: registrationData.ruang
-                },
-                {
-                    label: "Lokasi",
-                    value: registrationData.lokasi
-                }
+        function updatePreview() {
+            const fields = [
+                'name', 'nama_panggilan', 'nomor_induk_asal', 'nisn', 'tempat_lahir', 'tanggal_lahir_display',
+                'jenis_kelamin', 'agama', 'anak_ke', 'status_anak', 'alamat', 'no_hp', 'ra_tk_asal',
+                'alamat_ra_tk', 'sd_mi_asal', 'alamat_sd_mi', 'asal_smp_mts', 'asal_sma_smk',
+                'nama_ayah', 'alamat_ayah', 'pekerjaan_ayah', 'pendidikan_ayah', 'penghasilan_ayah',
+                'nama_ibu', 'alamat_ibu', 'pekerjaan_ibu', 'pendidikan_ibu', 'penghasilan_ibu', 'telepon_ortu',
+                'nama_ayah_wali', 'alamat_ayah_wali', 'pekerjaan_ayah_wali', 'pendidikan_ayah_wali', 'penghasilan_ayah_wali',
+                'nama_ibu_wali', 'alamat_ibu_wali', 'pekerjaan_ibu_wali', 'pendidikan_ibu_wali', 'penghasilan_ibu_wali', 'telepon_wali'
             ];
 
-            let y = 55;
-            details.forEach(detail => {
-                doc.setFont("helvetica", "bold");
-                doc.text(`${detail.label}:`, 10, y);
-                doc.setFont("helvetica", "normal");
-                const splitText = doc.splitTextToSize(detail.value, 90);
-                doc.text(splitText, 40, y);
-                y += splitText.length * 5 + 3;
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                const preview = document.getElementById(`preview_${field}`);
+                if (input && preview) {
+                    preview.textContent = input.value || 'Tidak diisi';
+                }
             });
 
-            doc.setFont("helvetica", "italic");
-            doc.setFontSize(8);
-            doc.text("© SCIS, 2025. Harap bawa kartu ini saat tes.", 74, 200, {
-                align: "center"
-            });
+            const pasFotoPreviewButton = document.getElementById('preview_pasfoto_path');
+            if (window.pasFotoDataUrl) {
+                pasFotoPreviewButton.disabled = false;
+                pasFotoPreviewButton.onclick = function(e) {
+                    e.preventDefault();
+                    const win = window.open();
+                    if (win) {
+                        win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
+                        win.document.close();
+                    } else {
+                        alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                    }
+                };
+            } else {
+                pasFotoPreviewButton.disabled = true;
+                pasFotoPreviewButton.onclick = null;
+                pasFotoPreviewButton.textContent = 'Tidak ada file';
+            }
 
-            doc.save(`Kartu_Peserta_${userData.name}.pdf`);
+            const buktiPembayaranPreviewButton = document.getElementById('preview_bukti_pembayaran');
+            if (window.buktiPembayaranDataUrl) {
+                buktiPembayaranPreviewButton.disabled = false;
+                buktiPembayaranPreviewButton.onclick = function(e) {
+                    e.preventDefault();
+                    const win = window.open();
+                    if (win) {
+                        const fileInput = document.getElementById('bukti_pembayaran');
+                        const file = fileInput.files[0];
+                        if (file && file.type === 'application/pdf') {
+                            win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
+                        } else {
+                            win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
+                        }
+                        win.document.close();
+                    } else {
+                        alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                    }
+                };
+            } else {
+                buktiPembayaranPreviewButton.disabled = true;
+                buktiPembayaranPreviewButton.onclick = null;
+                buktiPembayaranPreviewButton.textContent = 'Tidak ada file';
+            }
+        }
+
+        // Form submission validation
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity() || !window.pasFotoDataUrl || !window.buktiPembayaranDataUrl) {
+                e.preventDefault();
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                if (!window.pasFotoDataUrl) {
+                    document.getElementById('pasfoto_path').classList.add('is-invalid');
+                }
+                if (!window.buktiPembayaranDataUrl) {
+                    document.getElementById('bukti_pembayaran').classList.add('is-invalid');
+                }
+                alert('Harap lengkapi semua field yang diperlukan, termasuk unggahan file.');
+            }
         });
-    }
+
+        // Ensure date input synchronization
+        const tanggalLahirInput = document.getElementById('tanggal_lahir');
+        const tanggalLahirDisplay = document.getElementById('tanggal_lahir_display');
+        if (tanggalLahirInput && tanggalLahirDisplay) {
+            tanggalLahirInput.addEventListener('change', function() {
+                if (this.value) {
+                    const date = new Date(this.value);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    tanggalLahirDisplay.value = `${day}/${month}/${year}`;
+                }
+            });
+            tanggalLahirDisplay.addEventListener('input', function() {
+                const value = this.value.replace(/[^0-9\/]/g, '');
+                if (value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
+                    const [_, day, month, year] = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+                    const date = new Date(`${year}-${month}-${day}`);
+                    if (!isNaN(date.getTime())) {
+                        tanggalLahirInput.value = `${year}-${month}-${day}`;
+                    } else {
+                        this.classList.add('is-invalid');
+                    }
+                }
+            });
+        }
+    });
 </script>
 @endsection
