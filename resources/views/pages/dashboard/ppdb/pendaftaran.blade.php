@@ -290,18 +290,93 @@ use App\Models\Level;
                                 </div>
                             </div>
                             @elseif ($registration->status == 'not_accepted')
-                            <div class="card border-0 shadow-lg rounded-lg">
+                            <div class="card border-0 shadow-lg rounded-lg mt-4">
                                 <div class="card-body p-4">
                                     <div class="d-flex align-items-center mb-4">
                                         <div class="mr-3">
-                                            <i class="fas fa-times-circle fa-3x text-danger animate__animated animate__shakeX"></i>
+                                            <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
                                         </div>
                                         <div>
-                                            <h5 class="mb-1 font-weight-bold text-dark">Tidak Diterima</h5>
+                                            <h5 class="mb-1 font-weight-bold text-dark">Diterima Seleksi Administrasi</h5>
                                             <p class="text-muted mb-0">
-                                                Silahkan cek pengumuman Anda di <a href="{{ route('dashboard.ppdb_pengumuman') }}" class="alert-link">halaman pengumuman</a>.
+                                                Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini.
                                             </p>
                                         </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <h6 class="font-weight-bold mb-3 text-dark">Detail Tes</h6>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calendar-alt fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Jadwal Tes:</strong>
+                                                    <p class="mb-0">{{ \Carbon\Carbon::parse($registration->jadwal_tes)->format('d M Y, H:i') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->schoolLocation)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-map-marker-alt fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Lokasi:</strong>
+                                                    <p class="mb-0">{{ $registration->schoolLocation->nama_lokasi }}<br>{{ $registration->schoolLocation->alamat }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-map-marker-alt fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Lokasi:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->gedung)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-building fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Gedung:</strong>
+                                                    <p class="mb-0">{{ $registration->gedung->nama_gedung }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-building fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Gedung:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            @if ($registration->ruang)
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-door-open fa-lg text-primary mr-3"></i>
+                                                <div>
+                                                    <strong>Ruang:</strong>
+                                                    <p class="mb-0">{{ $registration->ruang->nama_ruang }}</p>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
+                                                <div>
+                                                    <strong>Ruang:</strong>
+                                                    <p class="mb-0 text-muted">Belum ditentukan</p>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                            <i class="fas fa-download mr-2"></i> Download Kartu Peserta
+                                        </button>
                                     </div>
                                 </div>
                             </div>
