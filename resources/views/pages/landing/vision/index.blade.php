@@ -108,9 +108,7 @@ use Illuminate\Support\Facades\Storage;
                     @if ($vision->poster_image)
                     <img src="{{ Storage::url($vision->poster_image) }}" alt="Poster Visi dan Misi" class="img-fluid">
                     @else
-                    <div class="placeholder-box">
-                        No poster image available. Upload one via the dashboard.
-                    </div>
+                    <img src="{{ asset('assets/img/visi dan misi.png') }}" alt="Poster Visi dan Misi" class="img-fluid">
                     @endif
                 </div>
             </div>

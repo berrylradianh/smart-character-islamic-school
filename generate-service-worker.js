@@ -5,7 +5,8 @@ import { join } from 'path';
 const directories = [
     'public/assets',
     'public/dashboard/assets',
-    'storage/app/public'
+    'storage/app/public',
+    'public/assets/img',
 ];
 
 // Ekstensi file yang diizinkan untuk di-cache
@@ -97,26 +98,80 @@ if (!allFiles.includes('/')) {
 const swTemplate = `
 const CACHE_NAME = 'scis-pwa-v1';
 const DYNAMIC_CACHE = 'dynamic-cache';
+const DB_NAME = 'offline-requests';
+const DB_VERSION = 1;
+const STORE_NAME = 'pending-requests';
 const urlsToCache = ${JSON.stringify(allFiles, null, 2)};
+
+// Fungsi untuk membuka IndexedDB
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = event => {
+            const db = event.target.result;
+            db.createObjectStore(STORE_NAME, { autoIncrement: true });
+        };
+        request.onsuccess = event => resolve(event.target.result);
+        request.onerror = event => reject(event.target.error);
+    });
+}
+
+// Fungsi untuk menyimpan permintaan ke IndexedDB
+function saveRequest(requestData) {
+    return openDB().then(db => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        return new Promise((resolve, reject) => {
+            const req = store.add(requestData);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
+        });
+    });
+}
+
+// Fungsi untuk mendapatkan semua permintaan yang tertunda
+function getPendingRequests() {
+    return openDB().then(db => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        return new Promise((resolve, reject) => {
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    });
+}
+
+// Fungsi untuk menghapus permintaan yang tertunda
+function clearPendingRequest(id) {
+    return openDB().then(db => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        return new Promise((resolve, reject) => {
+            const req = store.delete(id);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
+        });
+    });
+}
 
 // Install Service Worker
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('Membuka cache:', CACHE_NAME);
-            // Cache setiap URL secara individual untuk menghindari kegagalan total
             const cachePromises = urlsToCache.map(url => {
                 return fetch(url, { credentials: 'same-origin' })
                     .then(response => {
                         if (!response.ok) {
                             console.warn('Gagal meng-cache URL:', url, 'Status:', response.status);
-                            return Promise.resolve(); // Lanjutkan meski gagal
+                            return Promise.resolve();
                         }
                         return cache.put(url, response);
                     })
                     .catch(error => {
                         console.warn('Error meng-cache URL:', url, error);
-                        return Promise.resolve(); // Lanjutkan meski gagal
+                        return Promise.resolve();
                     });
             });
             return Promise.all(cachePromises)
@@ -152,33 +207,58 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
 
-    // Tangani permintaan API atau dashboard dengan Network-First
+    // Tangani permintaan API atau dashboard
     if (requestUrl.pathname.includes('/api') || requestUrl.pathname.includes('/dashboard')) {
-        event.respondWith(
-            fetch(event.request)
-                .then(response => {
-                    if (response.status === 200) {
-                        const responseClone = response.clone();
-                        caches.open(DYNAMIC_CACHE).then(cache => {
-                            cache.put(event.request, responseClone);
-                            console.log('Cached dynamic data:', event.request.url);
-                        });
-                    }
-                    return response;
-                })
-                .catch(() => {
-                    return caches.match(event.request).then(cachedResponse => {
-                        if (cachedResponse) {
-                            console.log('Mengambil dari cache dinamis:', event.request.url);
-                            return cachedResponse;
+        if (event.request.method === 'GET') {
+            event.respondWith(
+                fetch(event.request)
+                    .then(response => {
+                        if (response.status === 200) {
+                            const responseClone = response.clone();
+                            caches.open(DYNAMIC_CACHE).then(cache => {
+                                cache.put(event.request, responseClone);
+                                console.log('Cached dynamic data:', event.request.url);
+                            });
                         }
+                        return response;
+                    })
+                    .catch(() => {
+                        return caches.match(event.request).then(cachedResponse => {
+                            if (cachedResponse) {
+                                console.log('Mengambil dari cache dinamis:', event.request.url);
+                                return cachedResponse;
+                            }
+                            return new Response(
+                                JSON.stringify({ error: 'Offline, no data available' }),
+                                { status: 503, headers: { 'Content-Type': 'application/json' } }
+                            );
+                        });
+                    })
+            );
+        } else if (['POST', 'PUT'].includes(event.request.method)) {
+            event.respondWith(
+                fetch(event.request)
+                    .then(response => {
+                        console.log('Permintaan berhasil dikirim:', event.request.url);
+                        return response;
+                    })
+                    .catch(async () => {
+                        console.log('Offline, menyimpan permintaan:', event.request.url);
+                        const requestData = {
+                            url: event.request.url,
+                            method: event.request.method,
+                            headers: Object.fromEntries(event.request.headers),
+                            body: await event.request.text(),
+                            timestamp: Date.now()
+                        };
+                        await saveRequest(requestData);
                         return new Response(
-                            JSON.stringify({ error: 'Offline, no data available' }),
-                            { status: 503, headers: { 'Content-Type': 'application/json' } }
+                            JSON.stringify({ status: 'queued', message: 'Permintaan disimpan untuk sinkronisasi' }),
+                            { status: 202, headers: { 'Content-Type': 'application/json' } }
                         );
-                    });
-                })
-        );
+                    })
+            );
+        }
     } else {
         // Tangani aset statis dan halaman dengan Cache-First
         event.respondWith(
@@ -190,7 +270,6 @@ self.addEventListener('fetch', event => {
 
                 return fetch(event.request)
                     .then(fetchResponse => {
-                        // Cache respons baru untuk permintaan GET
                         if (fetchResponse.status === 200 && event.request.method === 'GET') {
                             caches.open(CACHE_NAME).then(cache => {
                                 cache.put(event.request, fetchResponse.clone());
@@ -200,7 +279,6 @@ self.addEventListener('fetch', event => {
                         return fetchResponse;
                     })
                     .catch(() => {
-                        // Fallback ke halaman root untuk navigasi offline
                         if (event.request.mode === 'navigate') {
                             return caches.match('/');
                         }
@@ -213,6 +291,40 @@ self.addEventListener('fetch', event => {
         );
     }
 });
+
+// Sync Event untuk menyinkronkan permintaan tertunda
+self.addEventListener('sync', event => {
+    if (event.tag === 'sync-pending-requests') {
+        event.waitUntil(syncPendingRequests());
+    }
+});
+
+async function syncPendingRequests() {
+    try {
+        const requests = await getPendingRequests();
+        console.log('Sinkronisasi permintaan tertunda:', requests.length);
+
+        for (const [index, req] of requests.entries()) {
+            try {
+                const response = await fetch(req.url, {
+                    method: req.method,
+                    headers: req.headers,
+                    body: req.body
+                });
+                if (response.ok) {
+                    console.log('Permintaan tersinkronisasi:', req.url);
+                    await clearPendingRequest(index);
+                } else {
+                    console.warn('Gagal menyinkronkan permintaan:', req.url, response.status);
+                }
+            } catch (error) {
+                console.error('Error saat menyinkronkan:', req.url, error);
+            }
+        }
+    } catch (error) {
+        console.error('Error selama sinkronisasi:', error);
+    }
+}
 `;
 
 // Simpan ke public/service-worker.js

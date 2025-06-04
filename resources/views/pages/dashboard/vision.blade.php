@@ -1,5 +1,5 @@
 @php
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 @endphp
 
 @extends('layouts.dashboard.app')
@@ -75,11 +75,10 @@
                                     <label for="poster_image">Poster Image</label>
                                     <input type="file" name="poster_image" id="poster_image" class="form-control-file" accept="image/*">
                                     @if ($vision->poster_image)
-                                        <div class="mt-2">
-                                            <p>Current Poster:</p>
-                                            <img src="{{ Storage::url($vision->poster_image) }}" alt="Current Poster" style="max-width: 200px; border-radius: 15px;">
-                                        </div>
-                                    @endif
+                                    <div class="mt-2">
+                                        <p>Current Poster:</p>
+                                        <img src="{{ Storage::url($vision->poster_image) }}" alt="Current Poster" style="max-width: 200px; border-radius: 15px;">
+                                    </div>
                                     @error('poster_image')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
