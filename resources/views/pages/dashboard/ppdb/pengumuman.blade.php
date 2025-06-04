@@ -65,12 +65,12 @@ use App\Models\Level;
                                 <div class="card-body p-4">
                                     <div class="d-flex align-items-center mb-4">
                                         <div class="mr-3">
-                                            <i class="fas fa-check-circle fa-3x text-success animate__animated animate__bounceIn"></i>
+                                            <i class="fas fa-clipboard-check fa-3x text-success animate__animated animate__bounceIn"></i>
                                         </div>
                                         <div>
                                             <h5 class="mb-1 font-weight-bold text-dark">Diterima Seleksi Administrasi</h5>
                                             <p class="text-muted mb-0">
-                                                Selamat! Pendaftaran Anda telah diterima. Silakan periksa detail tes di bawah ini. Silakan cek status pendaftaran Anda di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
+                                                Pendaftaran Anda telah diterima, lakukan tes terlebih dahulu, untuk detailnya silahkan cek di <a href="{{ route('dashboard.ppdb_pendaftaran') }}" class="alert-link">halaman pendaftaran</a>.
                                             </p>
                                         </div>
                                     </div>
