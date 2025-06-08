@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 <section class="course__area pt-120 grey-bg-3" style="background-color: white;">
     <div class="container">
         <div class="row">
