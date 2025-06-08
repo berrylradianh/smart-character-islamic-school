@@ -79,6 +79,7 @@ use Illuminate\Support\Facades\Storage;
                                         <p>Current Poster:</p>
                                         <img src="{{ Storage::url($vision->poster_image) }}" alt="Current Poster" style="max-width: 200px; border-radius: 15px;">
                                     </div>
+                                    @endif
                                     @error('poster_image')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
