@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Storage;
 <div class="content-page">
     <div class="content">
         <div class="container-fluid">
+            <!-- Success Message -->
+            @if (session('success'))
+            <div class="alert alert-success" data-testid="success-message">
+                {{ session('success') }}
+            </div>
+            @endif
+
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -14,12 +15,19 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
+            Log::info('Login attempt', ['email' => $request->email, 'has_csrf' => $request->has('_token')]);
+
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email',
                 'password' => 'required',
+            ], [
+                'email.required' => 'Harap isi bidang ini',
+                'email.email' => 'Harap masukkan alamat email yang valid',
+                'password.required' => 'Harap isi bidang ini',
             ]);
 
             if ($validator->fails()) {
+                Log::info('Validation failed', ['errors' => $validator->errors()->toArray()]);
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
@@ -30,15 +38,16 @@ class AuthController extends Controller
                 'password' => $request->password
             ], $request->has('remember'))) {
                 $request->session()->regenerate();
+                Log::info('Login successful', ['email' => $request->email]);
                 return redirect()->route('dashboard.index')
                     ->with('success', 'Login successful!');
             }
 
-            return redirect()->back()
-                ->withErrors(['email' => 'The provided credentials do not match our records.'])
-                ->withInput();
+            Log::info('Invalid credentials', ['email' => $request->email]);
+            return redirect()->back()->withErrors(['email' => 'These credentials do not match our record.'])->withInput();
         }
 
+        Log::info('Rendering login page');
         return view('pages.landing.auth.login', [
             'title' => 'Login',
         ]);
