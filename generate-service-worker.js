@@ -29,10 +29,28 @@ const getRoutes = [
     '/dashboards',
     '/dashboards/profile',
     '/dashboards/profile/edit',
-    '/dashboards/ppdb-information',
-    '/dashboards/ppdb-timeline',
-    '/dashboards/ppdb-faq',
-    '/dashboards/ppdb-pendaftaran'
+    '/dashboards/ppdb-pendaftaran',
+    '/dashboards/ppdb-pengumuman',
+    '/dashboards/ppdb-pendaftaran/revisi',
+    '/dashboards/stats',
+    '/dashboards/content-hero',
+    '/dashboards/content-news',
+    '/dashboards/content-agenda',
+    '/dashboards/content-introduction',
+    '/dashboards/list-pendaftar',
+    '/dashboards/values',
+    '/dashboards/content-programs',
+    '/dashboards/content-testimonials',
+    '/dashboards/content-media',
+    '/dashboards/content-profile',
+    '/dashboards/content-vision',
+    '/dashboards/content-ppdb',
+    '/dashboards/roles',
+    '/dashboards/roles/create',
+    '/dashboards/roles/edit',
+    '/dashboards/users',
+    '/dashboards/users/create',
+    '/dashboards/users/edit'
 ];
 
 // Fungsi untuk mendapatkan file secara rekursif dari direktori
