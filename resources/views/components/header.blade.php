@@ -82,7 +82,7 @@
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
-                                                Tentang Kami
+                                                Tentang Kamis
                                             </a>
                                             @endif
                                             <ul class="submenu"
@@ -159,7 +159,7 @@
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                                     onmouseover="this.style.backgroundColor='#FF9800';"
                                     onmouseout="this.style.backgroundColor='#E47804';">
-                                    Login 
+                                    Login
                                 </a>
                                 <a href="{{ route('auth.login') }}" class="header-btn"
                                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #1E88E5; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
