@@ -30,7 +30,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/spacing.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
 </head>
 
 <body>
@@ -96,14 +95,15 @@
             }
         }
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        // Search Suggestions
         $(document).ready(function() {
+            // CSRF Token Setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Search Suggestions
             $('#search-input').on('keyup', function() {
                 var query = $(this).val().trim();
                 var suggestionsBox = $('#search-suggestions');
@@ -113,9 +113,7 @@
                     $.ajax({
                         url: '{{ route("landing.search.suggestions") }}',
                         method: 'GET',
-                        data: {
-                            query: query
-                        },
+                        data: { query: query },
                         success: function(data) {
                             suggestionsList.empty();
                             if (data.length > 0) {
@@ -149,12 +147,50 @@
                 }
             });
 
-            // Sembunyikan suggestions saat klik di luar
+            // Hide suggestions on click outside
             $(document).on('click', function(e) {
                 if (!$(e.target).closest('.header__search').length) {
                     $('#search-suggestions').hide();
                 }
             });
+
+            // Owl Carousel Initialization for Testimonials
+            $('.testimonial__active').owlCarousel({
+                loop: false,
+                margin: 10,
+                nav: true,
+                navText: [
+                    '<i class="fa-solid fa-arrow-left"></i>',
+                    '<i class="fa-solid fa-arrow-right"></i>'
+                ],
+                dots: true,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                },
+                onInitialized: updateNavVisibility,
+                onTranslated: updateNavVisibility
+            });
+
+            function updateNavVisibility(event) {
+                var owl = $('.testimonial__active').data('owl.carousel');
+                var current = event.item.index;
+                var total = event.item.count;
+                var itemsPerPage = event.page.size;
+
+                if (current === 0) {
+                    $('.owl-prev').hide();
+                } else {
+                    $('.owl-prev').show();
+                }
+
+                if (current + itemsPerPage >= total) {
+                    $('.owl-next').hide();
+                } else {
+                    $('.owl-next').show();
+                }
+            }
         });
     </script>
     @vite(['resources/js/app.js'])

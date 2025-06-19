@@ -36,10 +36,10 @@ use Illuminate\Support\Facades\Storage;
                             <div class="testimonial__rating">
                                 <ul>
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <li>
+                                    <li>
                                         <a href="#"><i class="fa-solid fa-star {{ $i <= $testimonial->rating ? 'text-warning' : 'text-muted' }}"></i></a>
-                                        </li>
-                                        @endfor
+                                    </li>
+                                    @endfor
                                 </ul>
                             </div>
                         </div>
@@ -51,57 +51,6 @@ use Illuminate\Support\Facades\Storage;
         </div>
     </div>
 </section>
-
-<!-- Owl Carousel Initialization Script -->
-<script>
-    $(document).ready(function() {
-        $('.testimonial__active').owlCarousel({
-            loop: false, // Disable loop to prevent duplication
-            margin: 10,
-            nav: true, // Enable navigation arrows
-            navText: [
-                '<i class="fa-solid fa-arrow-left"></i>',
-                '<i class="fa-solid fa-arrow-right"></i>'
-            ],
-            dots: true,
-            responsive: {
-                0: {
-                    items: 1 // 1 card on mobile
-                },
-                600: {
-                    items: 2 // 2 cards on tablets
-                },
-                1000: {
-                    items: 3 // 3 cards on desktops
-                }
-            },
-            onInitialized: updateNavVisibility,
-            onTranslated: updateNavVisibility
-        });
-
-        // Function to hide/show navigation arrows
-        function updateNavVisibility(event) {
-            var owl = $('.testimonial__active').data('owl.carousel');
-            var current = event.item.index;
-            var total = event.item.count;
-            var itemsPerPage = event.page.size;
-
-            // Hide left arrow at the start
-            if (current === 0) {
-                $('.owl-prev').hide();
-            } else {
-                $('.owl-prev').show();
-            }
-
-            // Hide right arrow at the end
-            if (current + itemsPerPage >= total) {
-                $('.owl-next').hide();
-            } else {
-                $('.owl-next').show();
-            }
-        }
-    });
-</script>
 
 <style>
     /* Ensure Owl Carousel navigation arrows are visible */
@@ -134,17 +83,14 @@ use Illuminate\Support\Facades\Storage;
         background: rgba(0, 0, 0, 0.8) !important;
     }
 
-    /* Position left arrow to the left of the first card */
     .testimonial__active .owl-prev {
         margin-left: 10px;
     }
 
-    /* Position right arrow to the right of the third card */
     .testimonial__active .owl-next {
         margin-right: 10px;
     }
 
-    /* Ensure carousel container allows arrows to extend outside */
     .testimonial__slider {
         position: relative;
         padding: 0 50px;
@@ -163,7 +109,6 @@ use Illuminate\Support\Facades\Storage;
         opacity: 1;
     }
 
-    /* Uniform card sizing */
     .testimonial__item {
         display: flex;
         flex-direction: column;
@@ -174,7 +119,6 @@ use Illuminate\Support\Facades\Storage;
         padding: 20px;
     }
 
-    /* Ensure image size is consistent */
     .testimonial__avater img {
         width: 100px;
         height: 100px;
@@ -183,18 +127,13 @@ use Illuminate\Support\Facades\Storage;
         margin: 0 auto;
     }
 
-    /* Scrollable text content */
     .testimonial__text {
         height: 150px;
-        /* Fixed height for text area */
         overflow-y: auto;
-        /* Enable vertical scrolling */
         margin: 10px 0;
         padding-right: 10px;
-        /* Space for scrollbar */
     }
 
-    /* Optional: Style the scrollbar */
     .testimonial__text::-webkit-scrollbar {
         width: 8px;
     }
@@ -213,7 +152,6 @@ use Illuminate\Support\Facades\Storage;
         background: #555;
     }
 
-    /* Ensure name and position are consistent */
     .testimonial__avater-info {
         margin-bottom: 10px;
     }
@@ -228,7 +166,6 @@ use Illuminate\Support\Facades\Storage;
         color: #666;
     }
 
-    /* Ensure rating is consistent */
     .testimonial__rating ul {
         display: flex;
         justify-content: center;
