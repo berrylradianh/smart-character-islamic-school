@@ -23,13 +23,13 @@
             <div class="col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                 <div class="sign__wrapper white-bg">
                     @if (session('success'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-success" data-testid="success-message">
                         {{ session('success') }}
                     </div>
                     @endif
 
                     @if ($errors->any())
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger" data-testid="error-message">
                         <ul>
                             @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -39,26 +39,32 @@
                     @endif
 
                     <div class="sign__form">
-                        <form action="{{ route('auth.register') }}" method="POST">
+                        <form action="{{ route('auth.register') }}" method="POST" data-testid="register-form">
                             @csrf
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Full Name</h5>
                                 <div class="sign__input">
-                                    <input type="text" name="name" placeholder="Full name" value="{{ old('name') }}" required>
+                                    <input type="text" name="name" placeholder="Full name" value="{{ old('name') }}" data-testid="name-input">
                                     <i class="fal fa-user"></i>
+                                    @error('name')
+                                    <span class="text-danger" data-testid="name-error">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Email</h5>
                                 <div class="sign__input">
-                                    <input type="email" name="email" placeholder="e-mail address" value="{{ old('email') }}" required>
+                                    <input type="email" name="email" placeholder="e-mail address" value="{{ old('email') }}" data-testid="email-input">
                                     <i class="fal fa-envelope"></i>
+                                    @error('email')
+                                    <span class="text-danger" data-testid="email-error">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="sign__input-wrapper" style="margin-bottom: 80px;">
                                 <h5>Education Level</h5>
                                 <div class="sign__input">
-                                    <select name="level_id" required>
+                                    <select name="level_id" data-testid="level-input">
                                         <option value="" disabled selected>Select Education Level</option>
                                         @foreach (\App\Models\Level::orderByRaw("FIELD(slug, 'tk', 'sd', 'smp', 'sma', 'kuliah')")->orderBy('name')->get() as $level)
                                         <option value="{{ $level->id }}" {{ old('level_id') == $level->id ? 'selected' : '' }}>
@@ -66,25 +72,34 @@
                                         </option>
                                         @endforeach
                                     </select>
+                                    @error('level_id')
+                                    <span class="text-danger" data-testid="level-error">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Password</h5>
                                 <div class="sign__input">
-                                    <input type="password" name="password" placeholder="Password" required>
+                                    <input type="password" name="password" placeholder="Password" data-testid="password-input">
                                     <i class="fal fa-lock"></i>
+                                    @error('password')
+                                    <span class="text-danger" data-testid="password-error">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="sign__input-wrapper mb-10">
                                 <h5>Confirm Password</h5>
                                 <div class="sign__input">
-                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" data-testid="password-confirmation-input">
                                     <i class="fal fa-lock"></i>
+                                    @error('password_confirmation')
+                                    <span class="text-danger" data-testid="password-confirmation-error">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="sign__action d-flex justify-content-between mb-30">
                             </div>
-                            <button type="submit" class="tp-btn w-100"> <span></span> Sign Up</button>
+                            <button type="submit" class="tp-btn w-100" data-testid="submit-button"> <span></span> Sign Up</button>
                             <div class="sign__new text-center mt-20">
                                 <p>Have an account? <a href="{{ route('auth.login') }}">Sign in</a></p>
                             </div>

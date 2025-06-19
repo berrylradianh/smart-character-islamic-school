@@ -60,7 +60,19 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
-                'level_id' => 'required|exists:levels,id', // Validasi level_id
+                'password_confirmation' => 'required',
+                'level_id' => 'required|exists:levels,id',
+            ], [
+                'name.required' => 'Harap isi bidang ini',
+                'email.required' => 'Harap isi bidang ini',
+                'email.email' => 'Harap masukkan alamat email yang valid',
+                'email.unique' => 'Email sudah terdaftar',
+                'password.required' => 'Harap isi bidang ini',
+                'password.min' => 'Password minimal 8 karakter',
+                'password.confirmed' => 'Password dan Konfirmasi Password tidak cocok',
+                'password_confirmation.required' => 'Harap isi bidang ini',
+                'level_id.required' => 'Harap isi bidang ini',
+                'level_id.exists' => 'Tingkat pendidikan tidak valid',
             ]);
 
             if ($validator->fails()) {
