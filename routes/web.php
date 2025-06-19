@@ -13,6 +13,8 @@ Route::match(['get', 'post'], '/ppdb', [LandingController::class, 'ppdb'])->name
 Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 Route::get('/search-suggestions', [LandingController::class, 'searchSuggestions'])->name('landing.search.suggestions');
 
+Route::get('dashboard/ppdb/pendaftaran/download-kartu', [AdminController::class, 'downloadKartuPeserta'])->name('dashboard.ppdb_pendaftaran.download_kartu')->middleware('auth');
+
 // Auth
 Route::prefix('auth')->group(function () {
     Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('auth.login');

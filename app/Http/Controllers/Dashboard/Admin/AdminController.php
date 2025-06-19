@@ -25,6 +25,7 @@ use App\Models\Timeline;
 use App\Models\User;
 use App\Models\Value;
 use App\Models\Vision;
+use Barryvdh\DomPDF\Facade\Pdf;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Http\Request;
@@ -1637,5 +1638,27 @@ class AdminController extends Controller
         ];
 
         return view('pages.dashboard.ppdb.pengumuman', $data);
+    }
+
+    public function downloadKartuPeserta(Request $request)
+    {
+        $user = Auth::user();
+        $registration = Registration::where('user_id', $user->id)->first();
+
+        if (!$registration) {
+            return redirect()->back()->with('error', 'Data pendaftaran tidak ditemukan.');
+        }
+
+        $data = [
+            'user' => $user,
+            'registration' => $registration,
+            'logo_path' => public_path('assets/img/logo/logo-white.png'),
+            'pasfoto_path' => $user->pasfoto_path ? storage_path('app/public/' . $user->pasfoto_path) : null,
+        ];
+
+        $pdf = Pdf::loadView('pdf.kartu_peserta', $data)
+            ->setPaper('a5', 'portrait');
+
+        return $pdf->download('Kartu_Peserta_' . str_replace(' ', '_', $user->name) . '.pdf');
     }
 }

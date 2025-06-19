@@ -145,9 +145,9 @@ use App\Models\Level;
                                         </div>
                                     </div>
                                     <div class="mt-4">
-                                        <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pendaftaran.download_kartu') }}" class="btn btn-success btn-sm rounded-pill px-4">
                                             <i class="fas fa-download mr-2"></i> Download Kartu Peserta
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@ use App\Models\Level;
                                     </div>
                                     @endif
                                     <div class="mt-4">
-                                        <a href="{{ route('dashboard.ppdb_pendaftaran.revisi') }}" class="btn btn-primary btn-sm rounded-pill px-4">
+                                        <a id="buttonRevisiData" href="{{ route('dashboard.ppdb_pendaftaran.revisi') }}" class="btn btn-primary btn-sm rounded-pill px-4">
                                             <i class="fas fa-edit mr-2"></i> Revisi Data
                                         </a>
                                     </div>
@@ -283,9 +283,9 @@ use App\Models\Level;
                                         </div>
                                     </div>
                                     <div class="mt-4">
-                                        <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pendaftaran.download_kartu') }}" class="btn btn-success btn-sm rounded-pill px-4">
                                             <i class="fas fa-download mr-2"></i> Download Kartu Peserta
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -374,9 +374,9 @@ use App\Models\Level;
                                         </div>
                                     </div>
                                     <div class="mt-4">
-                                        <button id="downloadKartuPeserta" class="btn btn-success btn-sm rounded-pill px-4">
+                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pendaftaran.download_kartu') }}" class="btn btn-success btn-sm rounded-pill px-4">
                                             <i class="fas fa-download mr-2"></i> Download Kartu Peserta
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -863,6 +863,7 @@ use App\Models\Level;
 </div>
 
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Store file Data URLs for preview in a global scope
@@ -1029,181 +1030,182 @@ use App\Models\Level;
         const tabs = document.querySelectorAll('.nav-link');
         const form = document.getElementById('registrationForm');
 
-        function validateTab(tabId) {
-            const tab = document.getElementById(tabId);
-            const inputs = tab.querySelectorAll('input[required], select[required], textarea[required]');
-            let isValid = true;
+        if (form) {
+            function validateTab(tabId) {
+                const tab = document.getElementById(tabId);
+                const inputs = tab.querySelectorAll('input[required], select[required], textarea[required]');
+                let isValid = true;
 
-            inputs.forEach(input => {
-                if (input.type === 'file') {
-                    if (input.id === 'pasfoto_path' && !window.pasFotoDataUrl) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
-                    } else if (input.id === 'bukti_pembayaran' && !window.buktiPembayaranDataUrl) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
+                inputs.forEach(input => {
+                    if (input.type === 'file') {
+                        if (input.id === 'pasfoto_path' && !window.pasFotoDataUrl) {
+                            input.classList.add('is-invalid');
+                            isValid = false;
+                        } else if (input.id === 'bukti_pembayaran' && !window.buktiPembayaranDataUrl) {
+                            input.classList.add('is-invalid');
+                            isValid = false;
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
                     } else {
-                        input.classList.remove('is-invalid');
+                        if (!input.value.trim()) {
+                            input.classList.add('is-invalid');
+                            isValid = false;
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
                     }
-                } else {
-                    if (!input.value.trim()) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('is-invalid');
+                });
+
+                return isValid;
+            }
+
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentTab = document.querySelector('.tab-pane.active');
+                    const currentTabId = currentTab.id;
+                    const nextTabId = 'step' + (parseInt(currentTabId.replace('step', '')) + 1);
+
+                    if (validateTab(currentTabId)) {
+                        const nextTabLink = document.querySelector(`a[href="#${nextTabId}"]`);
+                        if (nextTabLink) {
+                            tabs.forEach(tab => tab.classList.remove('active'));
+                            nextTabLink.classList.add('active');
+                            nextTabLink.classList.remove('disabled');
+
+                            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                            document.getElementById(nextTabId).classList.add('active');
+
+                            if (nextTabId === 'step5') {
+                                updatePreview();
+                            }
+                        }
                     }
-                }
+                });
             });
 
-            return isValid;
-        }
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentTab = document.querySelector('.tab-pane.active');
+                    const currentTabId = currentTab.id;
+                    const prevTabId = 'step' + (parseInt(currentTabId.replace('step', '')) - 1);
 
-        nextButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const currentTab = document.querySelector('.tab-pane.active');
-                const currentTabId = currentTab.id;
-                const nextTabId = 'step' + (parseInt(currentTabId.replace('step', '')) + 1);
-
-                if (validateTab(currentTabId)) {
-                    const nextTabLink = document.querySelector(`a[href="#${nextTabId}"]`);
-                    if (nextTabLink) {
+                    const prevTabLink = document.querySelector(`a[href="#${prevTabId}"]`);
+                    if (prevTabLink) {
                         tabs.forEach(tab => tab.classList.remove('active'));
-                        nextTabLink.classList.add('active');
-                        nextTabLink.classList.remove('disabled');
+                        prevTabLink.classList.add('active');
 
                         document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-                        document.getElementById(nextTabId).classList.add('active');
-
-                        if (nextTabId === 'step5') {
-                            updatePreview();
-                        }
+                        document.getElementById(prevTabId).classList.add('active');
                     }
-                }
-            });
-        });
-
-        prevButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const currentTab = document.querySelector('.tab-pane.active');
-                const currentTabId = currentTab.id;
-                const prevTabId = 'step' + (parseInt(currentTabId.replace('step', '')) - 1);
-
-                const prevTabLink = document.querySelector(`a[href="#${prevTabId}"]`);
-                if (prevTabLink) {
-                    tabs.forEach(tab => tab.classList.remove('active'));
-                    prevTabLink.classList.add('active');
-
-                    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-                    document.getElementById(prevTabId).classList.add('active');
-                }
-            });
-        });
-
-        function updatePreview() {
-            const fields = [
-                'name', 'nama_panggilan', 'nomor_induk_asal', 'nisn', 'tempat_lahir', 'tanggal_lahir_display',
-                'jenis_kelamin', 'agama', 'anak_ke', 'status_anak', 'alamat', 'no_hp', 'ra_tk_asal',
-                'alamat_ra_tk', 'sd_mi_asal', 'alamat_sd_mi', 'asal_smp_mts', 'asal_sma_smk',
-                'nama_ayah', 'alamat_ayah', 'pekerjaan_ayah', 'pendidikan_ayah', 'penghasilan_ayah',
-                'nama_ibu', 'alamat_ibu', 'pekerjaan_ibu', 'pendidikan_ibu', 'penghasilan_ibu', 'telepon_ortu',
-                'nama_ayah_wali', 'alamat_ayah_wali', 'pekerjaan_ayah_wali', 'pendidikan_ayah_wali', 'penghasilan_ayah_wali',
-                'nama_ibu_wali', 'alamat_ibu_wali', 'pekerjaan_ibu_wali', 'pendidikan_ibu_wali', 'penghasilan_ibu_wali', 'telepon_wali'
-            ];
-
-            fields.forEach(field => {
-                const input = document.getElementById(field);
-                const preview = document.getElementById(`preview_${field}`);
-                if (input && preview) {
-                    preview.textContent = input.value || 'Tidak diisi';
-                }
+                });
             });
 
-            const pasFotoPreviewButton = document.getElementById('preview_pasfoto_path');
-            if (window.pasFotoDataUrl) {
-                pasFotoPreviewButton.disabled = false;
-                pasFotoPreviewButton.onclick = function(e) {
-                    e.preventDefault();
-                    const win = window.open();
-                    if (win) {
-                        win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
-                        win.document.close();
-                    } else {
-                        alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+            function updatePreview() {
+                const fields = [
+                    'name', 'nama_panggilan', 'nomor_induk_asal', 'nisn', 'tempat_lahir', 'tanggal_lahir_display',
+                    'jenis_kelamin', 'agama', 'anak_ke', 'status_anak', 'alamat', 'no_hp', 'ra_tk_asal',
+                    'alamat_ra_tk', 'sd_mi_asal', 'alamat_sd_mi', 'asal_smp_mts', 'asal_sma_smk',
+                    'nama_ayah', 'alamat_ayah', 'pekerjaan_ayah', 'pendidikan_ayah', 'penghasilan_ayah',
+                    'nama_ibu', 'alamat_ibu', 'pekerjaan_ibu', 'pendidikan_ibu', 'penghasilan_ibu', 'telepon_ortu',
+                    'nama_ayah_wali', 'alamat_ayah_wali', 'pekerjaan_ayah_wali', 'pendidikan_ayah_wali', 'penghasilan_ayah_wali',
+                    'nama_ibu_wali', 'alamat_ibu_wali', 'pekerjaan_ibu_wali', 'pendidikan_ibu_wali', 'penghasilan_ibu_wali', 'telepon_wali'
+                ];
+
+                fields.forEach(field => {
+                    const input = document.getElementById(field);
+                    const preview = document.getElementById(`preview_${field}`);
+                    if (input && preview) {
+                        preview.textContent = input.value || 'Tidak diisi';
                     }
-                };
-            } else {
-                pasFotoPreviewButton.disabled = true;
-                pasFotoPreviewButton.onclick = null;
-                pasFotoPreviewButton.textContent = 'Tidak ada file';
-            }
+                });
 
-            const buktiPembayaranPreviewButton = document.getElementById('preview_bukti_pembayaran');
-            if (window.buktiPembayaranDataUrl) {
-                buktiPembayaranPreviewButton.disabled = false;
-                buktiPembayaranPreviewButton.onclick = function(e) {
-                    e.preventDefault();
-                    const win = window.open();
-                    if (win) {
-                        const fileInput = document.getElementById('bukti_pembayaran');
-                        const file = fileInput.files[0];
-                        if (file && file.type === 'application/pdf') {
-                            win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
+                const pasFotoPreviewButton = document.getElementById('preview_pasfoto_path');
+                if (window.pasFotoDataUrl) {
+                    pasFotoPreviewButton.disabled = false;
+                    pasFotoPreviewButton.onclick = function(e) {
+                        e.preventDefault();
+                        const win = window.open();
+                        if (win) {
+                            win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
+                            win.document.close();
                         } else {
-                            win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
+                            alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
                         }
-                        win.document.close();
-                    } else {
-                        alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                    };
+                } else {
+                    pasFotoPreviewButton.disabled = true;
+                    pasFotoPreviewButton.onclick = null;
+                    pasFotoPreviewButton.textContent = 'Tidak ada file';
+                }
+
+                const buktiPembayaranPreviewButton = document.getElementById('preview_bukti_pembayaran');
+                if (window.buktiPembayaranDataUrl) {
+                    buktiPembayaranPreviewButton.disabled = false;
+                    buktiPembayaranPreviewButton.onclick = function(e) {
+                        e.preventDefault();
+                        const win = window.open();
+                        if (win) {
+                            const fileInput = document.getElementById('bukti_pembayaran');
+                            const file = fileInput.files[0];
+                            if (file && file.type === 'application/pdf') {
+                                win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
+                            } else {
+                                win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
+                            }
+                            win.document.close();
+                        } else {
+                            alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                        }
+                    };
+                } else {
+                    buktiPembayaranPreviewButton.disabled = true;
+                    buktiPembayaranPreviewButton.onclick = null;
+                    buktiPembayaranPreviewButton.textContent = 'Tidak ada file';
+                }
+            }
+
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                if (!form.checkValidity() || !window.pasFotoDataUrl || !window.buktiPembayaranDataUrl) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form.classList.add('was-validated');
+                    if (!window.pasFotoDataUrl) {
+                        document.getElementById('pasfoto_path').classList.add('is-invalid');
                     }
-                };
-            } else {
-                buktiPembayaranPreviewButton.disabled = true;
-                buktiPembayaranPreviewButton.onclick = null;
-                buktiPembayaranPreviewButton.textContent = 'Tidak ada file';
-            }
-        }
-
-        // Form submission validation
-        form.addEventListener('submit', function(e) {
-            if (!form.checkValidity() || !window.pasFotoDataUrl || !window.buktiPembayaranDataUrl) {
-                e.preventDefault();
-                e.stopPropagation();
-                form.classList.add('was-validated');
-                if (!window.pasFotoDataUrl) {
-                    document.getElementById('pasfoto_path').classList.add('is-invalid');
-                }
-                if (!window.buktiPembayaranDataUrl) {
-                    document.getElementById('bukti_pembayaran').classList.add('is-invalid');
-                }
-                alert('Harap lengkapi semua field yang diperlukan, termasuk unggahan file.');
-            }
-        });
-
-        // Ensure date input synchronization
-        const tanggalLahirInput = document.getElementById('tanggal_lahir');
-        const tanggalLahirDisplay = document.getElementById('tanggal_lahir_display');
-        if (tanggalLahirInput && tanggalLahirDisplay) {
-            tanggalLahirInput.addEventListener('change', function() {
-                if (this.value) {
-                    const date = new Date(this.value);
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const year = date.getFullYear();
-                    tanggalLahirDisplay.value = `${day}/${month}/${year}`;
+                    if (!window.buktiPembayaranDataUrl) {
+                        document.getElementById('bukti_pembayaran').classList.add('is-invalid');
+                    }
+                    alert('Harap lengkapi semua field yang diperlukan, termasuk unggahan file.');
                 }
             });
-            tanggalLahirDisplay.addEventListener('input', function() {
-                const value = this.value.replace(/[^0-9\/]/g, '');
-                if (value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
-                    const [_, day, month, year] = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-                    const date = new Date(`${year}-${month}-${day}`);
-                    if (!isNaN(date.getTime())) {
-                        tanggalLahirInput.value = `${year}-${month}-${day}`;
-                    } else {
-                        this.classList.add('is-invalid');
+
+            const tanggalLahirInput = document.getElementById('tanggal_lahir');
+            const tanggalLahirDisplay = document.getElementById('tanggal_lahir_display');
+            if (tanggalLahirInput && tanggalLahirDisplay) {
+                tanggalLahirInput.addEventListener('change', function() {
+                    if (this.value) {
+                        const date = new Date(this.value);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        tanggalLahirDisplay.value = `${day}/${month}/${year}`;
                     }
-                }
-            });
+                });
+                tanggalLahirDisplay.addEventListener('input', function() {
+                    const value = this.value.replace(/[^0-9\/]/g, '');
+                    if (value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)) {
+                        const [_, day, month, year] = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+                        const date = new Date(`${year}-${month}-${day}`);
+                        if (!isNaN(date.getTime())) {
+                            tanggalLahirInput.value = `${year}-${month}-${day}`;
+                        } else {
+                            this.classList.add('is-invalid');
+                        }
+                    }
+                });
+            }
         }
     });
 </script>
