@@ -38,7 +38,7 @@
                     @endif
 
                     <div class="sign__form">
-                        <form action="{{ route('auth.login') }}" method="POST" novalidate data-testid="login-form">
+                        <form action="{{ route('login') }}" method="POST" novalidate data-testid="login-form">
                             @csrf
                             <div class="sign__input-wrapper mb-25">
                                 <h5>Email</h5>

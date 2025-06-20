@@ -101,7 +101,7 @@
                             </div>
                             <button type="submit" class="tp-btn w-100" data-testid="submit-button"> <span></span> Sign Up</button>
                             <div class="sign__new text-center mt-20">
-                                <p>Have an account? <a href="{{ route('auth.login') }}">Sign in</a></p>
+                                <p>Have an account? <a href="{{ route('login') }}">Sign in</a></p>
                             </div>
                         </form>
                     </div>

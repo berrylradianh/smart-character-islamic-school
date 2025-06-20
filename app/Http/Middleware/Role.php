@@ -11,7 +11,7 @@ class Role
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!Auth::check()) {
-            return redirect()->route('auth.login');
+            return redirect()->route('login');
         }
 
         $user = Auth::user();

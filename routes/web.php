@@ -5,6 +5,10 @@ use App\Http\Controllers\Dashboard\Admin\AdminController;
 use App\Http\Controllers\Landing\LandingController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok'], 200);
+});
+
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/profile', [LandingController::class, 'profile'])->name('landing.profile');
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
@@ -17,7 +21,7 @@ Route::get('dashboard/ppdb/pendaftaran/download-kartu', [AdminController::class,
 
 // Auth
 Route::prefix('auth')->group(function () {
-    Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('auth.login');
+    Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('login');
     Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('auth.register');
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });

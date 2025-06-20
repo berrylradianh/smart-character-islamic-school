@@ -51,7 +51,7 @@ use Illuminate\Support\Facades\Storage;
                     <p>{!! $ppdb->contact_info !!}</p>
                 </div>
 
-                <a href="{{route('auth.login')}}" class="header-btn"
+                <a href="{{route('login')}}" class="header-btn"
                     style="display: inline-flex; align-items: center; padding: 8px 15px; background-color: #E47804; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.3s ease-in-out;"
                     onmouseover="this.style.backgroundColor='#FF9800';"
                     onmouseout="this.style.backgroundColor='#E47804';">
