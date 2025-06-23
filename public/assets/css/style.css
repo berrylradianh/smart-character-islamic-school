@@ -125,7 +125,7 @@
 }
 
 /*---------------------------------
-    typography css start 
+    typography css start
 ---------------------------------*/
 body {
   font-family: var(--tp-ff-body);
@@ -308,7 +308,7 @@ input[type=color] {
 }
 
 /*---------------------------------
-    common classes css start 
+    common classes css start
 ---------------------------------*/
 .w-img img {
   width: 100%;
@@ -362,7 +362,7 @@ input[type=color] {
 }
 
 /*----------------------------------------
-    Body Overlay 
+    Body Overlay
 -----------------------------------------*/
 .body-overlay {
   background-color: rgba(var(--tp-common-black), 0.5);
@@ -10306,3 +10306,10 @@ p.checkout-coupon input[type=text]:focus {
 }
 
 /*# sourceMappingURL=style.css.map */
+#click-blocker {
+    transition: opacity 0.3s ease;
+}
+#click-blocker.hidden {
+    opacity: 0;
+    pointer-events: none;
+}

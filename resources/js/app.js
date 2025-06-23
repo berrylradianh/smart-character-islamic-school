@@ -72,6 +72,14 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
         console.log('Halaman dimuat, status:', navigator.onLine);
 
+        const clickBlocker = document.getElementById('click-blocker');
+        if (clickBlocker) {
+            clickBlocker.classList.add('hidden');
+            setTimeout(() => {
+                clickBlocker.remove();
+            }, 300);
+        }
+
         if (navigator.onLine) {
             const serverAlive = await isServerAlive();
             if (serverAlive) {
