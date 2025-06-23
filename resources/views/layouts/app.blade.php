@@ -43,14 +43,6 @@
     </div>
     <!-- pre loader area end -->
 
-    <!-- Overlay untuk mencegah klik selama pemuatan -->
-    <div id="click-blocker" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 9999; cursor: wait;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <img src="{{ asset('assets/img/favicon.png') }}" alt="Loading..." style="width: 50px;">
-        </div>
-    </div>
-    <!-- End Overlay -->
-
     <!-- back to top start -->
     <div class="progress-wrap" style="background-color: white;">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
