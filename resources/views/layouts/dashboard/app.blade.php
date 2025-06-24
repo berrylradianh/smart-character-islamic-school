@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    @if (!isset($_SERVER['CYPRESS']))
     <!-- Overlay untuk mencegah klik selama pemuatan -->
     <div id="click-blocker" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 9999; cursor: wait;">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
@@ -34,6 +35,7 @@
         </div>
     </div>
     <!-- End Overlay -->
+    @endif
 
     <!-- Begin page -->
     <div id="wrapper">

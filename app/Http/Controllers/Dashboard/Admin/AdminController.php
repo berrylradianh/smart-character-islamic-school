@@ -273,7 +273,9 @@ class AdminController extends Controller
     public function destroyAgenda($id)
     {
         $agenda = Agenda::findOrFail($id);
-        Storage::disk('public')->delete($agenda->image);
+        if ($agenda->image && Storage::disk('public')->exists($agenda->image)) {
+            Storage::disk('public')->delete($agenda->image);
+        }
         $agenda->delete();
 
         return redirect()->route('dashboard.agenda')->with('success', 'Agenda berhasil dihapus.');
