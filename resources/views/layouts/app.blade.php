@@ -32,6 +32,33 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 </head>
 
+<style>
+    #loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+    }
+
+    #loading-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #loading-center-absolute {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
 <body>
     <!-- pre loader area start -->
     <div id="loading">
@@ -113,7 +140,9 @@
                     $.ajax({
                         url: '{{ route("landing.search.suggestions") }}',
                         method: 'GET',
-                        data: { query: query },
+                        data: {
+                            query: query
+                        },
                         success: function(data) {
                             suggestionsList.empty();
                             if (data.length > 0) {
@@ -165,9 +194,15 @@
                 ],
                 dots: true,
                 responsive: {
-                    0: { items: 1 },
-                    600: { items: 2 },
-                    1000: { items: 3 }
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 2
+                    },
+                    1000: {
+                        items: 3
+                    }
                 },
                 onInitialized: updateNavVisibility,
                 onTranslated: updateNavVisibility
