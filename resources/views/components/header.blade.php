@@ -82,7 +82,7 @@
                                                 style="color: #031220; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;"
                                                 onmouseover="this.style.color='#28a745';"
                                                 onmouseout="this.style.color='#031220';">
-                                                Tentang Kamis
+                                                Tentang Kami
                                             </a>
                                             @endif
                                             <ul class="submenu"
