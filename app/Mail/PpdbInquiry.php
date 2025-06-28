@@ -20,7 +20,8 @@ class PpdbInquiry extends Mailable
 
     public function build()
     {
-        return $this->subject('Pertanyaan PPDB - Smart Character Islamic School')
+        return $this->from($this->data['email'], $this->data['namaOrangTua'])
+            ->subject('Pertanyaan PPDB - Smart Character Islamic School')
             ->view('emails.ppdb_inquiry')
             ->with([
                 'namaSiswa' => $this->data['namaSiswa'],
@@ -36,7 +37,7 @@ class PpdbInquiry extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Ppdb Inquiry',
+            subject: 'Pertanyaan PPDB - Smart Character Islamic School',
         );
     }
 

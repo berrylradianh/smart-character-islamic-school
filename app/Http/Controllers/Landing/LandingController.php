@@ -141,7 +141,8 @@ class LandingController extends Controller
             ];
 
             try {
-                Mail::to('berrylhamesha@gmail.com')->send(new PpdbInquiry($emailData));
+                Mail::to(env('MAIL_FROM_ADDRESS', 'pesantrenscis@gmail.com'))
+                    ->send(new PpdbInquiry($emailData));
                 return redirect()->route('ppdb')->with('success', 'Pertanyaan Anda telah berhasil dikirim!');
             } catch (\Exception $e) {
                 return redirect()->route('ppdb')->with('error', 'Gagal mengirim email: ' . $e->getMessage());
