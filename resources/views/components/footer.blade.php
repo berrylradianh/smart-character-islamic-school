@@ -71,18 +71,18 @@
                                 </li>
                                 <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; line-height: 1.6;">
                                     <i class="fa-solid fa-phone" style="color: #28a745; font-size: 18px;"></i>
-                                    <a href="https://wa.me/6281777888" target="_blank" style="color: #031220; text-decoration: none;"
+                                    <a href="https://wa.me/6285659806667" target="_blank" style="color: #031220; text-decoration: none;"
                                         onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">
-                                        6281777888
+                                        6285659806667
                                     </a>
                                 </li>
                                 <li style="display: flex; align-items: center; gap: 12px; line-height: 1.6;">
                                     <i class="fa-solid fa-envelope" style="color: #28a745; font-size: 18px;"></i>
-                                    <a href="mailto:info@scis" target="_blank" style="color: #031220; text-decoration: none;"
+                                    <a href="mailto:pesantrenscis@gmail.com" target="_blank" style="color: #031220; text-decoration: none;"
                                         onmouseover="this.style.color='#28a745';"
                                         onmouseout="this.style.color='#031220';">
-                                        info@scis
+                                        pesantrenscis@gmail.com
                                     </a>
                                 </li>
                             </ul>
