@@ -135,6 +135,7 @@
                             <!-- Search -->
                             <div class="header__search" style="position: relative;">
                                 <form action="{{ route('landing.search') }}" method="GET">
+                                    @csrf
                                     <div class="header__search-input" style="padding: 5px 10px; display: flex; align-items: center; width: 200px;">
                                         <input type="text" name="query" id="search-input" placeholder="Search..." style="border: none; outline: none; width: 100%; padding: 0 5px;" autocomplete="off">
                                         <button class="header__search-btn" type="submit" style="background: none; border: none; cursor: pointer;">
