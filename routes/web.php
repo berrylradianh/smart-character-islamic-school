@@ -44,49 +44,49 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
 
     // Routes accessible to Admin and Superadmin
     Route::middleware('role:Admin,Superadmin')->group(function () {
-        Route::get('/stats', [AdminController::class, 'stats'])->name('dashboard.stats');
-        Route::post('/stats', [AdminController::class, 'storeStat'])->name('dashboard.stats.store');
-        Route::put('/stats/{id}', [AdminController::class, 'updateStat'])->name('dashboard.stats.update');
-        Route::delete('/stats/{id}', [AdminController::class, 'destroyStat'])->name('dashboard.stats.destroy');
-        Route::get('/content-hero', [AdminController::class, 'hero'])->name('dashboard.hero');
-        Route::post('/content-hero', [AdminController::class, 'storeHero'])->name('dashboard.hero.store');
-        Route::delete('/content-hero/{id}', [AdminController::class, 'destroyHero'])->name('dashboard.hero.destroy');
         Route::get('/content-news', [AdminController::class, 'news'])->name('dashboard.news');
-        Route::post('/content-news', [AdminController::class, 'storeNews'])->name('dashboard.news.store');
-        Route::delete('/content-news/{id}', [AdminController::class, 'destroyNews'])->name('dashboard.news.destroy');
         Route::get('/content-agenda', [AdminController::class, 'agenda'])->name('dashboard.agenda');
-        Route::post('/content-agenda', [AdminController::class, 'storeAgenda'])->name('dashboard.agenda.store');
-        Route::delete('/content-agenda/{id}', [AdminController::class, 'destroyAgenda'])->name('dashboard.agenda.destroy');
-        Route::get('/content-introduction', [AdminController::class, 'introduction'])->name('dashboard.introduction');
-        Route::post('/content-introduction', [AdminController::class, 'storeIntroduction'])->name('dashboard.introduction.store');
         Route::get('/list-pendaftar', [AdminController::class, 'listPendaftar'])->name('dashboard.list_pendaftar');
-        Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('dashboard.show_pendaftar');
-        Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('dashboard.update_status');
         Route::get('/export/{format}', [AdminController::class, 'export'])->name('dashboard.export');
-        Route::post('/upload-image', [AdminController::class, 'uploadImage'])->name('dashboard.upload_image');
-        Route::get('/values', [AdminController::class, 'values'])->name('dashboard.values');
-        Route::put('/values/{id}', [AdminController::class, 'updateValue'])->name('dashboard.values.update');
-        Route::get('/content-programs', [AdminController::class, 'programs'])->name('dashboard.programs');
-        Route::post('/content-programs', [AdminController::class, 'storeProgram'])->name('dashboard.programs.store');
-        Route::delete('/content-programs/{id}', [AdminController::class, 'destroyProgram'])->name('dashboard.programs.destroy');
-        Route::get('/content-testimonials', [AdminController::class, 'testimonials'])->name('dashboard.testimonials');
-        Route::post('/content-testimonials', [AdminController::class, 'storeTestimonial'])->name('dashboard.testimonials.store');
-        Route::delete('/content-testimonials/{id}', [AdminController::class, 'destroyTestimonial'])->name('dashboard.testimonials.destroy');
-        Route::get('/content-media', [AdminController::class, 'media'])->name('dashboard.media');
-        Route::post('/content-media', [AdminController::class, 'storeMedia'])->name('dashboard.media.store');
-        Route::delete('/content-media/{id}', [AdminController::class, 'destroyMedia'])->name('dashboard.media.destroy');
+    });
+
+    // Routes accessible only to Superadmin
+    Route::middleware('role:Superadmin')->group(function () {
+        Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('dashboard.show_pendaftar');
+        Route::get('/get-gedungs/{school_location_id}', [AdminController::class, 'getGedungs'])->name('dashboard.get_gedungs');
+        Route::get('/get-ruangs/{gedung_id}', [AdminController::class, 'getRuangs'])->name('dashboard.get_ruangs');
         Route::get('/content-profile', [AdminController::class, 'profile'])->name('dashboard.profile');
         Route::post('/content-profile', [AdminController::class, 'storeProfile'])->name('dashboard.profile.store');
         Route::get('/content-vision', [AdminController::class, 'vision'])->name('dashboard.vision');
         Route::post('/content-vision', [AdminController::class, 'storeVision'])->name('dashboard.vision.store');
         Route::get('/content-ppdb', [AdminController::class, 'ppdb'])->name('dashboard.ppdb');
         Route::post('/content-ppdb', [AdminController::class, 'storePpdb'])->name('dashboard.ppdb.store');
-        Route::get('/get-gedungs/{school_location_id}', [AdminController::class, 'getGedungs'])->name('dashboard.get_gedungs');
-        Route::get('/get-ruangs/{gedung_id}', [AdminController::class, 'getRuangs'])->name('dashboard.get_ruangs');
-    });
-
-    // Routes accessible only to Superadmin
-    Route::middleware('role:Superadmin')->group(function () {
+        Route::get('/content-media', [AdminController::class, 'media'])->name('dashboard.media');
+        Route::post('/content-media', [AdminController::class, 'storeMedia'])->name('dashboard.media.store');
+        Route::delete('/content-media/{id}', [AdminController::class, 'destroyMedia'])->name('dashboard.media.destroy');
+        Route::get('/content-testimonials', [AdminController::class, 'testimonials'])->name('dashboard.testimonials');
+        Route::post('/content-testimonials', [AdminController::class, 'storeTestimonial'])->name('dashboard.testimonials.store');
+        Route::delete('/content-testimonials/{id}', [AdminController::class, 'destroyTestimonial'])->name('dashboard.testimonials.destroy');
+        Route::get('/content-programs', [AdminController::class, 'programs'])->name('dashboard.programs');
+        Route::post('/content-programs', [AdminController::class, 'storeProgram'])->name('dashboard.programs.store');
+        Route::delete('/content-programs/{id}', [AdminController::class, 'destroyProgram'])->name('dashboard.programs.destroy');
+        Route::get('/values', [AdminController::class, 'values'])->name('dashboard.values');
+        Route::put('/values/{id}', [AdminController::class, 'updateValue'])->name('dashboard.values.update');
+        Route::post('/upload-image', [AdminController::class, 'uploadImage'])->name('dashboard.upload_image');
+        Route::post('/pendaftar/{id}/update-status', [AdminController::class, 'updateStatus'])->name('dashboard.update_status');
+        Route::get('/content-introduction', [AdminController::class, 'introduction'])->name('dashboard.introduction');
+        Route::post('/content-introduction', [AdminController::class, 'storeIntroduction'])->name('dashboard.introduction.store');
+        Route::post('/content-agenda', [AdminController::class, 'storeAgenda'])->name('dashboard.agenda.store');
+        Route::delete('/content-agenda/{id}', [AdminController::class, 'destroyAgenda'])->name('dashboard.agenda.destroy');
+        Route::post('/content-news', [AdminController::class, 'storeNews'])->name('dashboard.news.store');
+        Route::delete('/content-news/{id}', [AdminController::class, 'destroyNews'])->name('dashboard.news.destroy');
+        Route::get('/content-hero', [AdminController::class, 'hero'])->name('dashboard.hero');
+        Route::post('/content-hero', [AdminController::class, 'storeHero'])->name('dashboard.hero.store');
+        Route::delete('/content-hero/{id}', [AdminController::class, 'destroyHero'])->name('dashboard.hero.destroy');
+        Route::get('/stats', [AdminController::class, 'stats'])->name('dashboard.stats');
+        Route::post('/stats', [AdminController::class, 'storeStat'])->name('dashboard.stats.store');
+        Route::put('/stats/{id}', [AdminController::class, 'updateStat'])->name('dashboard.stats.update');
+        Route::delete('/stats/{id}', [AdminController::class, 'destroyStat'])->name('dashboard.stats.destroy');
         Route::get('/roles', [AdminController::class, 'listRoles'])->name('dashboard.roles.index');
         Route::get('/roles/create', [AdminController::class, 'createRole'])->name('dashboard.roles.create');
         Route::post('/roles', [AdminController::class, 'storeRole'])->name('dashboard.roles.store');

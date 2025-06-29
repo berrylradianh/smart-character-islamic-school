@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Auth;
+@endphp
+
 @extends('layouts.dashboard.app')
 
 @section('content')
@@ -83,7 +87,9 @@
                                         <th><i class="fas fa-clock mr-1"></i> Jadwal Tes</th>
                                         <th><i class="fas fa-map-marker-alt mr-1"></i> Lokasi Tes</th>
                                         <th><i class="fas fa-info-circle mr-1"></i> Status</th>
+                                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                                         <th><i class="fas fa-cog mr-1"></i> Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -111,9 +117,11 @@
                                             <span class="badge badge-secondary" style="font-size: 15px">Tidak Diketahui</span>
                                             @endif
                                         </td>
+                                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                                         <td>
                                             <a href="{{ route('dashboard.show_pendaftar', $registration->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye mr-1"></i> Detail</a>
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

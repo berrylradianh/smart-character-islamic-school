@@ -1,5 +1,6 @@
 @php
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 @endphp
 
 @extends('layouts.dashboard.app')
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Storage;
             @endif
 
             <div id="agenda-sections">
+                @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                 <form action="{{ route('dashboard.agenda.store') }}" method="POST" enctype="multipart/form-data" id="agenda-form">
                     @csrf
                     <div id="input-sections">
@@ -84,6 +86,7 @@ use Illuminate\Support\Facades\Storage;
                         </div>
                     </div>
                 </form>
+                @endif
 
                 @foreach ($agendas as $index => $item)
                 <div class="row agenda-item" data-agenda-index="{{ $index }}">
@@ -123,9 +126,11 @@ use Illuminate\Support\Facades\Storage;
                                                 @endif
                                             </div>
                                         </div>
+                                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                                         <div class="text-center m-t-15">
                                             <button type="submit" class="btn btn-danger waves-effect waves-light">Remove</button>
                                         </div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>

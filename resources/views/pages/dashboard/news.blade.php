@@ -1,4 +1,5 @@
 @php
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 @endphp
 
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Storage;
             @endif
 
             <div id="news-sections">
+                @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                 <form action="{{ route('dashboard.news.store') }}" method="POST" enctype="multipart/form-data" id="news-form">
                     @csrf
                     <div id="input-sections">
@@ -84,6 +86,7 @@ use Illuminate\Support\Facades\Storage;
                         </div>
                     </div>
                 </form>
+                @endif
 
                 @foreach ($news as $index => $item)
                 <div class="row news-item" data-news-index="{{ $index }}">
@@ -123,9 +126,11 @@ use Illuminate\Support\Facades\Storage;
                                                 @endif
                                             </div>
                                         </div>
+                                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                                         <div class="text-center m-t-15">
                                             <button type="submit" class="btn btn-danger waves-effect waves-light">Remove</button>
                                         </div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>
