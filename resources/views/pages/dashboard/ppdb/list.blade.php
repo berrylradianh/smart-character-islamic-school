@@ -189,19 +189,24 @@ use Illuminate\Support\Facades\Auth;
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <script>
+    var userRole = '{{ Auth::user()->role ? Auth::user()->role->name : "Admin" }}';
     $(document).ready(function() {
+        "use strict";
+
         var table = $('#datatable').DataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 8
-            }]
+            responsive: true,
+            autoWidth: false,
+            columnDefs: [{
+                    orderable: false,
+                    targets: userRole === 'Superadmin' ? 8 : -1
+                }
+            ]
         });
 
         $('#jenjangFilter').on('change', function() {
             var jenjangValue = $(this).val().toLowerCase();
-            table.column(2).search(jenjangValue).draw();
+            console.log('Filtering Jenjang:', jenjangValue);
+            table.column(2).search(jenjangValue, false, true).draw();
         });
 
         $.fn.dataTable.ext.search.push(
