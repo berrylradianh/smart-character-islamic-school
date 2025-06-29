@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-accelerator"></i><span> Dashboard <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="{{route('dashboard.index')}}">Dashboard</a></li>
+                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Superadmin']))
                         <li><a href="{{route('dashboard.stats')}}">Setting Dashboard</a></li>
+                        @endif
                     </ul>
                 </li>
                 @else
@@ -24,9 +26,12 @@ use Illuminate\Support\Facades\Auth;
                 <li>
                     <a href="javascript:void(0);" class="waves-effect"><i class="icon-spread"></i><span> Content <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
+                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Admin', 'Superadmin']))
                         <li><a href="{{route('dashboard.hero')}}">Hero</a></li>
+                        @endif
                         <li><a href="{{route('dashboard.news')}}">Berita</a></li>
                         <li><a href="{{route('dashboard.agenda')}}">Agenda</a></li>
+                        @if (Auth::user()->role && in_array(Auth::user()->role->name, ['Admin', 'Superadmin']))
                         <li><a href="{{route('dashboard.introduction')}}">Perkenalan</a></li>
                         <li><a href="{{route('dashboard.values')}}">Prinsip</a></li>
                         <li><a href="{{route('dashboard.programs')}}">Program Unggulan</a></li>
@@ -35,6 +40,7 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{route('dashboard.profile')}}">Profil</a></li>
                         <li><a href="{{route('dashboard.vision')}}">Visi dan Misi</a></li>
                         <li><a href="{{route('dashboard.ppdb')}}">PPDB</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endif
