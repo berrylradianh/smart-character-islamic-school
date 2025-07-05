@@ -11,6 +11,7 @@ Route::get('/health', function () {
 
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/profile', [LandingController::class, 'profile'])->name('landing.profile');
+Route::get('/faq', [LandingController::class, 'faq'])->name('landing.faq');
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
 Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
 Route::match(['get', 'post'], '/ppdb', [LandingController::class, 'ppdb'])->name('ppdb');
@@ -56,6 +57,10 @@ Route::prefix('dashboards')->middleware('auth', 'check.profile')->group(function
         Route::get('/pendaftar/{id}', [AdminController::class, 'showPendaftar'])->name('dashboard.show_pendaftar');
         Route::get('/get-gedungs/{school_location_id}', [AdminController::class, 'getGedungs'])->name('dashboard.get_gedungs');
         Route::get('/get-ruangs/{gedung_id}', [AdminController::class, 'getRuangs'])->name('dashboard.get_ruangs');
+        Route::get('/content-faq', [AdminController::class, 'requirementFaq'])->name('dashboard.ppdb_faq');
+        Route::delete('/content-faq/{id}', [AdminController::class, 'destroyFaq'])->name('dashboard.faq.destroy');
+        Route::put('/content-faq/{id}', [AdminController::class, 'updateFaq'])->name('dashboard.faq.update');
+        Route::post('/content-faq', [AdminController::class, 'storeFaq'])->name('dashboard.faq.store');
         Route::get('/content-profile', [AdminController::class, 'profile'])->name('dashboard.profile');
         Route::post('/content-profile', [AdminController::class, 'storeProfile'])->name('dashboard.profile.store');
         Route::get('/content-vision', [AdminController::class, 'vision'])->name('dashboard.vision');

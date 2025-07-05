@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\PpdbInquiry;
 use App\Models\Agenda;
 use App\Models\DashboardStat;
+use App\Models\Faqs;
 use App\Models\Hero;
 use App\Models\Introduction;
 use App\Models\Media;
@@ -223,5 +224,15 @@ class LandingController extends Controller
         }
 
         return response()->json($suggestions);
+    }
+
+    public function faq()
+    {
+        $data = [
+            'title' => 'FAQ',
+            'faqs' => Faqs::orderBy('order_number')->orderBy('created_at', 'desc')->get(),
+        ];
+
+        return view('pages.landing.faq.index', $data);
     }
 }

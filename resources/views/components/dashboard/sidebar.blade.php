@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{route('dashboard.values')}}">Prinsip</a></li>
                         <li><a href="{{route('dashboard.programs')}}">Program Unggulan</a></li>
                         <li><a href="{{route('dashboard.testimonials')}}">Testimoni</a></li>
+                        <li><a href="{{route('dashboard.ppdb_faq')}}">FAQ</a></li>
                         <li><a href="{{route('dashboard.media')}}">Media</a></li>
                         <li><a href="{{route('dashboard.profile')}}">Profil</a></li>
                         <li><a href="{{route('dashboard.vision')}}">Visi dan Misi</a></li>

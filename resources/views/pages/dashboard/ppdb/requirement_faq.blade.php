@@ -1,5 +1,5 @@
 @php
-    use Illuminate\Support\Str;
+use Illuminate\Support\Str;
 @endphp
 
 @extends('layouts.dashboard.app')
@@ -20,15 +20,6 @@
                             <li class="breadcrumb-item active">Kelola FAQs</li>
                         </ol>
                     </div>
-                </div>
-            </div>
-
-            <!-- Tombol Tambah FAQ -->
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#addFaqModal">
-                        <i class="fas fa-plus"></i> Tambah FAQ
-                    </button>
                 </div>
             </div>
 
@@ -54,12 +45,15 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $faq->question }}</td>
-                                        <td>{{ Str::limit($faq->answer, 50) }}</td>
+                                        <td>{{ Str::limit($faq->answer, 45) }}</td>
                                         <td>{{ $faq->order_number }}</td>
                                         <td>
                                             <span class="badge badge-{{ $faq->category_color }}" style="font-size: small;">{{ $faq->category_color }}</span>
                                         </td>
                                         <td>
+                                            <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewFaqModal{{ $faq->id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
                                             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editFaqModal{{ $faq->id }}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
@@ -84,62 +78,44 @@
                 </div>
             </div>
 
-            <!-- Modal Tambah FAQ -->
-            <div class="modal fade" id="addFaqModal" tabindex="-1" role="dialog" aria-labelledby="addFaqModalLabel" aria-hidden="true">
+            <!-- Modal Detail FAQ -->
+            @foreach ($faqs as $faq)
+            <div class="modal fade" id="viewFaqModal{{ $faq->id }}" tabindex="-1" role="dialog" aria-labelledby="viewFaqModalLabel{{ $faq->id }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('dashboard.faq.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addFaqModalLabel">Tambah FAQ</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewFaqModalLabel{{ $faq->id }}">Detail FAQ</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Pertanyaan</label>
+                                <p class="form-control-static">{{ $faq->question }}</p>
                             </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="question">Pertanyaan</label>
-                                    <input type="text" name="question" id="question" class="form-control @error('question') is-invalid @enderror" value="{{ old('question') }}" required>
-                                    @error('question')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="answer">Jawaban</label>
-                                    <textarea name="answer" id="answer" class="form-control @error('answer') is-invalid @enderror" rows="4" required>{{ old('answer') }}</textarea>
-                                    @error('answer')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="order_number">Nomor Urutan</label>
-                                    <input type="number" name="order_number" id="order_number" class="form-control @error('order_number') is-invalid @enderror" value="{{ old('order_number') }}" required>
-                                    @error('order_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="category_color">Warna Kategori</label>
-                                    <select name="category_color" id="category_color" class="form-control @error('category_color') is-invalid @enderror" required>
-                                        <option value="success" {{ old('category_color') == 'success' ? 'selected' : '' }}>Success</option>
-                                        <option value="primary" {{ old('category_color') == 'primary' ? 'selected' : '' }}>Primary</option>
-                                        <option value="warning" {{ old('category_color') == 'warning' ? 'selected' : '' }}>Warning</option>
-                                        <option value="danger" {{ old('category_color') == 'danger' ? 'selected' : '' }}>Danger</option>
-                                        <option value="info" {{ old('category_color') == 'info' ? 'selected' : '' }}>Info</option>
-                                    </select>
-                                    @error('category_color')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <div class="form-group">
+                                <label>Jawaban</label>
+                                <p class="form-control-static">{{ $faq->answer }}</p>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            <div class="form-group">
+                                <label>Nomor Urutan</label>
+                                <p class="form-control-static">{{ $faq->order_number }}</p>
                             </div>
-                        </form>
+                            <div class="form-group">
+                                <label>Warna Kategori</label>
+                                <p class="form-control-static">
+                                    <span class="badge badge-{{ $faq->category_color }}">{{ $faq->category_color }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endforeach
 
             <!-- Modal Edit FAQ -->
             @foreach ($faqs as $faq)
@@ -152,7 +128,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editFaqModalLabel{{ $faq->id }}">Edit FAQ</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             <div class="modal-body">
