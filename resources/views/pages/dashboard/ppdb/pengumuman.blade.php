@@ -122,6 +122,11 @@ use App\Models\Level;
                                             </p>
                                         </div>
                                     </div>
+                                    <div class="mt-4">
+                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pengumuman.download_kartu') }}" class="btn btn-success btn-sm rounded-pill px-4">
+                                            <i class="fas fa-download mr-2"></i> Download Kartu Penerimaan
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             @elseif ($registration->status == 'not_accepted')

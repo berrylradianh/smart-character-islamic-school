@@ -1663,4 +1663,26 @@ class AdminController extends Controller
 
         return $pdf->download('Kartu_Peserta_' . str_replace(' ', '_', $user->name) . '.pdf');
     }
+
+    public function downloadKartuPenerimaan(Request $request)
+    {
+        $user = Auth::user();
+        $registration = Registration::where('user_id', $user->id)->first();
+
+        if (!$registration) {
+            return redirect()->back()->with('error', 'Data pendaftaran tidak ditemukan.');
+        }
+
+        $data = [
+            'user' => $user,
+            'registration' => $registration,
+            'logo_path' => public_path('assets/img/logo/logo-white.png'),
+            'pasfoto_path' => $user->pasfoto_path ? storage_path('app/public/' . $user->pasfoto_path) : null,
+        ];
+
+        $pdf = Pdf::loadView('pdf.kartu_penerimaan', $data)
+            ->setPaper('a5', 'portrait');
+
+        return $pdf->download('Kartu_Penerimaan_' . str_replace(' ', '_', $user->name) . '.pdf');
+    }
 }

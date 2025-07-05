@@ -18,6 +18,7 @@ Route::get('/search', [LandingController::class, 'search'])->name('landing.searc
 Route::get('/search-suggestions', [LandingController::class, 'searchSuggestions'])->name('landing.search.suggestions');
 
 Route::get('dashboard/ppdb/pendaftaran/download-kartu', [AdminController::class, 'downloadKartuPeserta'])->name('dashboard.ppdb_pendaftaran.download_kartu')->middleware('auth');
+Route::get('dashboard/ppdb/pengumuman/download-kartu', [AdminController::class, 'downloadKartuPenerimaan'])->name('dashboard.ppdb_pengumuman.download_kartu')->middleware('auth');
 
 // Auth
 Route::prefix('auth')->group(function () {
