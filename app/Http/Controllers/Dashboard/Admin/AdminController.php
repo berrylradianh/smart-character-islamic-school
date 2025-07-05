@@ -579,7 +579,7 @@ class AdminController extends Controller
 
         Faqs::create($validated);
 
-        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil ditambahkan.');
+        return redirect()->route('dashboard.ppdb_faq')->with('success', 'FAQ berhasil ditambahkan.');
     }
 
     public function updateFaq(Request $request, $id)
@@ -591,11 +591,12 @@ class AdminController extends Controller
             'answer' => 'required|string',
             'order_number' => 'required|integer|min:1',
             'category_color' => 'required|in:success,primary,warning,danger,info',
+            'show_on_landing_page' => 'required',
         ]);
 
         $faq->update($validated);
 
-        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil diperbarui.');
+        return redirect()->route('dashboard.ppdb_faq')->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroyFaq($id)
@@ -603,7 +604,7 @@ class AdminController extends Controller
         $faq = Faqs::findOrFail($id);
         $faq->delete();
 
-        return redirect()->route('dashboard.requirement_faq')->with('success', 'FAQ berhasil dihapus.');
+        return redirect()->route('dashboard.ppdb_faq')->with('success', 'FAQ berhasil dihapus.');
     }
 
     public function ppdb_pendaftaran()

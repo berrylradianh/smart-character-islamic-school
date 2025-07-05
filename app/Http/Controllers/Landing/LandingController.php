@@ -125,8 +125,11 @@ class LandingController extends Controller
             ],
         ]);
 
+        $faqs = Faqs::orderBy('order_number')->orderBy('created_at', 'desc')->where('show_on_landing_page', true)->get();
+
         $data = [
             'title' => 'PPDB',
+            'faqs' => $faqs,
             'ppdb' => $ppdb,
         ];
 
@@ -224,15 +227,5 @@ class LandingController extends Controller
         }
 
         return response()->json($suggestions);
-    }
-
-    public function faq()
-    {
-        $data = [
-            'title' => 'FAQ',
-            'faqs' => Faqs::orderBy('order_number')->orderBy('created_at', 'desc')->get(),
-        ];
-
-        return view('pages.landing.faq.index', $data);
     }
 }

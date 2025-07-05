@@ -72,7 +72,7 @@
 
                                         <!-- Dropdown -->
                                         <li class="has-dropdown" style="position: relative;" onmouseover="showDropdown(this)" onmouseout="hideDropdown(this)">
-                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi dan Misi' || $title == 'Program' || $title == 'FAQ')
+                                            @if ($title == 'Tentang Kami' || $title == 'Profil' || $title == 'Visi dan Misi' || $title == 'Program')
                                             <a href="#"
                                                 style="color: #28a745; text-decoration: none; font-size: 16px; padding: 10px 15px; display: block; transition: color 0.3s ease-in-out;">
                                                 Tentang Kami
@@ -109,14 +109,6 @@
                                                         onmouseover="this.style.color='#28a745';"
                                                         onmouseout="this.style.color='#031220';">
                                                         Program
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('landing.faq') }}"
-                                                        style="display: block; padding: 8px 20px; color: #031220; text-decoration: none; transition: color 0.3s ease-in-out;"
-                                                        onmouseover="this.style.color='#28a745';"
-                                                        onmouseout="this.style.color='#031220';">
-                                                        FAQ
                                                     </a>
                                                 </li>
                                             </ul>

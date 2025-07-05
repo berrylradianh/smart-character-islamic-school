@@ -11,7 +11,6 @@ Route::get('/health', function () {
 
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/profile', [LandingController::class, 'profile'])->name('landing.profile');
-Route::get('/faq', [LandingController::class, 'faq'])->name('landing.faq');
 Route::get('/vision', [LandingController::class, 'vision'])->name('landing.vision');
 Route::get('/program', [LandingController::class, 'program'])->name('landing.program');
 Route::match(['get', 'post'], '/ppdb', [LandingController::class, 'ppdb'])->name('ppdb');

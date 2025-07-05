@@ -37,6 +37,7 @@ use Illuminate\Support\Str;
                                         <th>Jawaban</th>
                                         <th>Urutan</th>
                                         <th>Warna Kategori</th>
+                                        <th>Landing Page</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -44,11 +45,16 @@ use Illuminate\Support\Str;
                                     @forelse ($faqs as $faq)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $faq->question }}</td>
-                                        <td>{{ Str::limit($faq->answer, 45) }}</td>
+                                        <td>{{ Str::limit($faq->question, 42) }}</td>
+                                        <td>{{ Str::limit($faq->answer, 42) }}</td>
                                         <td>{{ $faq->order_number }}</td>
                                         <td>
                                             <span class="badge badge-{{ $faq->category_color }}" style="font-size: small;">{{ $faq->category_color }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-{{ $faq->show_on_landing_page ? 'success' : 'secondary' }}">
+                                                {{ $faq->show_on_landing_page ? 'Ya' : 'Tidak' }}
+                                            </span>
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewFaqModal{{ $faq->id }}">
@@ -68,7 +74,7 @@ use Illuminate\Support\Str;
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Tidak ada FAQ tersedia.</td>
+                                        <td colspan="7" class="text-center">Tidak ada FAQ tersedia.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -106,6 +112,14 @@ use Illuminate\Support\Str;
                                 <label>Warna Kategori</label>
                                 <p class="form-control-static">
                                     <span class="badge badge-{{ $faq->category_color }}">{{ $faq->category_color }}</span>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Tampil di Landing Page</label>
+                                <p class="form-control-static">
+                                    <span class="badge badge-{{ $faq->show_on_landing_page ? 'success' : 'secondary' }}">
+                                        {{ $faq->show_on_landing_page ? 'Ya' : 'Tidak' }}
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -163,6 +177,16 @@ use Illuminate\Support\Str;
                                         <option value="info" {{ old('category_color', $faq->category_color) == 'info' ? 'selected' : '' }}>Info</option>
                                     </select>
                                     @error('category_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="show_on_landing_page_{{ $faq->id }}">Tampil di Landing Page</label>
+                                    <select name="show_on_landing_page" id="show_on_landing_page_{{ $faq->id }}" class="form-control @error('show_on_landing_page') is-invalid @enderror">
+                                        <option value="1" {{ old('show_on_landing_page', $faq->show_on_landing_page) ? 'selected' : '' }}>Ya</option>
+                                        <option value="0" {{ old('show_on_landing_page', $faq->show_on_landing_page) ? '' : 'selected' }}>Tidak</option>
+                                    </select>
+                                    @error('show_on_landing_page')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

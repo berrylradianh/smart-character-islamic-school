@@ -46,10 +46,6 @@
                                             <a href="{{route('landing.program')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
                                             onmouseout="this.style.color='#031220';">Program</a>
                                         </div>
-                                        <div style="padding: 8px 12px; white-space: nowrap;">
-                                            <a href="{{route('landing.faq')}}" style="color: #031220; display: block;" onmouseover="this.style.color='#28a745';"
-                                            onmouseout="this.style.color='#031220';">FAQ</a>
-                                        </div>
                                     </div>
                                 </li>
                                 <li style="margin-bottom: 10px;">
