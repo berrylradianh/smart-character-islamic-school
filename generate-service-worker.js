@@ -19,6 +19,7 @@ const allowedExtensions = [
 const getRoutes = [
     '/',
     '/profile',
+    '/faq',
     '/vision',
     '/program',
     '/ppdb',

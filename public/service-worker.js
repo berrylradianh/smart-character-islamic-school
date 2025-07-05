@@ -647,6 +647,7 @@ const urlsToCache = [
   "/storage/vision_images/AMWL9gbqlzJrsSmXki3cO2VXuDBbS1x85CuZJTyh.png",
   "/storage/vision_images/visi dan misi.png",
   "/",
+  "/faq",
   "/profile",
   "/vision",
   "/program",
