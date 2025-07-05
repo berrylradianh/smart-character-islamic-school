@@ -145,7 +145,7 @@ use App\Models\Level;
                                         </div>
                                     </div>
                                     <div class="mt-4">
-                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pendaftaran.download_kartu') }}" class="btn btn-success btn-sm rounded-pill px-4">
+                                        <a id="downloadKartuPeserta" href="{{ route('dashboard.ppdb_pendaftaran.download_kartu') }}" class="btn btn-success btn-sm promo rounded-pill px-4">
                                             <i class="fas fa-download mr-2"></i> Download Kartu Peserta
                                         </a>
                                     </div>
@@ -273,7 +273,7 @@ use App\Models\Level;
                                             </div>
                                             @else
                                             <div class="d-flex align-items-center">
-                                                <i class="fas fa-door-open fa-lg text-muted mr-3"></i>
+                                                <i class="fas fa-door-open fa-lg text-muted mr-3"></ Dark
                                                 <div>
                                                     <strong>Ruang:</strong>
                                                     <p class="mb-0 text-muted">Belum ditentukan</p>
@@ -801,7 +801,7 @@ use App\Models\Level;
                                                     <p><strong>SMP/MTS Asal:</strong> <span id="preview_asal_smp_mts"></span></p>
                                                     <p><strong>SMK Asal:</strong> <span id="preview_asal_sma_smk"></span></p>
                                                     <p><strong>Pas Foto:</strong>
-                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_pasfoto_path" disabled>Lihat Pas Foto</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_pasfoto_path" data-toggle="modal" data-target="#filePreviewModal" data-file="pasfoto_path" disabled>Lihat Pas Foto</button>
                                                     </p>
 
                                                     <hr>
@@ -837,8 +837,27 @@ use App\Models\Level;
                                                     <p><strong>Jenjang:</strong> {{ auth()->user()->level ? strtoupper(auth()->user()->level->name) : 'Belum diatur' }}</p>
                                                     <p><strong>Biaya Pendaftaran:</strong> {{ optional(auth()->user()->level)->biaya ? 'Rp. ' . number_format(auth()->user()->level->biaya, 0, ',', '.') : 'Biaya belum diatur' }}</p>
                                                     <p><strong>Bukti Pembayaran:</strong>
-                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_bukti_pembayaran" disabled>Lihat Bukti Pembayaran</button>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm view-file" id="preview_bukti_pembayaran" data-toggle="modal" data-target="#filePreviewModal" data-file="bukti_pembayaran" disabled>Lihat Bukti Pembayaran</button>
                                                     </p>
+                                                </div>
+                                            </div>
+                                            <!-- File Preview Modal -->
+                                            <div class="modal fade" id="filePreviewModal" tabindex="-1" role="dialog" aria-labelledby="filePreviewModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="filePreviewModalLabel">Preview File</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 60vh;">
+                                                            <div id="filePreviewContent" style="width: 100%; height: 100%;"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="text-right mt-3">
@@ -887,7 +906,6 @@ use App\Models\Level;
                         label.classList.remove('selected');
                         window.pasFotoDataUrl = '';
                         previewButton.disabled = true;
-                        previewButton.onclick = null;
                         this.classList.add('is-invalid');
                         return;
                     }
@@ -898,7 +916,6 @@ use App\Models\Level;
                         label.classList.remove('selected');
                         window.pasFotoDataUrl = '';
                         previewButton.disabled = true;
-                        previewButton.onclick = null;
                         this.classList.add('is-invalid');
                         return;
                     }
@@ -912,21 +929,6 @@ use App\Models\Level;
                         window.pasFotoDataUrl = e.target.result;
                         console.log('Pas Foto Data URL:', window.pasFotoDataUrl.substring(0, 50) + '...'); // Debug
                         previewButton.disabled = false;
-                        previewButton.onclick = function(e) {
-                            e.preventDefault();
-                            if (window.pasFotoDataUrl) {
-                                const win = window.open();
-                                if (win) {
-                                    win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
-                                    win.document.close();
-                                } else {
-                                    alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
-                                }
-                            } else {
-                                console.error('Pas Foto Data URL is empty');
-                                alert('Tidak ada file pas foto untuk dipreview.');
-                            }
-                        };
                     };
                     reader.onerror = function(e) {
                         console.error('Error reading pas foto:', e);
@@ -939,7 +941,6 @@ use App\Models\Level;
                     label.textContent = 'Pilih file...';
                     label.classList.remove('selected');
                     previewButton.disabled = true;
-                    previewButton.onclick = null;
                     this.classList.add('is-invalid');
                 }
             });
@@ -962,7 +963,6 @@ use App\Models\Level;
                         label.classList.remove('selected');
                         window.buktiPembayaranDataUrl = '';
                         previewButton.disabled = true;
-                        previewButton.onclick = null;
                         this.classList.add('is-invalid');
                         return;
                     }
@@ -973,7 +973,6 @@ use App\Models\Level;
                         label.classList.remove('selected');
                         window.buktiPembayaranDataUrl = '';
                         previewButton.disabled = true;
-                        previewButton.onclick = null;
                         this.classList.add('is-invalid');
                         return;
                     }
@@ -987,25 +986,6 @@ use App\Models\Level;
                         window.buktiPembayaranDataUrl = e.target.result;
                         console.log('Bukti Pembayaran Data URL:', window.buktiPembayaranDataUrl.substring(0, 50) + '...'); // Debug
                         previewButton.disabled = false;
-                        previewButton.onclick = function(e) {
-                            e.preventDefault();
-                            if (window.buktiPembayaranDataUrl) {
-                                const win = window.open();
-                                if (win) {
-                                    if (file.type === 'application/pdf') {
-                                        win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
-                                    } else {
-                                        win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
-                                    }
-                                    win.document.close();
-                                } else {
-                                    alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
-                                }
-                            } else {
-                                console.error('Bukti Pembayaran Data URL is empty');
-                                alert('Tidak ada file bukti pembayaran untuk dipreview.');
-                            }
-                        };
                     };
                     reader.onerror = function(e) {
                         console.error('Error reading bukti pembayaran:', e);
@@ -1018,7 +998,6 @@ use App\Models\Level;
                     label.textContent = 'Pilih file...';
                     label.classList.remove('selected');
                     previewButton.disabled = true;
-                    previewButton.onclick = null;
                     this.classList.add('is-invalid');
                 }
             });
@@ -1121,16 +1100,17 @@ use App\Models\Level;
                 });
 
                 const pasFotoPreviewButton = document.getElementById('preview_pasfoto_path');
+                const filePreviewContent = document.getElementById('filePreviewContent');
                 if (window.pasFotoDataUrl) {
                     pasFotoPreviewButton.disabled = false;
                     pasFotoPreviewButton.onclick = function(e) {
                         e.preventDefault();
-                        const win = window.open();
-                        if (win) {
-                            win.document.write('<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;height:auto;">');
-                            win.document.close();
+                        if (window.pasFotoDataUrl) {
+                            filePreviewContent.innerHTML = '<img src="' + window.pasFotoDataUrl + '" style="max-width:100%;max-height:100%;object-fit:contain;">';
                         } else {
-                            alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                            console.error('Pas Foto Data URL is empty');
+                            alert('Tidak ada file pas foto untuk dipreview.');
+                            filePreviewContent.innerHTML = '';
                         }
                     };
                 } else {
@@ -1144,18 +1124,18 @@ use App\Models\Level;
                     buktiPembayaranPreviewButton.disabled = false;
                     buktiPembayaranPreviewButton.onclick = function(e) {
                         e.preventDefault();
-                        const win = window.open();
-                        if (win) {
+                        if (window.buktiPembayaranDataUrl) {
                             const fileInput = document.getElementById('bukti_pembayaran');
                             const file = fileInput.files[0];
                             if (file && file.type === 'application/pdf') {
-                                win.document.write('<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>');
+                                filePreviewContent.innerHTML = '<iframe src="' + window.buktiPembayaranDataUrl + '" style="width:100%;height:100%;"></iframe>';
                             } else {
-                                win.document.write('<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;height:auto;">');
+                                filePreviewContent.innerHTML = '<img src="' + window.buktiPembayaranDataUrl + '" style="max-width:100%;max-height:100%;object-fit:contain;">';
                             }
-                            win.document.close();
                         } else {
-                            alert('Popup diblokir oleh browser. Silakan izinkan popup untuk melihat file.');
+                            console.error('Bukti Pembayaran Data URL is empty');
+                            alert('Tidak ada file bukti pembayaran untuk dipreview.');
+                            filePreviewContent.innerHTML = '';
                         }
                     };
                 } else {
