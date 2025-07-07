@@ -144,7 +144,15 @@ class LandingController extends Controller
                 'pesan' => $request->pesan,
             ];
 
+            $lastNumberFaq = Faqs::orderBy('order_number', 'desc')->first()->order_number ?? 0;
+
+            $faqRequest = [
+                'question' => $request->pesan,
+                'order_number' => $lastNumberFaq + 1,
+            ];
+
             try {
+                $faq = Faqs::create($faqRequest);
                 Mail::to(env('MAIL_TO_ADDRESS', 'pesantrenscis@gmail.com'))
                     ->send(new PpdbInquiry($emailData));
                 return redirect()->route('ppdb')->with('success', 'Pertanyaan Anda telah berhasil dikirim!');
