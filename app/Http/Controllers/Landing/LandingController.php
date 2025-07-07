@@ -152,7 +152,7 @@ class LandingController extends Controller
             ];
 
             try {
-                $faq = Faqs::create($faqRequest);
+                Faqs::create($faqRequest);
                 Mail::to(env('MAIL_TO_ADDRESS', 'pesantrenscis@gmail.com'))
                     ->send(new PpdbInquiry($emailData));
                 return redirect()->route('ppdb')->with('success', 'Pertanyaan Anda telah berhasil dikirim!');
